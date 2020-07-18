@@ -1,0 +1,19 @@
+.showcase-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: teal;
+  box-shadow: 5px 0 2px 1px #000;
+}
+.showcase-nav1 {
+  padding-left: 10px;
+  position: absolute;
+}
+.showcase-nav2 {
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
+.app-name {
+  display: inline-block;
+}
