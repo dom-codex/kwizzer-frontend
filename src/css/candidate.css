@@ -1,0 +1,13 @@
+.quiz-registered-title,
+.candidates-table table td {
+  text-align: center;
+}
+.amt-reg {
+  color: grey;
+}
+.candidates-table table {
+  width: 100%;
+}
+tfoot {
+  background-color: tomato;
+}

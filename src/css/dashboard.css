@@ -1,0 +1,9 @@
+.showcase {
+  background-color: tomato;
+  height: 180px;
+}
+.dash-options {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

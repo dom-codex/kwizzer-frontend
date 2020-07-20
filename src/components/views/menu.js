@@ -10,7 +10,7 @@ function Menu(props) {
       <section className="menu">
         <div className="showcase">
           <Header />
-          <Jumbo />
+          <Jumbo title={"Hi! Dominic"} />
         </div>
       </section>
       <Submenu />

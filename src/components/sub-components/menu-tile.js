@@ -4,7 +4,7 @@ import "../../css/menu-tile.css";
 
 const Menutile = (props) => {
   return (
-    <div className="tile">
+    <div className="tile" onClick={props.action}>
       {props.subtile}
       <div className="tile-icon">
         <img src={Icon} style={{ height: 100 }} />

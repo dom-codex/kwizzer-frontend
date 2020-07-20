@@ -6,6 +6,11 @@ import App from "./App";
 import Signup from "./components/auth/signUp";
 import Login from "./components/auth/login";
 import * as serviceWorker from "./serviceWorker";
+import Dashboard from "./components/views/dashboard";
+import ScoreBoard from "./components/views/scoreboard";
+import Quizzes from "./components/views/quizzes";
+import QuizEditor from "./components/views/quizlist";
+import Candidates from "./components/views/candidates";
 
 const routing = (
   <Router>
@@ -15,6 +20,11 @@ const routing = (
       <Route exact path="/admin/auth" component={Signup} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/auth" component={Login} />
+      <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/dashboard/scoreboard" component={ScoreBoard} />
+      <Route exact path="/dashboard/quizzes" component={Quizzes} />
+      <Route exact path="/dashboard/quizzes/list" component={QuizEditor} />
+      <Route exact path="/dashboard/candidates" component={Candidates} />
     </div>
   </Router>
 );

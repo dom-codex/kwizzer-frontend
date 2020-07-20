@@ -1,0 +1,7 @@
+.scoreboard table {
+  width: 90%;
+  margin: auto;
+}
+.scoreboard table td {
+  text-align: center;
+}
