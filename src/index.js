@@ -11,11 +11,18 @@ import ScoreBoard from "./components/views/scoreboard";
 import Quizzes from "./components/views/quizzes";
 import QuizEditor from "./components/views/quizlist";
 import Candidates from "./components/views/candidates";
-
+import Result from "./components/views/result";
+import Notification from "./components/views/notification";
+import StudentQuizList from "./components/views/studentQuizlist";
+import Question from "./components/views/Questions";
 const routing = (
   <Router>
     <div>
-      <Route exact path="/" component={App} />
+      <Route exact path="/menu" component={App} />
+      <Route exact path="/menu/results" component={Result} />
+      <Route exact path="/menu/notifications" component={Notification} />
+      <Route exact path="/menu/quiz" component={StudentQuizList} />
+      <Route exact path="/menu/questions" component={Question} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/admin/auth" component={Signup} />
       <Route exact path="/login" component={Login} />

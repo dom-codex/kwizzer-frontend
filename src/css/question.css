@@ -1,0 +1,79 @@
+section.question {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.header {
+  background-color: teal;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 50px;
+  padding-left: 10px;
+}
+.header button {
+  position: absolute;
+  right: 18px;
+}
+.header h2,
+.timer-cont h5,
+.timer-cont p,
+.question-selector p,
+.question-area h4 {
+  margin: 0;
+  padding: 0;
+}
+.timer-cont {
+  text-align: center;
+  background-color: tomato;
+}
+.timer-cont p {
+  font-size: 1.55em;
+}
+.question-selector {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  color: grey;
+  background-color: rgba(233, 233, 233, 0.616);
+}
+.question-area h4 {
+  margin-top: 10px;
+  padding-left: 10px;
+  font-size: 1.6em;
+}
+.question-area p {
+  padding-left: 20px;
+  font-size: 1.5em;
+}
+.question ul {
+  list-style: none;
+  padding-left: 0;
+}
+.question-options ul li {
+  display: flex;
+  border: thin solid #ccc;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.question-options div:nth-child(1) {
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.question-controls {
+  text-align: center;
+}
+.question-controls button {
+  margin-left: 12px;
+  width: 90px;
+  height: 28px;
+}

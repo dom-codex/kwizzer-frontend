@@ -3,10 +3,10 @@ import React from "react";
 import Menu from "./components/views/menu";
 import "./App.css";
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <Menu />
+      <Menu history={props.history} />
     </div>
   );
 }

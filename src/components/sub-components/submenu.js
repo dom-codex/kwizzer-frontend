@@ -18,20 +18,29 @@ const Subtile = (props) => {
     </div>
   );
 };
-function SubMenu() {
+function SubMenu(props) {
   const title = {
     first: "Login",
     second: "SignUp",
   };
+  const LinkTo = (route) => {
+    props.history.push(route);
+  };
   return (
     <div class="submenu">
-      <div class="submenu-heading">Menu</div>
+      <h2 class="submenu-heading">Menu</h2>
       <hr />
       <div class="menu-options">
         <Menutile title={"Dashboard"} subtile={<Subtile title={title} />} />
-        <Menutile title={"Notification"} />
-        <Menutile title={"Quizzes"} />
-        <Menutile title={"Results"} />
+        <Menutile
+          title={"Notifications"}
+          action={() => LinkTo("/menu/notifications")}
+        />
+        <Menutile title={"Results"} action={() => LinkTo("/menu/results")} />
+        <Menutile
+          title={"Quizzes"}
+          action={() => LinkTo("/menu/quiz?user=student")}
+        />
         <Menutile title={"Apply"} />
       </div>
     </div>

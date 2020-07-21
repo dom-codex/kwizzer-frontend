@@ -1,8 +1,10 @@
 import React from "react";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
+import QuizTile from "../sub-components/quiz-tile";
 import "../../css/quizzes.css";
-const QuizEditor = (props) => {
+const QuizList = (props) => {
+  const { user } = props;
   return (
     <section className="quizzes">
       <div className="showcase">
@@ -12,18 +14,10 @@ const QuizEditor = (props) => {
       <div className="quizzes-list">
         <div className="title">
           <h2>List</h2>
+          <QuizTile user={user} showOverview={props.showOverView} />
         </div>
-        <ul className="quizzes-list">
-          <li>
-            <div className="quiz-name">Virtualization</div>
-            <div className="quizzes-controls">
-              <button>edit</button>
-              <button>delete</button>
-            </div>
-          </li>
-        </ul>
       </div>
     </section>
   );
 };
-export default QuizEditor;
+export default QuizList;

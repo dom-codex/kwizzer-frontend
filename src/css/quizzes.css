@@ -25,3 +25,15 @@
   width: 50px;
   border-radius: 50%;
 }
+ul.student-quiz-controls li {
+  border: none;
+  font-size: 0.7em;
+  color: rgb(66, 65, 65);
+  border-radius: 0;
+  box-shadow: none;
+}
+.take-quiz button {
+  border-radius: 5px;
+  width: 100%;
+  margin-left: 0;
+}
