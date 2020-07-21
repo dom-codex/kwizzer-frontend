@@ -21,9 +21,9 @@ function SignUp(props) {
         </div>
         <div className="signup-content">
           {!adminSignUp ? (
-            <UserSignup redirect={() => redirect("/")} />
+            <UserSignup redirect={redirect} />
           ) : (
-            <AdminSignup redirect={() => redirect("/admin/dashboard")} />
+            <AdminSignup routes={props} redirect={redirect} />
           )}
         </div>
       </div>

@@ -6,7 +6,7 @@ import "./App.css";
 function App(props) {
   return (
     <div className="App">
-      <Menu history={props.history} />
+      <Menu routes={props} />
     </div>
   );
 }

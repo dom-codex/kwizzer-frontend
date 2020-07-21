@@ -12,7 +12,9 @@ const Subtile = (props) => {
       </div>
       <div className="sub-tile-options">
         <button>
-          <Link to="/admin/auth?signup=true">{props.title.second}</Link>
+          <Link to={`/admin/auth?signup=true&user=${props.user.ref}`}>
+            {props.title.second}
+          </Link>
         </button>
       </div>
     </div>
@@ -24,14 +26,17 @@ function SubMenu(props) {
     second: "SignUp",
   };
   const LinkTo = (route) => {
-    props.history.push(route);
+    props.routes.history.push(route);
   };
   return (
     <div class="submenu">
       <h2 class="submenu-heading">Menu</h2>
       <hr />
       <div class="menu-options">
-        <Menutile title={"Dashboard"} subtile={<Subtile title={title} />} />
+        <Menutile
+          title={"Dashboard"}
+          subtile={<Subtile title={title} user={props.user} />}
+        />
         <Menutile
           title={"Notifications"}
           action={() => LinkTo("/menu/notifications")}

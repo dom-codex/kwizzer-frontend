@@ -17,7 +17,7 @@ function Login(props) {
           <p className="title">{!adminLogin ? "User Login" : "Admin Login"}</p>
         </div>
         {!adminLogin ? (
-          <UserLoginForm redirect={() => redirect("/")} />
+          <UserLoginForm redirect={redirect} />
         ) : (
           <AdminLoginForm redirect={() => redirect("/dashboard")} />
         )}
