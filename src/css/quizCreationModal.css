@@ -4,13 +4,13 @@
   width: 100%;
   z-index: 6;
   background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
 }
 .new-quiz {
   border: thin solid #ccc;
   width: 90%;
   max-width: 400px;
-  margin: auto;
-  margin-top: 50px;
+  margin: 50px auto;
   border-radius: 10px;
   background-color: #fff;
   position: relative;
@@ -50,6 +50,13 @@
   padding-left: 5px;
   border-radius: 7px;
   border: 2px solid teal;
+}
+.time {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  width: 95%;
+  margin: 10px auto;
 }
 .radio {
   display: flex;

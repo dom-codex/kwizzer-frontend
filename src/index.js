@@ -9,7 +9,8 @@ import * as serviceWorker from "./serviceWorker";
 import Dashboard from "./components/views/dashboard";
 import ScoreBoard from "./components/views/scoreboard";
 import Quizzes from "./components/views/quizzes";
-import QuizEditor from "./components/views/quizlist";
+import QuizList from "./components/views/quizlist";
+import QuestionEditor from "./components/views/quiz-editor";
 import Candidates from "./components/views/candidates";
 import Result from "./components/views/result";
 import Notification from "./components/views/notification";
@@ -30,7 +31,12 @@ const routing = (
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/dashboard/scoreboard" component={ScoreBoard} />
       <Route exact path="/dashboard/quizzes" component={Quizzes} />
-      <Route exact path="/dashboard/quizzes/list" component={QuizEditor} />
+      <Route exact path="/dashboard/quizzes/list" component={QuizList} />
+      <Route
+        exact
+        path="/dashboard/question/:quiz"
+        component={QuestionEditor}
+      />
       <Route exact path="/dashboard/candidates" component={Candidates} />
     </div>
   </Router>

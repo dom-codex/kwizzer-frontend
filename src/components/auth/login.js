@@ -19,7 +19,7 @@ function Login(props) {
         {!adminLogin ? (
           <UserLoginForm redirect={redirect} />
         ) : (
-          <AdminLoginForm redirect={() => redirect("/dashboard")} />
+          <AdminLoginForm redirect={redirect} />
         )}
       </div>
     </section>

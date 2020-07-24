@@ -1,15 +1,30 @@
 import React from "react";
 const QuizTile = (props) => {
   const isStudent = props.user === "student";
+  const quiz = props.quiz;
+  const LinkTo = () => {
+    props.history.push(
+      `/dashboard/quizzes/list?sid=${props.school}&quid=${quiz.id}`
+    );
+  };
+  const publish = (quiz, school) => {
+    const url = "";
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {});
+  };
   return (
     <div>
       <ul className="quizzes-list">
         <li>
-          <div className="quiz-name">Virtualization</div>
+          <div className="quiz-name">{quiz.title}</div>
           <div className="quizzes-controls">
             {!isStudent ? (
               <span>
-                <button>edit</button>
+                <button onClick={() => publish(quiz.id, props.school)}>
+                  pub
+                </button>
+                <button onClick={LinkTo}>edit</button>
                 <button>delete</button>
               </span>
             ) : (

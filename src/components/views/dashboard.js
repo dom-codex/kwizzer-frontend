@@ -1,10 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import Menutile from "../sub-components/menu-tile";
 import "../../css/dashboard.css";
 import "../../css/quizCreationModal.css";
 const NewQuizWindow = (props) => {
+  const inputReducer = (state, action) => {
+    switch (action.type) {
+      case "Input":
+        return {
+          ...state,
+          ...action.input,
+        };
+      default:
+        return state;
+    }
+  };
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    title: "",
+    markPerQuestion: "",
+    noOfQuestionForStud: "",
+    totalMarks: "",
+    resultDelivery: "",
+    hours: "",
+    min: "",
+    sec: "",
+    school: props.sid,
+  });
+  const handleInput = (e, name) => {
+    switch (name) {
+      case "title":
+        dispatch({ type: "Input", input: { title: e.target.value } });
+        break;
+      case "permark":
+        dispatch({ type: "Input", input: { markPerQuestion: e.target.value } });
+        break;
+      case "nquestion":
+        dispatch({
+          type: "Input",
+          input: { noOfQuestionForStud: e.target.value },
+        });
+        break;
+      case "tmarks":
+        dispatch({ type: "Input", input: { totalMarks: e.target.value } });
+        break;
+      case "hr":
+        dispatch({ type: "Input", input: { hours: e.target.value } });
+        break;
+      case "min":
+        dispatch({ type: "Input", input: { min: e.target.value } });
+        break;
+      case "sec":
+        dispatch({ type: "Input", input: { sec: e.target.value } });
+        break;
+    }
+  };
+  const createQuiz = () => {
+    const body = inputState;
+    const url = "http://localhost:3500/school/class/create/quiz";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        if (res.code === 200) {
+          props.close();
+        }
+      });
+  };
   return (
     <div className="new-quiz-window">
       <div className="new-quiz">
@@ -18,7 +85,13 @@ const NewQuizWindow = (props) => {
         <div className="quiz-form">
           <div className="quiz-input">
             <label for="subject">Title</label>
-            <input id="subject" type="text" placeholder="course" />
+            <input
+              id="subject"
+              type="text"
+              value={inputState.title}
+              onInput={(e) => handleInput(e, "title")}
+              placeholder="course"
+            />
           </div>
           <div className="quiz-input">
             <label for="mark">Mark per Question</label>
@@ -26,6 +99,8 @@ const NewQuizWindow = (props) => {
               id="mark"
               step="0.01"
               type="number"
+              value={inputState.markPerQuestion}
+              onInput={(e) => handleInput(e, "permark")}
               placeholder="Mark(s) per question"
             />
           </div>
@@ -33,14 +108,48 @@ const NewQuizWindow = (props) => {
             <label for="mark">No of question to be answered</label>
             <input
               id="mark"
-              step="0.01"
               type="number"
+              value={inputState.noOfQuestionForStud}
+              onInput={(e) => handleInput(e, "nquestion")}
               placeholder="No of questions to be answered"
             />
           </div>
           <div className="quiz-input">
             <label for="total">Total Marks</label>
-            <input id="total" type="number" placeholder="total quiz mark" />
+            <input
+              id="total"
+              type="number"
+              value={inputState.totalMarks}
+              onInput={(e) => handleInput(e, "tmarks")}
+              placeholder="total quiz mark"
+            />
+          </div>
+          <div className="quiz-input time">
+            <label for="time">Time</label>
+            <input
+              id="hr"
+              type="number"
+              value={inputState.hours}
+              onInput={(e) => handleInput(e, "hr")}
+              placeholder="hr"
+            />
+            <label for="hr">hr</label>
+            <input
+              id="min"
+              type="number"
+              value={inputState.min}
+              onInput={(e) => handleInput(e, "min")}
+              placeholder="min"
+            />
+            <label for="min">min</label>
+            <input
+              id="sec"
+              type="number"
+              value={inputState.sec}
+              onInput={(e) => handleInput(e, "sec")}
+              placeholder="sec"
+            />
+            <label for="s">sec</label>
           </div>
           <div className="quiz-radio">
             <label>Deliver result on submition</label>
@@ -57,7 +166,7 @@ const NewQuizWindow = (props) => {
           </div>
         </div>
         <div className="create-btn">
-          <button>create quiz</button>
+          <button onClick={createQuiz}>create quiz</button>
         </div>
       </div>
     </div>
@@ -69,10 +178,13 @@ const Dashboard = (props) => {
   const LinkTo = (route) => {
     props.history.push(route);
   };
+  //get examiners id
+  const { search } = props.location;
+  const id = search.split("=")[1]; //sch ref
   return (
     <section className="dashboard">
       {quizModalIsOpen ? (
-        <NewQuizWindow close={() => setQuizModalIsOpen(false)} />
+        <NewQuizWindow sid={id} close={() => setQuizModalIsOpen(false)} />
       ) : (
         ""
       )}
@@ -91,7 +203,7 @@ const Dashboard = (props) => {
           />
           <Menutile
             title={"Quizzes"}
-            action={() => LinkTo("/dashboard/quizzes")}
+            action={() => LinkTo(`/dashboard/quizzes?id=${id}`)}
           />
           <Menutile
             title={"Candidates"}

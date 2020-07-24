@@ -22,6 +22,12 @@
   font-size: 1.3rem;
   margin-left: 40px;
 }
+button.add-option {
+  width: 85%;
+  margin-left: 45px;
+  height: 30px;
+  margin-bottom: 50px;
+}
 .options ul {
   list-style: none;
 }
