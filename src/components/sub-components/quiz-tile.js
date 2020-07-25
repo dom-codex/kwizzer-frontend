@@ -4,7 +4,10 @@ const QuizTile = (props) => {
   const quiz = props.quiz;
   const LinkTo = () => {
     props.history.push(
-      `/dashboard/quizzes/list?sid=${props.school}&quid=${quiz.id}`
+      `/dashboard/quizzes/list?sid=${props.school}&quid=${quiz.id}`,
+      {
+        school: props.school,
+      }
     );
   };
   const publish = (quiz, school) => {

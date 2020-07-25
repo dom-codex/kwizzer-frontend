@@ -8,26 +8,28 @@
   margin-top: 5px;
 }
 .quiz-name-edit {
-  height: 90px;
+  height: 350px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   padding-left: 15px;
   background-color: tomato;
 }
 .name-quiz {
   width: 100%;
 }
-.name-quiz label {
+.name-quiz label,
+label[for="perMark"],
+label[for="total"],
+label[for="nQuest"] {
   font-size: 1.3em;
-  margin-right: 5px;
   font-weight: bold;
-  width: 70px;
+  width: 100%;
+  display: block;
 }
 .name-quiz input {
   height: 30px;
   width: 55%;
   margin-right: 5px;
-
   font-size: 1.2em;
 }
 .name-quiz input:disabled {
@@ -37,6 +39,45 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+}
+
+.edit-time,
+.publish-mode {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.bar {
+  width: 50px;
+}
+.edit-time h2 {
+  margin: 0;
+}
+.edit-time input {
+  width: 50px;
+  height: 25px;
+  background: none;
+  border: thin solid gray;
+  border-radius: 5px;
+}
+.edit-time label {
+  margin-right: 8px;
+}
+.publish-mode input[type="radio"] {
+  width: 20px;
+  height: 40px;
+}
+label[for="public"] {
+  margin-left: 20px;
+}
+label[for="private"] {
+  margin-left: 22px;
+}
+#private,
+#public,
+label[for="public"],
+label[for="private"] {
+  margin-bottom: -5px;
 }
 .questions-tile {
   border: thin solid #ccc;
