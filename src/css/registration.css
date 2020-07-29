@@ -1,0 +1,16 @@
+.reg-header {
+  text-align: center;
+  margin-top: 10px;
+}
+.reg-header h1,
+.reg-header h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.reg-body {
+  text-align: center;
+  padding-bottom: 28px;
+}
+.quiz-name h4 {
+  font-size: 1.4em;
+}

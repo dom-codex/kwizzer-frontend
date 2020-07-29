@@ -5,6 +5,8 @@ import Submenu from "../sub-components/submenu";
 import "../../css/showcase.css";
 let user;
 function Menu(props) {
+  //retrieve user details from state
+  const stateData = props.routes.location.state;
   const [detailLoaded, setDetailsLoaded] = useState(false);
   const { location } = props.routes;
   const LoadInfo = () => {
@@ -31,7 +33,9 @@ function Menu(props) {
           <Jumbo title={detailLoaded ? `${"Hi " + user.name}` : "Loading..."} />
         </div>
       </section>
-      {detailLoaded && <Submenu user={user} routes={props.routes} />}
+      {detailLoaded && (
+        <Submenu user={user} routes={props.routes} stateData={stateData} />
+      )}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import Signup from "./components/auth/signUp";
@@ -16,10 +16,14 @@ import Result from "./components/views/result";
 import Notification from "./components/views/notification";
 import StudentQuizList from "./components/views/studentQuizlist";
 import Question from "./components/views/Questions";
+import Registration from "./components/views/registration";
+import CandidatesResult from "./components/views/candidatesResult";
+import CandidatesResults from "./components/views/candidatesResult";
 const routing = (
   <Router>
     <div>
       <Route exact path="/menu" component={App} />
+      <Route exact path="/quiz/register/:sch/:quiz" component={Registration} />
       <Route exact path="/menu/results" component={Result} />
       <Route exact path="/menu/notifications" component={Notification} />
       <Route exact path="/menu/quiz" component={StudentQuizList} />
@@ -38,6 +42,11 @@ const routing = (
         component={QuestionEditor}
       />
       <Route exact path="/dashboard/candidates" component={Candidates} />
+      <Route
+        exact
+        path="/dashboard/mycandidates/result"
+        component={CandidatesResults}
+      />
     </div>
   </Router>
 );

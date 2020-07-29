@@ -21,6 +21,16 @@ const QuizList = (props) => {
   useEffect(() => {
     fetchAllQuiz();
   }, []);
+  const publish = (id) => {
+    const url = `http://localhost:3500/school/quiz/publish`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    });
+  };
   return (
     <section className="quizzes">
       <div className="showcase">
@@ -42,6 +52,7 @@ const QuizList = (props) => {
                   quiz={quiz}
                   user={user}
                   showOverview={props.showOverView}
+                  publish={() => publish(quiz.id)}
                 />
               );
             })

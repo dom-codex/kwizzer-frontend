@@ -175,12 +175,14 @@ const NewQuizWindow = (props) => {
 
 const Dashboard = (props) => {
   const [quizModalIsOpen, setQuizModalIsOpen] = useState(false);
-  const LinkTo = (route) => {
-    props.history.push(route);
-  };
-  //get examiners id
   const { search } = props.location;
   const id = search.split("=")[1]; //sch ref
+  const schId = props.location.state.sch;
+  const schRef = props.location.state.ref;
+  const LinkTo = (route, id = "") => {
+    props.history.push(route, { sref: id });
+  };
+  //get examiners id
   return (
     <section className="dashboard">
       {quizModalIsOpen ? (
@@ -211,7 +213,7 @@ const Dashboard = (props) => {
           />
           <Menutile
             title={"Scoreboard"}
-            action={() => LinkTo("/dashboard/scoreboard")}
+            action={() => LinkTo("/dashboard/scoreboard", schRef)}
           />
         </div>
       </div>

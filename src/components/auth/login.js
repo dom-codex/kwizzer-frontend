@@ -5,8 +5,8 @@ import "../../css/login.css";
 function Login(props) {
   const { search } = props.location;
   const adminLogin = search.split("=")[1];
-  const redirect = (addr) => {
-    props.history.push(addr);
+  const redirect = (addr, data) => {
+    props.history.push(addr, data);
   };
   return (
     <section className="login">

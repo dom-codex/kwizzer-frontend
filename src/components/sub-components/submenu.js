@@ -25,9 +25,10 @@ function SubMenu(props) {
     first: "Login",
     second: "SignUp",
   };
-  const LinkTo = (route) => {
-    props.routes.history.push(route);
+  const LinkTo = (route, data) => {
+    props.routes.history.push(route, data);
   };
+  const userIdentities = props.stateData;
   return (
     <div class="submenu">
       <h2 class="submenu-heading">Menu</h2>
@@ -41,10 +42,13 @@ function SubMenu(props) {
           title={"Notifications"}
           action={() => LinkTo("/menu/notifications")}
         />
-        <Menutile title={"Results"} action={() => LinkTo("/menu/results")} />
+        <Menutile
+          title={"Results"}
+          action={() => LinkTo("/menu/results", userIdentities)}
+        />
         <Menutile
           title={"Quizzes"}
-          action={() => LinkTo("/menu/quiz?user=student")}
+          action={() => LinkTo("/menu/quiz?user=student", userIdentities)}
         />
         <Menutile title={"Apply"} />
       </div>

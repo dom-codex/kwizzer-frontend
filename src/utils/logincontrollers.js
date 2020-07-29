@@ -30,10 +30,14 @@ module.exports.login = (url, body, redirect) => {
     .then((res) => res.json())
     .then((resp) => {
       if (resp.code === 200) {
-        const ref = resp.school.ref;
-        return redirect(`/dashboard?ref=${ref}`);
+        const sch = resp.school;
+        return redirect(`/dashboard?ref=${sch.ref}`, {
+          sch: sch.id,
+          ref: sch.ref,
+        });
       }
-      const ref = resp.user;
-      redirect(`/menu?ref=${ref}`);
+      const ref = resp.user.ref;
+      const id = resp.user.id;
+      redirect(`/menu?ref=${ref}`, { pid: id, pref: ref });
     });
 };

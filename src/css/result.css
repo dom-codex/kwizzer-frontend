@@ -1,4 +1,12 @@
-.stud-result-table table {
-  width: 98%;
+.stud-result {
+  padding-bottom: 12px;
+  border: thin solid #efefef;
+  width: 95%;
   margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+.stud-result button {
+  width: 120px;
+  height: 30px;
 }
