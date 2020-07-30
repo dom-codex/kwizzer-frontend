@@ -9,7 +9,7 @@ const QuizTile = (props) => {
       }
     );
   };
-  const openResult = props.openResult || null;
+  const openResult = props.openResult ? props.openResult : () => {};
   return (
     <div onClick={() => openResult(quiz.id)}>
       <ul className="quizzes-list">

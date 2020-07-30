@@ -13,24 +13,45 @@ const CandidatesResults = (props) => {
         setResult(data.result);
       });
   };
+  const linkTo = (paper) => {
+    props.history.push(`/quiz/solutions`, { question: paper });
+  };
+  const ApproveResults = () => {
+    const url = `http://localhost:3500/school/approve/results?quiz=${quizId}`;
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+  const ApproveSingleResult = (id) => {
+    const url = `http://localhost:3500/school/approve/result?paper=${id}`;
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
   useEffect(fetchResult, []);
   return (
     <section>
       <Header />
       <div className="results-topic">
         <h1>Results</h1>
+        <small>total submitted: {result.length}</small>
         <div>
-          <button>release result</button>
+          <button onClick={ApproveResults}>Approve all results</button>
         </div>
       </div>
       <div className="result-content">
         <ul>
           {result.length ? (
             result.map((r) => {
+              const correct = r.totalAnswered - r.fails;
               return (
-                <li>
+                <li onClick={r.isComplete ? () => linkTo(r._id) : null}>
                   <div className="res-details">
-                    <small>correct :{r.totalAnswered - r.fails}</small>
+                    <small>correct :{correct <= 0 ? 0 : correct}</small>
                     <small>fails: {r.fails}</small>
                     <small>total: {r.totalMarks}</small>
                     <small>
@@ -50,6 +71,9 @@ const CandidatesResults = (props) => {
                     <p>
                       <small>Name</small>:<span> {r.name}</span>
                     </p>
+                    <button onClick={() => ApproveSingleResult(r._id)}>
+                      approve
+                    </button>
                   </div>
                 </li>
               );

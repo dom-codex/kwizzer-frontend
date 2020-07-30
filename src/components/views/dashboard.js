@@ -204,6 +204,10 @@ const Dashboard = (props) => {
             action={() => setQuizModalIsOpen(true)}
           />
           <Menutile
+            title={"Notifications"}
+            action={() => LinkTo(`/admin/notifications`, schRef)}
+          />
+          <Menutile
             title={"Quizzes"}
             action={() => LinkTo(`/dashboard/quizzes?id=${id}`)}
           />

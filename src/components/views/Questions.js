@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useReducer } from "react";
 import Timer from "../sub-components/timer";
 import Dialog from "../sub-components/dialog";
+import QuestionDisplayArea from "../sub-components/question-display";
+import OptionLabel from "../sub-components/option-label";
 import "../../css/question.css";
 const myStyle = {
   backgroundColor: "green",
@@ -134,10 +136,10 @@ const Question = (props) => {
       </div>
       {questions.length && (
         <div>
-          <div className="question-area">
-            <h4>Question</h4>
-            <p>{question.questions[index].question}</p>
-          </div>
+          <QuestionDisplayArea
+            index={index + 1}
+            question={question.questions[index].question}
+          />
           <div className="question-options">
             <ul>
               {question.questions[index].options.map((q, i) => {
@@ -150,19 +152,7 @@ const Question = (props) => {
                     }
                     onClick={() => selectAnswer(index, q.option)}
                   >
-                    <div>
-                      {i + 1 == 1
-                        ? "A"
-                        : i + 1 == 2
-                        ? "B"
-                        : i + 1 == 3
-                        ? "C"
-                        : i + 1 == 4
-                        ? "D"
-                        : i + 1 == 5
-                        ? "E"
-                        : "F"}
-                    </div>
+                    <OptionLabel i={i} />
                     <div>{q.option}</div>
                   </li>
                 );

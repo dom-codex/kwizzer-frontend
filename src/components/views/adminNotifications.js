@@ -4,10 +4,11 @@ import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import "../../css/notification.css";
 const Notification = (props) => {
+  const schref = props.location.state.sref;
   const [notification, setNotification] = useState([]);
-  const pref = props.location.state.pid;
+  //const pref = props.location.state.pid;
   const fetchNotifcations = () => {
-    const url = `http://localhost:3500/school/get/notifications?student=${pref}`;
+    const url = `http://localhost:3500/school/admin/notifications?sch=${schref}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -16,12 +17,12 @@ const Notification = (props) => {
   };
   useEffect(() => {
     fetchNotifcations();
-    const socket = Opensocket(`http://localhost:3500?ref=${pref}`);
+    const socket = Opensocket(`http://localhost:3500?ref=${schref}`);
     socket.on("notify", (data) => {
       setNotification((prev) => {
         const details = {
           message: data.message,
-          schoolName: data.schoolName,
+          topic: data.topic,
           time: "3.44pm",
         };
         return [details, ...prev];
@@ -39,7 +40,7 @@ const Notification = (props) => {
           return (
             <div className="notification-card">
               <div className="n-card-title">
-                <h3>From {noti.schoolName}:</h3>
+                <h3>{noti.topic}:</h3>
                 <p>{noti.time}</p>
               </div>
               <div className="n-card-body">

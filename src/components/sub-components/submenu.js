@@ -40,7 +40,7 @@ function SubMenu(props) {
         />
         <Menutile
           title={"Notifications"}
-          action={() => LinkTo("/menu/notifications")}
+          action={() => LinkTo("/menu/notifications", userIdentities)}
         />
         <Menutile
           title={"Results"}

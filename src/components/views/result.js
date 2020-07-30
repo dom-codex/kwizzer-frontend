@@ -5,6 +5,9 @@ import "../../css/result.css";
 
 const Tile = (props) => {
   const answeredCorrectly = props.answered - props.fails;
+  const viewSolution = () => {
+    props.viewSoln({ question: props.paperId });
+  };
   return (
     <div className="stud-result">
       <div>
@@ -18,7 +21,7 @@ const Tile = (props) => {
         <p>Percentage: {(props.score / props.total) * 100}%</p>
       </div>
       <div>
-        <button>solutions</button>
+        <button onClick={viewSolution}>solutions</button>
       </div>
     </div>
   );
@@ -33,6 +36,9 @@ const Result = (props) => {
       .then((data) => {
         setResult(data.questionPapers);
       });
+  };
+  const linkTo = (data) => {
+    props.history.push("/quiz/solutions", data);
   };
   useEffect(getResults, []);
   return (
@@ -51,6 +57,8 @@ const Result = (props) => {
               fails={r.fails}
               score={r.score.$numberDecimal}
               total={r.totalMarks}
+              paperId={r._id}
+              viewSoln={linkTo}
             />
           );
         })

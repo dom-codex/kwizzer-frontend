@@ -7,6 +7,7 @@ import Signup from "./components/auth/signUp";
 import Login from "./components/auth/login";
 import * as serviceWorker from "./serviceWorker";
 import Dashboard from "./components/views/dashboard";
+import AdminNotifications from "./components/views/adminNotifications";
 import ScoreBoard from "./components/views/scoreboard";
 import Quizzes from "./components/views/quizzes";
 import QuizList from "./components/views/quizlist";
@@ -17,7 +18,7 @@ import Notification from "./components/views/notification";
 import StudentQuizList from "./components/views/studentQuizlist";
 import Question from "./components/views/Questions";
 import Registration from "./components/views/registration";
-import CandidatesResult from "./components/views/candidatesResult";
+import QuizSolution from "./components/views/solutions";
 import CandidatesResults from "./components/views/candidatesResult";
 const routing = (
   <Router>
@@ -26,8 +27,10 @@ const routing = (
       <Route exact path="/quiz/register/:sch/:quiz" component={Registration} />
       <Route exact path="/menu/results" component={Result} />
       <Route exact path="/menu/notifications" component={Notification} />
+      <Route exact path="/admin/notifications" component={AdminNotifications} />
       <Route exact path="/menu/quiz" component={StudentQuizList} />
       <Route exact path="/menu/questions" component={Question} />
+      <Route exact path="/quiz/solutions" component={QuizSolution} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/admin/auth" component={Signup} />
       <Route exact path="/login" component={Login} />
