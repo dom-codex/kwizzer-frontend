@@ -209,7 +209,7 @@ const Dashboard = (props) => {
           />
           <Menutile
             title={"Quizzes"}
-            action={() => LinkTo(`/dashboard/quizzes?id=${id}`)}
+            action={() => LinkTo(`/dashboard/quizzes?id=${id}`, schRef)}
           />
           <Menutile
             title={"Candidates"}

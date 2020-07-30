@@ -196,6 +196,7 @@ const QuizList = (props) => {
                 question={question.question}
                 options={question.options}
                 quiz={quid}
+                school={school}
               />
             );
           })

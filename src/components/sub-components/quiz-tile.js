@@ -20,7 +20,7 @@ const QuizTile = (props) => {
               <span>
                 <button onClick={props.publish}>pub</button>
                 <button onClick={LinkTo}>edit</button>
-                <button>delete</button>
+                <button onClick={props.delete}>delete</button>
               </span>
             )}
           </div>

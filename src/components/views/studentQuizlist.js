@@ -90,19 +90,20 @@ const StudentQuizList = (props) => {
           closeOverview={() => showOverView(false)}
         />
       )}
-      {quizzes.map((quiz, i) => {
-        return (
-          <QuizList
-            key={i}
-            location={props.location}
-            quiz={quiz.quiz}
-            completed={quiz.completed}
-            sch={quiz.school}
-            user={user}
-            showOverView={showOverView}
-          />
-        );
-      })}
+      {quizzes.length &&
+        quizzes.map((quiz, i) => {
+          return (
+            <QuizList
+              key={i}
+              location={props.location}
+              quiz={quiz.quiz}
+              completed={quiz.completed}
+              sch={quiz.school}
+              user={user}
+              showOverView={showOverView}
+            />
+          );
+        })}
     </div>
   );
 };

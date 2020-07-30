@@ -144,13 +144,14 @@ const QuizEditor = (props) => {
             <button
               onClick={
                 isNew === "true"
-                  ? () => save(inputState, quid, props.history)
+                  ? () => save(inputState, quid, props.history, props.school)
                   : () =>
                       saveEdited(
                         inputState,
                         quid,
                         props.history,
-                        match.params.quiz
+                        match.params.quiz,
+                        props.school
                       )
               }
             >

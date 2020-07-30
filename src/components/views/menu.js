@@ -7,6 +7,7 @@ let user;
 function Menu(props) {
   //retrieve user details from state
   const stateData = props.routes.location.state;
+  console.log(props);
   const [detailLoaded, setDetailsLoaded] = useState(false);
   const { location } = props.routes;
   const LoadInfo = () => {

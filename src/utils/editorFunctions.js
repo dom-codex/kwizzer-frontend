@@ -42,7 +42,7 @@ module.exports.textHandler = (e, input, name, dispatch, type) => {
       break;
   }
 };
-module.exports.save = (data, quid, history) => {
+module.exports.save = (data, quid, history, school) => {
   const url = `http://localhost:3500/school/class/create/question?quid=${quid}`;
 
   if (!data.question.length) {
@@ -58,11 +58,13 @@ module.exports.save = (data, quid, history) => {
     .then((resp) => resp.json())
     .then((resp) => {
       if (resp.code === 201) {
-        history.push(`/dashboard/quizzes/list?quid=${quid}`);
+        history.push(`/dashboard/quizzes/list?quid=${quid}`, {
+          school: school,
+        });
       }
     });
 };
-module.exports.saveEdited = (data, quid, history, quiz) => {
+module.exports.saveEdited = (data, quid, history, quiz, school) => {
   const url = `http://localhost:3500/school/class/update/question?quid=${quid}`;
   if (!data.question.length) {
     //visit later
@@ -77,7 +79,9 @@ module.exports.saveEdited = (data, quid, history, quiz) => {
     .then((resp) => resp.json())
     .then((resp) => {
       if (resp.code === 201) {
-        history.push(`/dashboard/quizzes/list?quid=${quiz}`);
+        history.push(`/dashboard/quizzes/list?quid=${quiz}`, {
+          school: school,
+        });
       }
     });
 };

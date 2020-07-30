@@ -6,6 +6,7 @@ import "../../css/quizzes.css";
 const QuizList = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const { user } = props;
+  const sref = props.location.state.sref;
   //retrieve id(sch ref)
   const { search } = props.location;
   const id = search.split("=")[1];
@@ -31,6 +32,14 @@ const QuizList = (props) => {
       body: JSON.stringify({ id: id }),
     });
   };
+  const deleteQuiz = (quid) => {
+    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${sref}`;
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
   return (
     <section className="quizzes">
       <div className="showcase">
@@ -53,6 +62,9 @@ const QuizList = (props) => {
                   user={user}
                   showOverview={props.showOverView}
                   publish={() => publish(quiz.id)}
+                  delete={() => {
+                    deleteQuiz(quiz.id);
+                  }}
                 />
               );
             })
