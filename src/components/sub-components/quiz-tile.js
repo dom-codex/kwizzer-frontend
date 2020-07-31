@@ -11,7 +11,15 @@ const QuizTile = (props) => {
   };
   const openResult = props.openResult ? props.openResult : () => {};
   return (
-    <div onClick={() => openResult(quiz.id)}>
+    <div
+      onClick={() =>
+        quiz.NumberOfSubmitted
+          ? openResult(quiz.id)
+          : props.score
+          ? props.showToast(true)
+          : null
+      }
+    >
       <ul className="quizzes-list">
         <li>
           <div className="quiz-name">{quiz.title}</div>

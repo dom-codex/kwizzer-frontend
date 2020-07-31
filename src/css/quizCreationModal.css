@@ -1,27 +1,15 @@
 .new-quiz-window {
-  position: fixed;
   height: 100%;
   width: 100%;
-  z-index: 6;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow-y: scroll;
 }
 .new-quiz {
   border: thin solid #ccc;
-  width: 90%;
-  max-width: 400px;
-  margin: 50px auto;
+  width: 95%;
+  max-width: 500px;
+  margin: 20px auto;
   border-radius: 10px;
   background-color: #fff;
   position: relative;
-}
-.quiz-close {
-  position: absolute;
-  right: 8px;
-  top: 5px;
-  border-radius: 50%;
-  padding: 10px;
-  border: none;
 }
 .new-quiz-header {
   text-align: center;
@@ -40,9 +28,9 @@
   display: block;
   width: 90%;
   max-width: 400px;
-  margin: auto;
+
   text-align: left;
-  margin: 5px auto;
+  margin: 5px 20px;
 }
 .quiz-form input {
   width: 90%;
@@ -56,7 +44,7 @@
   justify-content: space-between;
   margin-top: 10px;
   width: 95%;
-  margin: 10px auto;
+  margin: 10px 0;
 }
 .radio {
   display: flex;
@@ -65,11 +53,19 @@
 .radio1 {
   display: flex;
   align-items: center;
-  width: 60px;
+  width: 17%;
+  min-width: 90px;
+  height: 40px;
   margin-left: 20px;
 }
 .radio1 input {
   height: 20px;
+}
+.radio1 label {
+  margin: 0 !important;
+}
+.publish input {
+  margin-bottom: 3px !important;
 }
 .create-btn {
   margin: 10px 0 30px 20px;
@@ -91,4 +87,29 @@
   border: none;
   background-image: none;
   background-color: rgb(85, 195, 195);
+}
+.swi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+  margin-left: 20px;
+}
+
+label.toggle,
+.swi p {
+  margin: 0 !important;
+}
+.swi p {
+  margin-bottom: 4px !important;
+}
+.max-retries {
+  overflow: hidden;
+  height: 72px;
+  transition: all 0.8s ease-in-out;
+}
+
+.zero {
+  transition: all 0.8s ease-in;
+  height: 0;
 }

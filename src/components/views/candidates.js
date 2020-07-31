@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import LongTable from "../sub-components/longtable";
+import Toast from "../sub-components/toast";
 import "../../css/candidate.css";
 const CandidateList = (props) => {
   const [candidates, setCandidates] = useState([]);
-
   const fetchCandidates = () => {
     const url = `http://localhost:3500/school/hall/all?sch=${props.param.sch}&quiz=${props.param.quiz} `;
     fetch(url)
@@ -65,7 +65,7 @@ const PubTile = (props) => {
                 quiz: quiz.id,
                 title: quiz.title,
               });
-              props.showList();
+              registered > 0 ? props.showList() : props.showToast();
             }}
           >
             candidates list
@@ -79,6 +79,8 @@ const Published = (props) => {
   const [published, setPublished] = useState([]);
   const [showList, setShowList] = useState(false);
   const [param, setParam] = useState({ sch: "", quiz: "" });
+  const [isToast, setToast] = useState(false);
+
   const fetchCandidates = () => {
     //pass the school refrence from outside
     const url = `http://localhost:3500/school/get/published?sch=${3}`;
@@ -95,6 +97,13 @@ const Published = (props) => {
   };
   return (
     <section className="candidates">
+      {isToast && (
+        <Toast
+          isOpen={isToast}
+          action={setToast}
+          text={"No candidate has regisetered for the quiz"}
+        />
+      )}
       {showList && (
         <CandidateList param={param} closeList={() => setShowList(false)} />
       )}
@@ -111,6 +120,7 @@ const Published = (props) => {
                   quiz={pub.quiz}
                   showList={() => setShowList(true)}
                   getParam={getParam}
+                  showToast={() => setToast(true)}
                 />
               );
             })

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import QuizTile from "../sub-components/quiz-tile";
+import Toast from "../sub-components/toast";
 import "../../css/quizzes.css";
+let sref;
 const QuizList = (props) => {
   const [quizzes, setQuizzes] = useState([]);
+  const [isToast, setToast] = useState(false);
+  const [toastTEXT, setTEXT] = useState("");
   const { user } = props;
-  const sref = props.location.state.sref;
+  sref = props.location.state.sref;
   //retrieve id(sch ref)
   const { search } = props.location;
   const id = search.split("=")[1];
@@ -30,18 +34,37 @@ const QuizList = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ id: id }),
-    });
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        if (res.code === 400) {
+          setTEXT(res.message);
+          setToast(true);
+          return;
+        }
+        setTEXT(res.message);
+        setToast(true);
+      });
   };
   const deleteQuiz = (quid) => {
-    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${sref}`;
+    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${id}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
+        if (data.code === 201) {
+          setTEXT(data.message);
+          setToast(true);
+          setQuizzes((prev) => {
+            const quizzes = prev.filter((quiz) => quiz.id !== quid);
+            return quizzes;
+          });
+        }
       });
   };
   return (
     <section className="quizzes">
+      {isToast && <Toast isOpen={isToast} text={toastTEXT} action={setToast} />}
       <div className="showcase">
         <Header />
         <Jumbo title={"Quizzes"} />

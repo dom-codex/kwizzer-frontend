@@ -20,6 +20,7 @@ import Question from "./components/views/Questions";
 import Registration from "./components/views/registration";
 import QuizSolution from "./components/views/solutions";
 import CandidatesResults from "./components/views/candidatesResult";
+import QuizCreationWindow from "./components/views/newQuiz";
 const routing = (
   <Router>
     <div>
@@ -27,6 +28,11 @@ const routing = (
       <Route exact path="/quiz/register/:sch/:quiz" component={Registration} />
       <Route exact path="/menu/results" component={Result} />
       <Route exact path="/menu/notifications" component={Notification} />
+      <Route
+        exact
+        path="/dashboard/create/quiz"
+        component={QuizCreationWindow}
+      />
       <Route exact path="/admin/notifications" component={AdminNotifications} />
       <Route exact path="/menu/quiz" component={StudentQuizList} />
       <Route exact path="/menu/questions" component={Question} />
