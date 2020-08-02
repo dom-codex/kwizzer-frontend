@@ -3,6 +3,7 @@
   width: 100%;
   height: 42px;
   bottom: 25px;
+  z-index: 1;
 }
 .toast-content {
   width: 50%;

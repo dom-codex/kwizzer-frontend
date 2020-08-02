@@ -54,7 +54,7 @@ module.exports.saveEditedQuiz = (data, quizid, schid, history) => {
     .then((res) => res.json())
     .then((data) => {
       if (data.code === 201) {
-        history.push(`/dashboard/quizzes?id=${schid}`);
+        history.push(`/dashboard/quizzes?id=${schid}`, { sref: schid });
       }
     });
 };

@@ -1,0 +1,65 @@
+.form-header {
+  text-align: center;
+}
+.form-header h2,
+.form-header h1 {
+  margin: 5px 0 0 0;
+}
+.exam-form {
+  margin-top: 28px;
+  margin-left: 20px;
+}
+.exam-forms label {
+  display: block;
+}
+.exam-forms input {
+  width: 90%;
+  height: 32px;
+  border-radius: 5px;
+}
+.exam-forms-duration input {
+  width: 90px;
+  height: 32px;
+  border-radius: 5px;
+}
+/*quiz overlay*/
+.exam-quiz-overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quiz-overlay-content {
+  width: 90%;
+  background-color: royalblue;
+  padding-bottom: 10px;
+}
+.quiz-overlay-content h2 {
+  text-align: center;
+}
+.overlay-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 92%;
+  margin: auto;
+  padding: 8px 12px;
+  border-bottom: thin solid #efefef;
+}
+.overlay-input label {
+  font-size: large;
+  font-weight: bold;
+}
+.overlay-input input[type="checkbox"] {
+  height: 30px;
+  width: 30px;
+}
+.select-btn {
+  width: 65%;
+  margin-top: 6px;
+  text-align: left;
+}

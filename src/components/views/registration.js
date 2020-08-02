@@ -4,10 +4,17 @@ import "../../css/registration.css";
 const Registration = (props) => {
   const [email, setEmail] = useState();
   //get url params
-  const { match } = props;
+  const {
+    match,
+    location: { search },
+  } = props;
   const { sch, quiz } = match.params;
+  const type = search.split("type=")[1];
   const register = (email) => {
-    const url = `http://localhost:3500/school/quiz/register?sid=${sch}&quid=${quiz}`;
+    let url = `http://localhost:3500/school/quiz/register?sid=${sch}&quid=${quiz}`;
+    if (type === "exam") {
+      url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
+    }
     fetch(url, {
       method: "POST",
       headers: {

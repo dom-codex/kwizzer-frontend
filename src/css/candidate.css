@@ -66,3 +66,12 @@
 tfoot {
   background-color: tomato;
 }
+/*switch style*/
+.switch-cont {
+  margin-top: 12px;
+  display: flex;
+}
+.switch-cont span {
+  margin: 0 8px;
+  font-weight: bold;
+}

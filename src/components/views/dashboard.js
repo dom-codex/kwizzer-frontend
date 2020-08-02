@@ -46,11 +46,19 @@ const Dashboard = (props) => {
           />
           <Menutile
             title={"Candidates"}
-            action={() => LinkTo("/dashboard/candidates")}
+            action={() => LinkTo("/dashboard/candidates", schRef)}
           />
           <Menutile
             title={"Scoreboard"}
             action={() => LinkTo("/dashboard/scoreboard", schRef)}
+          />
+          <Menutile
+            title={"set exam"}
+            action={() => LinkTo("/dashboard/set/exam", schRef)}
+          />
+          <Menutile
+            title={"Exam record"}
+            action={() => LinkTo("/dashboard/exam/records", schRef)}
           />
         </div>
       </div>

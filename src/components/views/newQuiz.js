@@ -1,10 +1,13 @@
 import React, { useReducer, useState } from "react";
 import Header from "../sub-components/header";
 import Switch from "../sub-components/switch";
+import Toast from "../sub-components/toast";
 import "../../css/quizCreationModal.css";
 const NewQuizWindow = (props) => {
   const sref = props.location.state.sref;
   const [toggle, setToggle] = useState(false);
+  const [isToast, setToast] = useState(false);
+  const [text, setText] = useState("");
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "Input":
@@ -47,11 +50,17 @@ const NewQuizWindow = (props) => {
       .then((res) => {
         if (res.code === 200) {
           props.history.push(`/dashboard?ref=${sref}`, { sref: sref });
+          return;
+        }
+        if (res.code === 403) {
+          setText(res.message);
+          setToast(true);
         }
       });
   };
   return (
     <div className="new-quiz-window">
+      {isToast && <Toast text={text} isOpen={isToast} action={setToast} />}
       <Header />
       <div className="new-quiz">
         <div className="new-quiz-header">

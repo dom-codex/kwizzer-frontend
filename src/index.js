@@ -21,6 +21,9 @@ import Registration from "./components/views/registration";
 import QuizSolution from "./components/views/solutions";
 import CandidatesResults from "./components/views/candidatesResult";
 import QuizCreationWindow from "./components/views/newQuiz";
+import ExamRecords from "./components/views/examRecords";
+import NewExam from "./components/views/newExam";
+import EditExam from "./components/views/editExam";
 const routing = (
   <Router>
     <div>
@@ -56,6 +59,9 @@ const routing = (
         path="/dashboard/mycandidates/result"
         component={CandidatesResults}
       />
+      <Route exact path="/dashboard/set/exam" component={NewExam} />
+      <Route exact path="/dashboard/exam/records" component={ExamRecords} />
+      <Route exact path="/dashboard/edit/exam" component={EditExam} />
     </div>
   </Router>
 );
