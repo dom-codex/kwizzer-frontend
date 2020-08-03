@@ -5,8 +5,17 @@
 .form-header h1 {
   margin: 5px 0 0 0;
 }
+.new-exam-switch {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+.new-exam-switch div {
+  display: flex;
+  align-items: center;
+}
 .exam-form {
-  margin-top: 28px;
+  margin-top: 5px;
   margin-left: 20px;
 }
 .exam-forms label {

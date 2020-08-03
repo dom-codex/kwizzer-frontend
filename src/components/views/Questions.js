@@ -38,7 +38,7 @@ const Question = (props) => {
   const [showDialog, setDialog] = useState(false);
   const { state } = props.location;
   const fetchQuestions = () => {
-    const url = `http://localhost:3500/school/student/quiz?pid=${state.user.pid}&quiz=${state.quiz}&sch=${state.sch}&retry=${stateData.retry}`;
+    let url = `http://localhost:3500/school/student/quiz?pid=${state.user.pid}&quiz=${state.quiz}&sch=${state.sch}&retry=${stateData.retry}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {

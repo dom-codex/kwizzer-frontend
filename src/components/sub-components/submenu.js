@@ -51,6 +51,11 @@ function SubMenu(props) {
           action={() => LinkTo("/menu/quiz?user=student", userIdentities)}
         />
         <Menutile title={"Apply"} />
+
+        <Menutile
+          title={"My Exams"}
+          action={() => LinkTo("/menu/myexams", userIdentities)}
+        />
       </div>
     </div>
   );

@@ -27,9 +27,20 @@ const NewExam = (props) => {
           ...state,
           quiz: quiz,
         };
+      case "switch":
+        const type = !state.switch;
+        return {
+          ...state,
+          switch: type,
+          type: type ? "custom" : "standard",
+        };
     }
   };
-  const [inputState, dispatch] = useReducer(inputReducer, { quiz: {} });
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    quiz: {},
+    switch: false,
+    type: "standard",
+  });
   const inputHandler = (e, name) => {
     dispatch({ type: "new", input: name, value: e.target.value });
   };
@@ -38,6 +49,9 @@ const NewExam = (props) => {
       return dispatch({ type: "rmv", input: name });
     }
     dispatch({ type: "quiz", input: name, value: e.target.value });
+  };
+  const toggle = () => {
+    dispatch({ type: "switch" });
   };
   const getPublishedQuiz = () => {
     //pass the school refrence from outside
@@ -73,6 +87,7 @@ const NewExam = (props) => {
         title={"Set Examination"}
         inputHandler={inputHandler}
         save={save}
+        toggle={toggle}
         checkboxHandler={checkboxHandler}
         data={{
           isOpen: isOpen,

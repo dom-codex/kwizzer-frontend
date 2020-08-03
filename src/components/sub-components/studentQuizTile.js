@@ -3,10 +3,10 @@ const StudentQuizTile = (props) => {
   const hours = props.quiz.hours;
   const minutes = props.quiz.minutes;
   const seconds = props.quiz.seconds;
-  const title = props.quiz.title;
-  const n = props.quiz.nQuestions;
+  const title = props.title;
+  const n = props.n;
   const time = `${hours > 0 ? hours + " hour(s)" : ""} 
-      ${hours >= 0 && minutes > 0 ? minutes + " minutes" : ""}
+      ${parseInt(minutes) > 0 ? minutes + " minute(s)" : ""}
       ${seconds + " seconds"}
   `;
   const showOverView = (isretry) => {
@@ -16,7 +16,7 @@ const StudentQuizTile = (props) => {
       sec: seconds,
     };
     const data = {
-      id: props.quiz.id,
+      id: props.id,
       sch: props.quiz.schoolId,
       title: title,
       time: time,
@@ -31,8 +31,7 @@ const StudentQuizTile = (props) => {
       <li>
         <h1>{title}</h1>
       </li>
-      <li>created by : {props.sch.name}</li>
-      <li>Total questions: {props.quiz.nQuestions}</li>
+      {props.children}
       <li>Time allocated: {time}</li>
       <li
         className={

@@ -1,7 +1,8 @@
 import React, { useState, useReducer, useEffect } from "react";
 import Header from "./header";
+import Switch from "../sub-components/switch";
 import "../../css/exam.css";
-let t;
+
 const QuizOverlay = (props) => {
   const { state } = props;
   const quizzes = props.quizzes;
@@ -15,7 +16,7 @@ const QuizOverlay = (props) => {
           quizzes.map((quiz, i) => {
             const values = Object.values(state).map((quid) => quid);
             len = values.length;
-            t = values.length;
+            //   t = values.length;
             const isChosed = values.some(
               (val) => parseInt(val) === parseInt(quiz.quiz.id)
             );
@@ -44,6 +45,19 @@ const ExamForm = (props) => {
       <div className="form-header">
         <h1>Quizzer</h1>
         <h2>{props.title}</h2>
+      </div>
+      <div className="new-exam-switch">
+        <span>Type:</span>
+        <div>
+          <span>Standard</span> &nbsp;{" "}
+          <Switch
+            toggle={state.switch}
+            isExam={true}
+            setToggle={props.toggle}
+          />{" "}
+          &nbsp;
+          <span>Custom</span>
+        </div>
       </div>
       <div className="exam-form">
         <div className="exam-forms">
@@ -98,11 +112,16 @@ const ExamForm = (props) => {
           />
           <label>sec</label>
         </div>
-        <div className="exam-forms-result">
-          <button onClick={() => props.selectQuiz(true)} className="select-btn">
-            select quiz
-          </button>
-        </div>
+        {!state.switch && (
+          <div className="exam-forms-result">
+            <button
+              onClick={() => props.selectQuiz(true)}
+              className="select-btn"
+            >
+              select quiz
+            </button>
+          </div>
+        )}
         <div className="exam-forms-result">
           <span>Deliver Result on submition</span>
           <br />
@@ -150,6 +169,7 @@ const Exam = (props) => {
           <div className="exam-content">
             <ExamForm
               title={props.title}
+              toggle={props.toggle}
               selectQuiz={data.setList}
               textHandler={props.inputHandler}
               state={data.inputState}

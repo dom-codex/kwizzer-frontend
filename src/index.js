@@ -24,6 +24,8 @@ import QuizCreationWindow from "./components/views/newQuiz";
 import ExamRecords from "./components/views/examRecords";
 import NewExam from "./components/views/newExam";
 import EditExam from "./components/views/editExam";
+import MyExams from "./components/views/studentExams";
+import Examination from "./components/views/examination";
 const routing = (
   <Router>
     <div>
@@ -62,6 +64,8 @@ const routing = (
       <Route exact path="/dashboard/set/exam" component={NewExam} />
       <Route exact path="/dashboard/exam/records" component={ExamRecords} />
       <Route exact path="/dashboard/edit/exam" component={EditExam} />
+      <Route exact path="/menu/myexams" component={MyExams} />
+      <Route exact path="/menu/examination" component={Examination} />
     </div>
   </Router>
 );

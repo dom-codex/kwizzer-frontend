@@ -10,12 +10,16 @@ const Switch = (props) => {
         id="switch"
         class="checkbox"
         checked={toggle ? true : false}
-        onChange={() =>
+        onChange={() => {
+          if (props.isExam) {
+            props.setToggle();
+            return;
+          }
           props.setToggle((prev) => {
             props.handleInput({ target: { value: !prev } }, "retry");
             return !prev;
-          })
-        }
+          });
+        }}
       />
       <label for="switch" class="toggle"></label>
     </div>
