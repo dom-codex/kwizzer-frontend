@@ -14,3 +14,12 @@
 .quiz-name h4 {
   font-size: 1.4em;
 }
+.quiz-selector {
+  margin-bottom: 12px;
+}
+.quiz-selector p {
+  margin: 0;
+}
+.quiz-selector button {
+  width: 120px;
+}

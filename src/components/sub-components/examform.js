@@ -1,42 +1,8 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React from "react";
 import Header from "./header";
 import Switch from "../sub-components/switch";
 import "../../css/exam.css";
-
-const QuizOverlay = (props) => {
-  const { state } = props;
-  const quizzes = props.quizzes;
-  let len;
-  return (
-    <div className="exam-quiz-overlay">
-      <div className="quiz-overlay-content">
-        <button onClick={() => props.action(false)}>close</button>
-        <h2>Quiz list</h2>
-        {quizzes.length &&
-          quizzes.map((quiz, i) => {
-            const values = Object.values(state).map((quid) => quid);
-            len = values.length;
-            //   t = values.length;
-            const isChosed = values.some(
-              (val) => parseInt(val) === parseInt(quiz.quiz.id)
-            );
-            return (
-              <div className="overlay-input" key={i}>
-                <label>{quiz.quiz.title}</label>
-
-                <input
-                  type="checkbox"
-                  value={quiz.quiz.id.toString()}
-                  checked={isChosed ? true : false}
-                  onChange={(e) => props.textHandler(e, `quiz${i + 1}`)}
-                />
-              </div>
-            );
-          })}
-      </div>
-    </div>
-  );
-};
+import QuizOverlay from "../sub-components/QuizOverlay";
 
 const ExamForm = (props) => {
   const { state } = props;
@@ -46,19 +12,24 @@ const ExamForm = (props) => {
         <h1>Quizzer</h1>
         <h2>{props.title}</h2>
       </div>
+
       <div className="new-exam-switch">
         <span>Type:</span>
-        <div>
-          <span>Standard</span> &nbsp;{" "}
-          <Switch
-            toggle={state.switch}
-            isExam={true}
-            setToggle={props.toggle}
-          />{" "}
-          &nbsp;
-          <span>Custom</span>
-        </div>
+        {!props.isedit && (
+          <div>
+            <span>Standard</span> &nbsp;{" "}
+            <Switch
+              toggle={state.switch}
+              isExam={true}
+              setToggle={props.toggle}
+            />{" "}
+            &nbsp;
+            <span>Custom</span>
+          </div>
+        )}
+        {props.isedit && <div>{state.type}</div>}
       </div>
+
       <div className="exam-form">
         <div className="exam-forms">
           <label>Name</label>
@@ -112,7 +83,7 @@ const ExamForm = (props) => {
           />
           <label>sec</label>
         </div>
-        {!state.switch && (
+        {!props.edit && state.type !== "custom" && (
           <div className="exam-forms-result">
             <button
               onClick={() => props.selectQuiz(true)}
@@ -160,7 +131,7 @@ const Exam = (props) => {
           {data.isOpen && (
             <QuizOverlay
               action={data.setList}
-              state={data.inputState.quiz}
+              state={data.data.quiz}
               textHandler={props.checkboxHandler}
               quizzes={data.quizzes}
             />
@@ -170,9 +141,10 @@ const Exam = (props) => {
             <ExamForm
               title={props.title}
               toggle={props.toggle}
+              isedit={props.isedit}
               selectQuiz={data.setList}
               textHandler={props.inputHandler}
-              state={data.inputState}
+              state={data.data}
               save={props.save}
             />
           </div>

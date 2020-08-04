@@ -1,8 +1,49 @@
-import React, { useState } from "react";
+import React, { useReducer, useEffect } from "react";
 import Header from "../sub-components/header";
+import QuizOverlay from "../sub-components/QuizOverlay";
 import "../../css/registration.css";
 const Registration = (props) => {
-  const [email, setEmail] = useState();
+  const inputReducer = (state, action) => {
+    switch (action.type) {
+      case "email":
+        return {
+          ...state,
+          email: action.email,
+        };
+      case "quiz":
+        return {
+          ...state,
+          quiz: action.quiz,
+        };
+      case "published":
+        return {
+          ...state,
+          published: action.published,
+        };
+      case "overlay":
+        return {
+          ...state,
+          overlay: !state.overlay,
+        };
+      case "subjects":
+        return {
+          ...state,
+          subjects: [...state.subjects, action.value],
+        };
+      case "rmv":
+        return {
+          ...state,
+          subjects: state.subjects.filter((id) => id !== action.value),
+        };
+    }
+  };
+  const [data, dispatch] = useReducer(inputReducer, {
+    email: "",
+    quiz: {},
+    published: [],
+    subjects: [],
+    overlay: false,
+  });
   //get url params
   const {
     match,
@@ -11,16 +52,20 @@ const Registration = (props) => {
   const { sch, quiz } = match.params;
   const type = search.split("type=")[1];
   const register = (email) => {
+    let body = { email, email };
     let url = `http://localhost:3500/school/quiz/register?sid=${sch}&quid=${quiz}`;
     if (type === "exam") {
       url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
+    }
+    if (data.quiz.type === "custom") {
+      body = { subjects: data.subjects, email: email, type: data.quiz.type };
     }
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email }),
+      body: JSON.stringify(body),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -29,8 +74,53 @@ const Registration = (props) => {
         }
       });
   };
+  const getPublishedQuiz = () => {
+    //pass the school refrence from outside
+    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${"c90f02be515dfb01383b87f884c9b0e959a3f948"}`;
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        dispatch({ type: "published", published: data.published });
+        console.log(data);
+      });
+  };
+
+  const findTest = () => {
+    let url = `http://localhost:3500/school/get/quiz?quid=${quiz}`;
+    if (type === "exam") {
+      url = `http://localhost:3500/school/find/exam?eid=${quiz}&ref=${sch}`;
+    }
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        dispatch({ type: "quiz", quiz: data.quiz });
+        if (data.quiz.type === "custom") {
+          getPublishedQuiz();
+        }
+      });
+  };
+  const checkboxHandler = (e) => {
+    if (!e.target.checked) {
+      return dispatch({ type: "rmv", value: e.target.value });
+    }
+    dispatch({ type: "subjects", value: e.target.value });
+  };
+  const toggleOverlay = () => {
+    dispatch({ type: "overlay" });
+  };
+  useEffect(findTest, []);
   return (
     <section className="reg-page">
+      {data.overlay && (
+        <QuizOverlay
+          quizzes={data.published}
+          isExam={true}
+          textHandler={checkboxHandler}
+          state={data.subjects}
+          action={toggleOverlay}
+        />
+      )}
       <Header />
       <div className="reg-content">
         <div className="reg-header">
@@ -55,17 +145,26 @@ const Registration = (props) => {
             <span>2hrs 30mins</span>
           </div>
           <hr />
+
           <div className="candidate-email">
+            {data.quiz.type === "custom" && (
+              <div className="quiz-selector">
+                <p>select quiz(s):</p>
+                <button onClick={toggleOverlay}>select</button>
+              </div>
+            )}
             <label>Email</label>
             <input
               type="email"
-              value={email}
-              onInput={(e) => setEmail(e.target.value)}
+              value={data.email}
+              onInput={(e) =>
+                dispatch({ type: "email", email: e.target.value })
+              }
               placeholder="enter your email address"
             />
           </div>
           <div className="reg-btn">
-            <button onClick={() => register(email)}>Submit</button>
+            <button onClick={() => register(data.email)}>Submit</button>
           </div>
         </div>
       </div>

@@ -1,10 +1,7 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
 const NewExam = (props) => {
   let sref = props.location.state.sref;
-  const [isOpen, setList] = useState(false);
-  const [isLoading, setLoader] = useState(true);
-  const [quizzes, setQuizzes] = useState([]);
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "new":
@@ -15,17 +12,12 @@ const NewExam = (props) => {
       case "quiz":
         return {
           ...state,
-          quiz: {
-            ...state.quiz,
-            [action.input]: action.value,
-          },
+          quiz: [...state.quiz, action.value],
         };
       case "rmv":
-        const quiz = { ...state.quiz };
-        delete quiz[action.input];
         return {
           ...state,
-          quiz: quiz,
+          quiz: state.quiz.filter((id) => id !== action.value),
         };
       case "switch":
         const type = !state.switch;
@@ -34,19 +26,37 @@ const NewExam = (props) => {
           switch: type,
           type: type ? "custom" : "standard",
         };
+      case "isloading":
+        return {
+          ...state,
+          isLoading: !state.isLoading,
+        };
+      case "isopen":
+        return {
+          ...state,
+          isOpen: !state.isOpen,
+        };
+      case "quizzes":
+        return {
+          ...state,
+          quizzes: action.quizzes,
+        };
     }
   };
-  const [inputState, dispatch] = useReducer(inputReducer, {
-    quiz: {},
+  const [data, dispatch] = useReducer(inputReducer, {
+    quiz: [],
     switch: false,
     type: "standard",
+    isLoading: true,
+    isOpen: false,
+    quizzes: [],
   });
   const inputHandler = (e, name) => {
-    dispatch({ type: "new", input: name, value: e.target.value });
+    dispatch({ type: "new", value: e.target.value, input: name });
   };
   const checkboxHandler = (e, name) => {
     if (!e.target.checked) {
-      return dispatch({ type: "rmv", input: name });
+      return dispatch({ type: "rmv", value: e.target.value });
     }
     dispatch({ type: "quiz", input: name, value: e.target.value });
   };
@@ -59,19 +69,25 @@ const NewExam = (props) => {
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        setLoader(false);
-        setQuizzes(data.published);
+        dispatch({ type: "isloading" });
+        dispatch({ type: "quizzes", quizzes: data.published });
         console.log(data);
       });
   };
   const save = () => {
     const url = `http://localhost:3500/school/set/examination?sch=${sref}`;
+    let body = { ...data };
+    delete body["quizzes"];
+    delete body["isOpen"];
+    delete body["isLoading"];
+    delete body["switch"];
+
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputState),
+      body: JSON.stringify(body),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -90,11 +106,11 @@ const NewExam = (props) => {
         toggle={toggle}
         checkboxHandler={checkboxHandler}
         data={{
-          isOpen: isOpen,
-          isLoading: isLoading,
-          quizzes: quizzes,
-          setList: setList,
-          inputState: inputState,
+          isOpen: data.isOpen,
+          isLoading: data.isLoading,
+          quizzes: data.quizzes,
+          setList: () => dispatch({ type: "isopen" }),
+          data: data,
         }}
       />
     </section>

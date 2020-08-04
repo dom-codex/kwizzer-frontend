@@ -3,9 +3,6 @@ import NewExamForm from "../sub-components/examform";
 const NewExam = (props) => {
   let sref = props.location.state.sref;
   let exam = props.location.state.exam;
-  const [isOpen, setList] = useState(false);
-  const [isLoading, setLoader] = useState(true);
-  const [quizzes, setQuizzes] = useState([]);
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "new":
@@ -14,26 +11,30 @@ const NewExam = (props) => {
           [action.input]: action.value,
         };
       case "quiz":
-        const qui = { ...state.quiz, [action.input]: action.value };
         const inList = state.todelete.some((id) => id === action.value);
         return {
           ...state,
-          quiz: qui,
+          quiz: [...state.quiz, action.value],
           todelete: inList
             ? state.todelete.filter((id) => id !== action.value)
             : [...state.todelete],
         };
       case "rmv":
-        const quiz = { ...state.quiz };
-        const istobecreated = state.tocreate.some((id) => id === action.value);
-        delete quiz[action.input];
+        const istobecreated = state.tocreate.some(
+          (id) => id.toString() === action.value
+        );
+        const wasChosed = state.existing.some(
+          (id) => id.toString() === action.value
+        );
         return {
           ...state,
-          quiz: quiz,
-          todelete: [...state.todelete, action.value],
-          tocreate: istobecreated
-            ? state.tocreate.filter((id) => id !== action.value)
-            : state.tocreate,
+          quiz: state.quiz.filter((id) => id.toString() !== action.value),
+          todelete: wasChosed
+            ? [...state.todelete, action.value]
+            : state.todelete,
+          tocreate: state.tocreate.filter(
+            (id) => id.toString() !== action.value
+          ),
         };
       case "prefill":
         const {
@@ -55,29 +56,56 @@ const NewExam = (props) => {
           nquiz: nQuiz,
           choice: resultDelivery,
           quiz: action.quiz,
-          existing: Object.values(action.quiz).map((quiz) => quiz),
+          existing: action.quiz,
+          type: action.exam.type,
         };
       case "tocreate":
         const isinList = state.tocreate.some((id) => id === action.value);
-        if (isinList) return;
+        const Waschosed = state.existing.some(
+          (id) => id.toString() === action.value
+        );
+        if (isinList || Waschosed) return state;
         return {
           ...state,
           tocreate: [...state.tocreate, action.value],
         };
+      case "switch":
+        const type = !state.switch;
+        return {
+          ...state,
+          switch: type,
+          type: type ? "custom" : "standard",
+        };
+      case "isloading":
+        return {
+          ...state,
+          isLoading: !state.isLoading,
+        };
+      case "isopen":
+        return {
+          ...state,
+          isOpen: !state.isOpen,
+        };
+      case "quizzes":
+        return {
+          ...state,
+          quizzes: action.quizzes,
+        };
     }
   };
-  const [inputState, dispatch] = useReducer(inputReducer, {
+  const [data, dispatch] = useReducer(inputReducer, {
     quiz: {},
     todelete: [],
     existing: [],
     tocreate: [],
+    type: "",
+    isLoading: true,
   });
   const inputHandler = (e, name) => {
     dispatch({ type: "new", input: name, value: e.target.value });
   };
   const checkboxHandler = (e, name) => {
-    const ids = Object.values(inputState.existing).map((id) => id);
-    const wasChosed = ids.some((id) => id.toString() === e.target.value);
+    const wasChosed = data.quiz.some((id) => id.toString() === e.target.value);
     if (!e.target.checked) {
       dispatch({ type: "rmv", input: name, value: e.target.value });
     } else if (!wasChosed) {
@@ -94,36 +122,25 @@ const NewExam = (props) => {
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        let existing = [];
-        let published = [...data.published];
-        Object.values(quiz)
-          .reverse()
-          .forEach((qui) => {
-            const selected = published.find(
-              (pub) => pub.quizId.toString() === qui.toString()
-            );
-            const notselected = published.filter(
-              (pub) => pub.quizId.toString() !== qui.toString()
-            );
-            published = [...notselected];
-            existing.unshift(selected);
-          });
-        const appended = existing.concat(published);
         dispatch({ type: "prefill", exam: exams, quiz: quiz });
-        setLoader(false);
-        console.log("p", appended);
-        setQuizzes(appended.length ? appended : data.published);
-        //  console.log(data);
+        dispatch({ type: "quizzes", quizzes: data.published });
+        dispatch({ type: "isloading" });
       });
   };
   const save = () => {
     const url = `http://localhost:3500/school/exam/save?sch=${sref}&exam=${exam}`;
+    let body = { ...data };
+    delete body["quizzes"];
+    delete body["isOpen"];
+    delete body["isLoading"];
+    delete body["switch"];
+
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(inputState),
+      body: JSON.stringify(body),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -147,13 +164,14 @@ const NewExam = (props) => {
         title={"Edit Examination"}
         inputHandler={inputHandler}
         save={save}
+        isedit={true}
         checkboxHandler={checkboxHandler}
         data={{
-          isOpen: isOpen,
-          isLoading: isLoading,
-          quizzes: quizzes,
-          setList: setList,
-          inputState: inputState,
+          isOpen: data.isOpen,
+          isLoading: data.isLoading,
+          quizzes: data.quizzes,
+          setList: () => dispatch({ type: "isopen" }),
+          data: data,
         }}
       />
     </section>
