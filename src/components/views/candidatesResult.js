@@ -3,9 +3,13 @@ import Header from "../sub-components/header";
 import "../../css/candidate_result.css";
 const CandidatesResults = (props) => {
   const [result, setResult] = useState([]);
-  const { quizId } = props.location.state;
+  const { quizId, mode } = props.location.state;
+  const isExam = mode === "exam";
   const fetchResult = () => {
-    const url = `http://localhost:3500/school/get/students/result?quiz=${quizId}`;
+    let url = `http://localhost:3500/school/get/students/result?quiz=${quizId}`;
+    if (isExam) {
+      url = `http://localhost:3500/school/exam/results?exam=${quizId}`;
+    }
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -14,10 +18,13 @@ const CandidatesResults = (props) => {
       });
   };
   const linkTo = (paper) => {
-    props.history.push(`/quiz/solutions`, { question: paper });
+    props.history.push(`/quiz/solutions`, { question: paper, isExam: isExam });
   };
   const ApproveResults = () => {
-    const url = `http://localhost:3500/school/approve/results?quiz=${quizId}`;
+    let url = `http://localhost:3500/school/approve/results?quiz=${quizId}`;
+    if (isExam) {
+      url = `http://localhost:3500/school/exam/approve/result?exam=${quizId}`;
+    }
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -25,7 +32,10 @@ const CandidatesResults = (props) => {
       });
   };
   const ApproveSingleResult = (id) => {
-    const url = `http://localhost:3500/school/approve/result?paper=${id}`;
+    let url = `http://localhost:3500/school/approve/result?paper=${id}`;
+    if (isExam) {
+      url = `http://localhost:3500/school/exam/approve/single?paper=${id}`;
+    }
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -69,7 +79,7 @@ const CandidatesResults = (props) => {
                   </div>
                   <div className="res-owner">
                     <p>
-                      <small>Name</small>:<span> {r.name}</span>
+                      <small>Name</small>:<span> {r.studentName}</span>
                     </p>
                     <button onClick={() => ApproveSingleResult(r._id)}>
                       approve

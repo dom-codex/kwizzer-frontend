@@ -12,17 +12,17 @@ const QuizTile = (props) => {
   const openResult = props.openResult ? props.openResult : () => {};
   return (
     <div
-      onClick={() =>
-        quiz.NumberOfSubmitted
-          ? openResult(quiz.id)
+      onClick={
+        quiz.NumberOfSubmitted || quiz.noOfStudents
+          ? openResult
           : props.score
-          ? props.showToast(true)
+          ? props.showToast
           : null
       }
     >
       <ul className="quizzes-list">
         <li>
-          <div className="quiz-name">{quiz.title}</div>
+          <div className="quiz-name">{quiz.title || quiz.name}</div>
           <div className="quizzes-controls">
             {!props.score && (
               <span>

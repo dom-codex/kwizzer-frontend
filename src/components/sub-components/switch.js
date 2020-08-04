@@ -2,7 +2,7 @@ import React from "react";
 import "../../css/toggle.css";
 
 const Switch = (props) => {
-  const { toggle } = props;
+  const { toggle, isResult, setToggle } = props;
   return (
     <div className="switch">
       <input
@@ -12,10 +12,13 @@ const Switch = (props) => {
         checked={toggle ? true : false}
         onChange={() => {
           if (props.isExam) {
-            props.setToggle();
+            setToggle();
+            return;
+          } else if (isResult) {
+            setToggle(!toggle);
             return;
           }
-          props.setToggle((prev) => {
+          setToggle((prev) => {
             props.handleInput({ target: { value: !prev } }, "retry");
             return !prev;
           });

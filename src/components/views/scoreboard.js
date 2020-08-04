@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Header from "../sub-components/header";
-import QuizTile from "../sub-components/quiz-tile";
 import Jumbo from "../sub-components/Jumbo";
 import "../../css/scoreboard.css";
 import Toast from "../sub-components/toast";
 import Switch from "../sub-components/switch";
+import ExamScore from "../sub-components/examScore";
+import QuizScore from "../sub-components/quizScore";
 const ScoreBoard = (props) => {
   const [quizzes, setQuizzes] = useState([]);
+  const [isToggle, setToggle] = useState(false);
   const [isToast, setToast] = useState(false);
+  const [Exams, setExams] = useState([]);
   const ref = props.location.state.sref;
-  const fetchAllQuiz = () => {
+  const fetchAllQuiz = (exams) => {
     const url = `http://localhost:3500/school/class/quiz/all?sid=${ref}`;
     fetch(url)
       .then((res) => res.json())
@@ -17,13 +20,23 @@ const ScoreBoard = (props) => {
         const quizzes = res.quizzes;
         console.log(quizzes);
         setQuizzes(quizzes);
+        setExams(exams);
       });
   };
-  const viewResults = (id) => {
-    props.history.push("/dashboard/mycandidates/result", { quizId: id });
+  const fetchAllExams = () => {
+    const url = `http://localhost:3500/school/get/exams?sch=${ref}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        fetchAllQuiz(data.exams);
+      });
+  };
+  const viewResults = (route, id, mode = "quiz") => {
+    // props.history.push("/dashboard/mycandidates/result", { quizId: id });
+    props.history.push(route, { quizId: id, mode: mode });
   };
   useEffect(() => {
-    fetchAllQuiz();
+    fetchAllExams();
   }, []);
   return (
     <section className="scoreboard">
@@ -40,24 +53,21 @@ const ScoreBoard = (props) => {
       </div>
       <div className="selector">
         <span>Quiz</span>
-        <Switch />
+        <Switch toggle={isToggle} setToggle={setToggle} isResult={true} />
         <span>Exam</span>
       </div>
-      {quizzes.length ? (
-        quizzes.map((quiz) => {
-          return (
-            <QuizTile
-              key={quiz.id}
-              quiz={quiz}
-              showOverview={props.showOverView}
-              score={true}
-              openResult={viewResults}
-              showToast={setToast}
-            />
-          );
-        })
+      {!isToggle ? (
+        <QuizScore
+          quizzes={quizzes}
+          setToast={setToast}
+          viewResults={viewResults}
+        />
       ) : (
-        <h1>No quiz</h1>
+        <ExamScore
+          quizzes={Exams}
+          setToast={setToast}
+          viewResults={viewResults}
+        />
       )}
     </section>
   );
