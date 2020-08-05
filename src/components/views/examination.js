@@ -9,7 +9,7 @@ const myStyle = {
   backgroundColor: "green",
 };
 let message =
-  "This marks the end of the quiz!!! Good luck on checking your result";
+  "This marks the end of the exam!!! Good luck on checking your result";
 let heading = "Congratulations";
 const Examination = (props) => {
   console.log(props);
@@ -22,15 +22,16 @@ const Examination = (props) => {
     currentquestion: "",
     currentQuizIndex: 0,
     currentQuestionIndex: 0,
+    showDialog: false,
   });
   const LoadExam = () => {
     const url = `http://localhost:3500/school/get/exampaper?pid=${state.user.pid}&exam=${state.quiz}&sch=${state.sch}`;
     fetch(url)
       .then((res) => res.json())
-      .then((data) => {
+      .then((exam) => {
         const {
           quizzes: { quizzes, _id },
-        } = data;
+        } = exam;
         dispatch({ type: "init", quizzes: quizzes, sheet: _id });
       });
   };
@@ -68,9 +69,17 @@ const Examination = (props) => {
         sheet: data.id,
         student: state.user.pid,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.code === 200) {
+          dispatch({ type: "dialog" });
+        }
+      });
   };
-  const redirect = () => {};
+  const redirect = () => {
+    props.history.replace(`/login`);
+  };
   const selectAnswer = (i, option) => {
     dispatch({ type: "answer_a_question", answer: option, submit: submit });
   };
@@ -93,12 +102,10 @@ const Examination = (props) => {
     });
     return selectors;
   };
-  const showDialog = false;
-  console.log(data);
   useEffect(LoadExam, []);
   return (
     <section className="question">
-      {showDialog && (
+      {data.showDialog && (
         <Dialog title={heading} text={message} action={redirect} />
       )}
       <div className="header">
@@ -107,16 +114,12 @@ const Examination = (props) => {
         <button onClick={submitExam}>submit</button>
       </div>
       {
-        /*question.questions.length*/ false && (
-          <Timer time={state.time} submit={submit} />
+        /*question.questions.length*/ data.questions.length && (
+          <Timer time={state.time} submit={submitExam} />
         )
       }
       <div className="question-selector">
-        <div className="question-list">
-          {genQuizSelectors(data.quizzes)}
-          <button>1</button>
-          <button>2</button>
-        </div>
+        <div className="question-list">{genQuizSelectors(data.quizzes)}</div>
         <p>{`${data.currentQuestionIndex + 1} / ${data.questions.length}`}</p>
       </div>
       {data.questions.length && (

@@ -40,6 +40,11 @@ module.exports.examsReducer = (state, action) => {
         questions: questionss,
         currentQuestionIndex: 0,
       };
+    case "dialog":
+      return {
+        ...state,
+        showDialog: true,
+      };
     default:
       return state;
   }

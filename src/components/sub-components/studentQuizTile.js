@@ -33,7 +33,12 @@ const StudentQuizTile = (props) => {
       </li>
       {props.children}
       <li>Time allocated: {time}</li>
-      <li
+      {props.isExam && (
+        <button onClick={props.completed ? null : () => showOverView(false)}>
+          {props.completed ? "taken" : "take exam"}
+        </button>
+      )}
+      {/*<li
         className={
           props.completed && props.quiz.canRetake
             ? "take-quiz"
@@ -57,7 +62,7 @@ const StudentQuizTile = (props) => {
               : "Already taken"}
           </button>
         }
-      </li>
+      </li>*/}
     </ul>
   );
 };

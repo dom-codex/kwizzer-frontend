@@ -57,7 +57,9 @@ const StudentExams = (props) => {
                 id={myexam.examId}
                 title={exam.name}
                 n={exam.nQuiz}
+                isExam={true}
                 showOverView={showOverview}
+                completed={myexam.completed}
               >
                 <li>created by : {exam.name}</li>
                 <li>Total Quiz: {exam.nQuiz}</li>

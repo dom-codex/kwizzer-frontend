@@ -10,9 +10,9 @@ class Timer extends Component {
   }
   timer = setInterval(() => {
     if (
-      this.state.minutes === 0 &&
-      this.state.hours === 0 &&
-      this.state.seconds === 0
+      parseInt(this.state.minutes) === 0 &&
+      parseInt(this.state.hours) === 0 &&
+      parseInt(this.state.seconds) === 0
     ) {
       clearInterval(this.timer);
       this.props.submit();

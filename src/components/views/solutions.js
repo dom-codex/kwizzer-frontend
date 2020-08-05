@@ -36,7 +36,7 @@ const QuestionDisplay = (props) => {
 };
 const Solutions = (props) => {
   const { question, isExam } = props.location.state;
-  const [questionPaper, setQuestionpaper] = useState([]);
+  console.log(isExam);
   const questionReducer = (state, action) => {
     let index = 0;
     switch (action.type) {
@@ -48,6 +48,13 @@ const Solutions = (props) => {
           quizzes: action.quizzes,
           questions: action.quizzes[0].questions,
           question: action.quizzes[0].questions[0],
+        };
+      case "single-prefill":
+        return {
+          ...state,
+          questions: action.questions,
+          currentQuestionIndex: 0,
+          question: action.questions[0],
         };
       case "currentQuestion":
         return {
@@ -79,6 +86,20 @@ const Solutions = (props) => {
           currentQuestionIndex: index,
           question: state.quizzes[state.currentQuizIndex].questions[index],
         };
+      case "nxt":
+        index = state.currentQuestionIndex + 1;
+        return {
+          ...state,
+          currentQuestionIndex: index,
+          question: state.questions[index],
+        };
+      case "pre":
+        index = state.currentQuestionIndex - 1;
+        return {
+          ...state,
+          currentQuestionIndex: index,
+          question: state.questions[index],
+        };
     }
   };
   const [data, dispatch] = useReducer(questionReducer, {
@@ -95,12 +116,16 @@ const Solutions = (props) => {
     }
     fetch(url)
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+      .then((datas) => {
+        console.log(datas);
         if (isExam) {
-          return dispatch({ type: "load", quizzes: data.solution.quizzes });
+          return dispatch({ type: "load", quizzes: datas.solution.quizzes });
         }
-        // setQuestionpaper(data.questions.questions);
+        dispatch({
+          type: "single-prefill",
+          questions: datas.questions.questions,
+        });
+        //setQuestionpaper(data.questions.questions);
       });
   };
   const genQuizSelectors = (quizzes) => {
@@ -118,9 +143,15 @@ const Solutions = (props) => {
       direction === "forward" &&
       data.currentQuestionIndex < data.questions.length - 1
     ) {
-      dispatch({ type: "next" });
+      if (isExam) {
+        return dispatch({ type: "next" });
+      }
+      dispatch({ type: "nxt" });
     } else if (direction === "backward" && data.currentQuestionIndex > 0) {
-      dispatch({ type: "prev" });
+      if (isExam) {
+        return dispatch({ type: "prev" });
+      }
+      dispatch({ type: "pre" });
     }
   };
   useEffect(getQuestionPaper, []);
