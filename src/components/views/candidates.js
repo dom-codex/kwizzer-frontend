@@ -2,41 +2,37 @@ import React, { useState, useEffect } from "react";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import Toast from "../sub-components/toast";
-import Switch from "../sub-components/switch";
 import ExamCandidatesWindow from "../sub-components/examCandidates";
-import QuizCandidates from "../sub-components/quizCandidate";
 import CandidateList from "../sub-components/appliedCandidatesList";
 import "../../css/candidate.css";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const Published = (props) => {
   const sref = props.location.state.sref;
   const [candidates, setCandidates] = useState([]);
-  const [quizzes, setQuizzes] = useState([]);
   const [exams, setExams] = useState([]);
   const [showList, setShowList] = useState(false);
   const [param, setParam] = useState({ sch: sref, quiz: "" });
   const [isToast, setToast] = useState(false);
-  const [isExam, setSwitch] = useState(false);
-  const fetchCandidates = () => {
+  const fetchExams = () => {
     //pass the school refrence from outside
-    let url = `http://localhost:3500/school/get/published?sch=${3}`;
-    if (isExam) {
-      url = `http://localhost:3500/school/get/examinations?sch=${sref}`;
-    }
+    /*let url = `http://localhost:3500/school/get/published?sch=${3}`;*/
+
+    let url = `http://localhost:3500/school/get/examinations?sch=${school}`;
+
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        if (!isExam) {
-          return setQuizzes(data.quizzes);
-        }
+
         setExams(data.exams);
       });
   };
-  const fetchRegCandidates = () => {
-    let url = `http://localhost:3500/school/hall/all?sch=${param.sch}&quiz=${param.quiz} `;
-    if (isExam) {
-      url = `http://localhost:3500/school/get/exam/hallstudents?sch=${sref}&exam=${param.quiz}`;
-    }
+  const fetchRegCandidates = (id) => {
+    /* let url = `http://localhost:3500/school/hall/all?sch=${param.sch}&quiz=${param.quiz} `;*/
+
+    const url = `http://localhost:3500/school/get/exam/hallstudents?sch=${school}&exam=${id}`;
+
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -44,16 +40,13 @@ const Published = (props) => {
         setCandidates(data.students);
       });
   };
-  useEffect(() => {
-    if (showList) {
-      fetchRegCandidates();
-    } else {
-      fetchCandidates();
-    }
-  }, [isExam, showList]);
   const getParam = (data) => {
     setParam(data);
+    fetchRegCandidates(data.quiz);
   };
+  useEffect(() => {
+    fetchExams();
+  }, []);
   return (
     <section className="candidates">
       {isToast && (
@@ -67,7 +60,6 @@ const Published = (props) => {
         <CandidateList
           candidates={candidates}
           param={param}
-          isExam={isExam}
           closeList={() => setShowList(false)}
         />
       )}
@@ -75,28 +67,15 @@ const Published = (props) => {
         <Header />
         <Jumbo title={"Published  Quiz"} />
       </div>
-      <div className="switch-cont">
-        <span>Quiz</span>{" "}
-        <Switch setToggle={setSwitch} toggle={isExam} handleInput={() => {}} />{" "}
-        <span>Exam</span>
-      </div>
+
       <div className="published-quiz-list">
-        {!isExam ? (
-          <QuizCandidates
-            published={quizzes}
-            showList={setShowList}
-            setToast={setToast}
-            getParam={getParam}
-          />
-        ) : (
-          <ExamCandidatesWindow
-            exams={exams}
-            isExam={isExam}
-            showList={setShowList}
-            setToast={setToast}
-            getParam={getParam}
-          />
-        )}
+        <ExamCandidatesWindow
+          exams={exams}
+          isExam={true}
+          showList={setShowList}
+          setToast={setToast}
+          getParam={getParam}
+        />
       </div>
     </section>
   );

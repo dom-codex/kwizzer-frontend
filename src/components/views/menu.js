@@ -3,16 +3,16 @@ import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import Submenu from "../sub-components/submenu";
 import "../../css/showcase.css";
+import { fetchData } from "../../utils/storage";
+const stateData = fetchData("person");
 let user;
 function Menu(props) {
   //retrieve user details from state
-  const stateData = props.routes.location.state;
-  console.log(props);
   const [detailLoaded, setDetailsLoaded] = useState(false);
-  const { location } = props.routes;
+  //const { location } = props.routes;
   const LoadInfo = () => {
-    const query = location.search.split("=")[1];
-    const url = `http://localhost:3500/user/find?ref=${query}`;
+    //  const query = location.search.split("=")[1];
+    const url = `http://localhost:3500/user/find?ref=${stateData}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -34,9 +34,7 @@ function Menu(props) {
           <Jumbo title={detailLoaded ? `${"Hi " + user.name}` : "Loading..."} />
         </div>
       </section>
-      {detailLoaded && (
-        <Submenu user={user} routes={props.routes} stateData={stateData} />
-      )}
+      {detailLoaded && <Submenu user={user} routes={props.routes} />}
     </section>
   );
 }

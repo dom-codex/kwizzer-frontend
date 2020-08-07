@@ -1,5 +1,6 @@
 import React from "react";
 const StudentQuizTile = (props) => {
+  console.log(props);
   const hours = props.quiz.hours;
   const minutes = props.quiz.minutes;
   const seconds = props.quiz.seconds;
@@ -17,9 +18,9 @@ const StudentQuizTile = (props) => {
     };
     const data = {
       id: props.id,
-      sch: props.quiz.schoolId,
       title: title,
       time: time,
+      sheet: props.sheet,
       rawTime: rawTime,
       n: n,
       retry: isretry,

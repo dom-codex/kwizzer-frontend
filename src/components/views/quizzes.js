@@ -4,18 +4,20 @@ import Jumbo from "../sub-components/Jumbo";
 import QuizTile from "../sub-components/quiz-tile";
 import Toast from "../sub-components/toast";
 import "../../css/quizzes.css";
+import { fetchData } from "../../utils/storage";
 let sref;
+const school = fetchData("school");
 const QuizList = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [isToast, setToast] = useState(false);
   const [toastTEXT, setTEXT] = useState("");
   const { user } = props;
-  sref = props.location.state.sref;
+  //sref = props.location.state.sref;
   //retrieve id(sch ref)
-  const { search } = props.location;
-  const id = search.split("=")[1];
+  //const { search } = props.location;
+  //const id = search.split("=")[1];
   const fetchAllQuiz = () => {
-    const url = `http://localhost:3500/school/class/quiz/all?sid=${id}`;
+    const url = `http://localhost:3500/school/class/quiz/all?sid=${school}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
@@ -26,14 +28,14 @@ const QuizList = (props) => {
   useEffect(() => {
     fetchAllQuiz();
   }, []);
-  const publish = (id) => {
+  const publish = (ref) => {
     const url = `http://localhost:3500/school/quiz/publish`;
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: id }),
+      body: JSON.stringify({ ref: ref }),
     })
       .then((resp) => resp.json())
       .then((res) => {
@@ -47,7 +49,7 @@ const QuizList = (props) => {
       });
   };
   const deleteQuiz = (quid) => {
-    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${id}`;
+    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -78,15 +80,15 @@ const QuizList = (props) => {
             quizzes.map((quiz) => {
               return (
                 <QuizTile
-                  key={quiz.id}
-                  school={id}
+                  key={quiz.ref}
+                  school={school}
                   history={props.history}
                   quiz={quiz}
                   user={user}
                   showOverview={props.showOverView}
-                  publish={() => publish(quiz.id)}
+                  publish={() => publish(quiz.ref)}
                   delete={() => {
-                    deleteQuiz(quiz.id);
+                    deleteQuiz(quiz.ref);
                   }}
                 />
               );

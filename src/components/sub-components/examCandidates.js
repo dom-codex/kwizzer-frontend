@@ -7,7 +7,7 @@ const ExamCandidates = (props) => {
         props.exams.map((exam, i) => {
           return (
             <PubTile
-              key={i}
+              key={exam.ref}
               quiz={exam}
               isExam={props.isExam}
               showList={() => props.showList(true)}

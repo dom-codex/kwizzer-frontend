@@ -1,3 +1,4 @@
+const { storeData, clearData } = require("./storage");
 module.exports.inputReducer = (state, action) => {
   switch (action.type) {
     case "Input":
@@ -42,9 +43,12 @@ module.exports.submitValue = (url, details, redirect, ref = "") => {
     .then((res) => res.json())
     .then((data) => {
       if (data.code === 201) {
-        redirect(`/menu?ref=${data.user.ref}`);
+        clearData("person");
+        storeData("person", data.user.ref);
+        redirect(`/menu`);
       } else if (data.code === 200) {
-        redirect(`/dashboard/?ref=${data.school.ref}`);
+        storeData("school", data.school.ref);
+        redirect(`/dashboard`);
       }
     });
 };

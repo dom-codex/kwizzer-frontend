@@ -1,11 +1,11 @@
 import React from "react";
 import QuizCandidate from "./quizCandidate";
 const PubTile = (props) => {
-  const { quiz, registered, isExam } = props;
+  const { quiz } = props;
   return (
     <div className="pub-card">
       <div className="pub-card-body">
-        <h3>{isExam ? quiz.name : quiz.title}</h3>
+        <h3>{quiz.name}</h3>
         <div className="pub-card-item">
           <small>Time: </small>
           <span>
@@ -16,12 +16,12 @@ const PubTile = (props) => {
           </span>
         </div>
         <div className="pub-card-item">
-          <small>{isExam ? "No of Quiz" : "No of Questions"}: </small>
-          <span> {isExam ? quiz.nQuiz : quiz.nQuestions}</span>
+          <small>{"No of Quiz"}: </small>
+          <span> {quiz.nQuiz}</span>
         </div>
         <div className="pub-card-item">
           <small>No of registered candidates: </small>
-          <span> {isExam ? quiz.noOfStudents : registered}</span>
+          <span> {quiz.noOfStudents}</span>
         </div>
       </div>
       <div className="pub-card-item-btn">
@@ -29,12 +29,10 @@ const PubTile = (props) => {
           <button
             onClick={() => {
               props.getParam({
-                quiz: quiz.id,
-                title: isExam ? QuizCandidate.name : quiz.title,
+                quiz: quiz.ref,
+                title: QuizCandidate.name,
               });
-              registered > 0 || (isExam && quiz.noOfStudents > 0)
-                ? props.showList()
-                : props.showToast();
+              quiz.noOfStudents > 0 ? props.showList() : props.showToast();
             }}
           >
             candidates list

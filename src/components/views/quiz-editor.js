@@ -40,7 +40,7 @@ const QuizEditor = (props) => {
   const isNew = search.split("new=")[1].split("&")[0];
 
   const quid =
-    isNew == "true"
+    isNew === "true"
       ? search.split("quid=")[1].split("&")[0]
       : search.split("qu=")[1].split("&")[0];
 
@@ -57,7 +57,7 @@ const QuizEditor = (props) => {
     });
   };
   const fetchQuestion = () => {
-    const url = `http://localhost:3500/school/class/get/question?qu=${quid}`;
+    const url = `http://localhost:3500/school/class/get/question?qu=${quid}&quiz=${match.params.quiz}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {

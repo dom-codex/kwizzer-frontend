@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import Header from "../sub-components/header";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
+import { fetchData } from "../../utils/storage";
 const correct = {
   backgroundColor: "green",
 };
 const choosed = {
   backgroundColor: "red",
 };
+const person = fetchData("person");
 const QuestionDisplay = (props) => {
   return (
     <div>
@@ -36,7 +38,6 @@ const QuestionDisplay = (props) => {
 };
 const Solutions = (props) => {
   const { question, isExam } = props.location.state;
-  console.log(isExam);
   const questionReducer = (state, action) => {
     let index = 0;
     switch (action.type) {
@@ -48,13 +49,6 @@ const Solutions = (props) => {
           quizzes: action.quizzes,
           questions: action.quizzes[0].questions,
           question: action.quizzes[0].questions[0],
-        };
-      case "single-prefill":
-        return {
-          ...state,
-          questions: action.questions,
-          currentQuestionIndex: 0,
-          question: action.questions[0],
         };
       case "currentQuestion":
         return {
@@ -86,20 +80,6 @@ const Solutions = (props) => {
           currentQuestionIndex: index,
           question: state.quizzes[state.currentQuizIndex].questions[index],
         };
-      case "nxt":
-        index = state.currentQuestionIndex + 1;
-        return {
-          ...state,
-          currentQuestionIndex: index,
-          question: state.questions[index],
-        };
-      case "pre":
-        index = state.currentQuestionIndex - 1;
-        return {
-          ...state,
-          currentQuestionIndex: index,
-          question: state.questions[index],
-        };
     }
   };
   const [data, dispatch] = useReducer(questionReducer, {
@@ -110,21 +90,16 @@ const Solutions = (props) => {
     question: {},
   });
   const getQuestionPaper = () => {
-    let url = `http://localhost:3500/school/get/student/questionpaper?paper=${question}`;
-    if (isExam) {
-      url = `http://localhost:3500/school/exam/result?sheet=${question}`;
-    }
+    /*let url = `http://localhost:3500/school/get/student/questionpaper?paper=${question}`;*/
+
+    const url = `http://localhost:3500/school/exam/result?sheet=${question}`;
+
     fetch(url)
       .then((res) => res.json())
       .then((datas) => {
         console.log(datas);
-        if (isExam) {
-          return dispatch({ type: "load", quizzes: datas.solution.quizzes });
-        }
-        dispatch({
-          type: "single-prefill",
-          questions: datas.questions.questions,
-        });
+        dispatch({ type: "load", quizzes: datas.solution.quizzes });
+
         //setQuestionpaper(data.questions.questions);
       });
   };
@@ -143,15 +118,9 @@ const Solutions = (props) => {
       direction === "forward" &&
       data.currentQuestionIndex < data.questions.length - 1
     ) {
-      if (isExam) {
-        return dispatch({ type: "next" });
-      }
-      dispatch({ type: "nxt" });
+      dispatch({ type: "next" });
     } else if (direction === "backward" && data.currentQuestionIndex > 0) {
-      if (isExam) {
-        return dispatch({ type: "prev" });
-      }
-      dispatch({ type: "pre" });
+      return dispatch({ type: "prev" });
     }
   };
   useEffect(getQuestionPaper, []);
@@ -168,7 +137,7 @@ const Solutions = (props) => {
             answered={data.question.isAnswered}
             nav={switchQuestion}
           >
-            {isExam ? genQuizSelectors(data.quizzes) : null}
+            {genQuizSelectors(data.quizzes)}
           </QuestionDisplay>
         )}
         {/*data.questions.length

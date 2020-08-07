@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Header from "../sub-components/header";
 import "../../css/candidate_result.css";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const CandidatesResults = (props) => {
   const [result, setResult] = useState([]);
   const { quizId, mode } = props.location.state;
   const isExam = mode === "exam";
   const fetchResult = () => {
-    let url = `http://localhost:3500/school/get/students/result?quiz=${quizId}`;
-    if (isExam) {
-      url = `http://localhost:3500/school/exam/results?exam=${quizId}`;
-    }
+    //let url = `http://localhost:3500/school/get/students/result?quiz=${quizId}`;
+
+    let url = `http://localhost:3500/school/exam/results?exam=${quizId}`;
+
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -21,10 +23,9 @@ const CandidatesResults = (props) => {
     props.history.push(`/quiz/solutions`, { question: paper, isExam: isExam });
   };
   const ApproveResults = () => {
-    let url = `http://localhost:3500/school/approve/results?quiz=${quizId}`;
-    if (isExam) {
-      url = `http://localhost:3500/school/exam/approve/result?exam=${quizId}`;
-    }
+    //let url = `http://localhost:3500/school/approve/results?quiz=${quizId}`;
+    let url = `http://localhost:3500/school/exam/approve/result?exam=${quizId}&sch=${school}`;
+
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -32,10 +33,9 @@ const CandidatesResults = (props) => {
       });
   };
   const ApproveSingleResult = (id) => {
-    let url = `http://localhost:3500/school/approve/result?paper=${id}`;
-    if (isExam) {
-      url = `http://localhost:3500/school/exam/approve/single?paper=${id}`;
-    }
+    // let url = `http://localhost:3500/school/approve/result?paper=${id}`;
+    let url = `http://localhost:3500/school/exam/approve/single?paper=${id}`;
+
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {

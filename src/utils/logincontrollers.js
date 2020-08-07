@@ -1,3 +1,4 @@
+const { storeData, clearData } = require("./storage");
 module.exports.inputReducer = (state, action) => {
   switch (action.type) {
     case "Input":
@@ -31,13 +32,12 @@ module.exports.login = (url, body, redirect) => {
     .then((resp) => {
       if (resp.code === 200) {
         const sch = resp.school;
-        return redirect(`/dashboard?ref=${sch.ref}`, {
-          sch: sch.id,
-          ref: sch.ref,
-        });
+        storeData("school", resp.school);
+        return redirect(`/dashboard`);
       }
       const ref = resp.user.ref;
       const id = resp.user.id;
-      redirect(`/menu?ref=${ref}`, { pid: id, pref: ref });
+      storeData("person", ref);
+      redirect(`/menu`);
     });
 };

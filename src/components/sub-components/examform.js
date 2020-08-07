@@ -93,6 +93,35 @@ const ExamForm = (props) => {
             </button>
           </div>
         )}
+        {
+          <div className="swi">
+            <p>Retry</p>
+            <Switch
+              toggle={state.setRetry}
+              isExam={true}
+              forRetry={true}
+              setToggle={() => props.dispatch({ type: "setRetry" })}
+              handleInput={""}
+            />
+          </div>
+        }
+        {
+          <div className={`max-retries ${state.setRetry ? "" : "zero"}`}>
+            <div>
+              <label for="max-retries">Max retries</label>
+              <input
+                type="number"
+                id="max-retries"
+                step="1"
+                onChange={(e) =>
+                  props.dispatch({ type: "retries", value: e.target.value })
+                }
+                value={state.retries}
+                placeholder="maximum number of retries"
+              />
+            </div>
+          </div>
+        }
         <div className="exam-forms-result">
           <span>Deliver Result on submition</span>
           <br />
@@ -142,6 +171,7 @@ const Exam = (props) => {
               title={props.title}
               toggle={props.toggle}
               isedit={props.isedit}
+              dispatch={props.dispatch}
               selectQuiz={data.setList}
               textHandler={props.inputHandler}
               state={data.data}

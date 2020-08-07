@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import LongTable from "../sub-components/longtable";
 const CandidateList = (props) => {
-  const { isExam } = props;
-  const [candidates, setCandidates] = useState([]);
+  //const [candidates, setCandidates] = useState([]);
   const fetchCandidates = () => {
-    let url = `http://localhost:3500/school/hall/all?sch=${props.param.sch}&quiz=${props.param.quiz} `;
-    if (isExam) {
-      url = `http://localhost:3500/school/exam/hallstudents?sch=${props.param.sch}&exam=${props.param.quiz}`;
-    }
+    const url = `http://localhost:3500/school/exam/hallstudents?sch=${props.param.sch}&exam=${props.param.quiz}`;
+
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        setCandidates(data.hall);
+        //   setCandidates(data.hall);
       });
   };
-  useEffect(fetchCandidates, []);
+  //  useEffect(fetchCandidates, []);
   return (
     <div className="candidates-list">
       <div className="list-body">

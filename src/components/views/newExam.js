@@ -1,7 +1,9 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const NewExam = (props) => {
-  let sref = props.location.state.sref;
+  //  let sref = props.location.state.sref;
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "new":
@@ -41,6 +43,17 @@ const NewExam = (props) => {
           ...state,
           quizzes: action.quizzes,
         };
+      case "setRetry":
+        return {
+          ...state,
+          setRetry: !state.setRetry,
+          retries: !state.setRetry === true ? state.retries : 0,
+        };
+      case "retries":
+        return {
+          ...state,
+          retries: parseInt(action.value),
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -50,6 +63,8 @@ const NewExam = (props) => {
     isLoading: true,
     isOpen: false,
     quizzes: [],
+    setRetry: false,
+    retries: 0,
   });
   const inputHandler = (e, name) => {
     dispatch({ type: "new", value: e.target.value, input: name });
@@ -65,7 +80,7 @@ const NewExam = (props) => {
   };
   const getPublishedQuiz = () => {
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${sref}`;
+    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -75,7 +90,7 @@ const NewExam = (props) => {
       });
   };
   const save = () => {
-    const url = `http://localhost:3500/school/set/examination?sch=${sref}`;
+    const url = `http://localhost:3500/school/set/examination?sch=${school}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
@@ -104,6 +119,7 @@ const NewExam = (props) => {
         inputHandler={inputHandler}
         save={save}
         toggle={toggle}
+        dispatch={dispatch}
         checkboxHandler={checkboxHandler}
         data={{
           isOpen: data.isOpen,

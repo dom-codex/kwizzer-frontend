@@ -1,6 +1,6 @@
 import React from "react";
 const QuizOverView = (props) => {
-  console.log(props.data);
+  console.log("--------", props.data);
   return (
     <div className="quizOverView">
       <div className="quiz-overview">
@@ -24,7 +24,7 @@ const QuizOverView = (props) => {
             onClick={() =>
               props.linkTo(props.route, {
                 quiz: props.data.id,
-                sch: props.data.sch,
+                sheet: props.data.sheet,
                 time: props.data.rawTime,
                 title: props.data.title,
                 retry: props.data.retry,

@@ -15,7 +15,7 @@ const ExamScore = (props) => {
               showOverview={props.showOverView}
               score={true}
               openResult={() =>
-                viewResults("/dashboard/mycandidates/result", quiz.id, "exam")
+                viewResults("/dashboard/mycandidates/result", quiz.ref, "exam")
               }
               showToast={() => setToast(true)}
             />

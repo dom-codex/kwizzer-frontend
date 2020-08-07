@@ -46,10 +46,10 @@ function SubMenu(props) {
           title={"Results"}
           action={() => LinkTo("/menu/results", userIdentities)}
         />
-        <Menutile
+        {/*<Menutile
           title={"Quizzes"}
           action={() => LinkTo("/menu/quiz?user=student", userIdentities)}
-        />
+        />*/}
         <Menutile title={"Apply"} />
 
         <Menutile

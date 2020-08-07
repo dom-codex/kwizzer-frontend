@@ -3,11 +3,13 @@ import Opensocket from "socket.io-client";
 import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
 import "../../css/notification.css";
+import { fetchData } from "../../utils/storage";
+const person = fetchData("person");
 const Notification = (props) => {
   const [notification, setNotification] = useState([]);
-  const pref = props.location.state.pid;
+  //  const pref = props.location.state.pid;
   const fetchNotifcations = () => {
-    const url = `http://localhost:3500/school/get/notifications?student=${pref}`;
+    const url = `http://localhost:3500/school/get/notifications?student=${person}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -16,7 +18,7 @@ const Notification = (props) => {
   };
   useEffect(() => {
     fetchNotifcations();
-    const socket = Opensocket(`http://localhost:3500?ref=${pref}`);
+    const socket = Opensocket(`http://localhost:3500?ref=${person}`);
     socket.on("notify", (data) => {
       setNotification((prev) => {
         const details = {

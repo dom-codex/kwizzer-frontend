@@ -11,7 +11,6 @@ const QuizOverlay = (props) => {
         <h2>Quiz list</h2>
         {quizzes.length &&
           quizzes.map((quiz, i) => {
-            console.log(state);
             const isChosed = state.some(
               (val) => parseInt(val) === parseInt(quiz.quiz.id)
             );

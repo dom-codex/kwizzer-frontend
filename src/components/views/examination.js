@@ -12,8 +12,8 @@ let message =
   "This marks the end of the exam!!! Good luck on checking your result";
 let heading = "Congratulations";
 const Examination = (props) => {
-  console.log(props);
   const { state } = props.location;
+  console.log("this is state ", state);
   const [data, dispatch] = useReducer(examsReducer, {
     id: "",
     quizzes: [],
@@ -25,7 +25,8 @@ const Examination = (props) => {
     showDialog: false,
   });
   const LoadExam = () => {
-    const url = `http://localhost:3500/school/get/exampaper?pid=${state.user.pid}&exam=${state.quiz}&sch=${state.sch}`;
+    const url = `http://localhost:3500/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
+
     fetch(url)
       .then((res) => res.json())
       .then((exam) => {
@@ -46,7 +47,6 @@ const Examination = (props) => {
         quid: data.currentQuizIndex,
         quest: data.currentQuestionIndex,
         id: data.id,
-        student: state.user.pid,
         answer: choice,
       }),
     })
@@ -78,7 +78,7 @@ const Examination = (props) => {
       });
   };
   const redirect = () => {
-    props.history.replace(`/login`);
+    props.history.replace(`/menu`);
   };
   const selectAnswer = (i, option) => {
     dispatch({ type: "answer_a_question", answer: option, submit: submit });

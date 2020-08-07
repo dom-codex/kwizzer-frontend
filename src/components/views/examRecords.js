@@ -3,13 +3,14 @@ import Header from "../sub-components/header";
 import Tile from "../sub-components/tiles";
 import Toast from "../sub-components/toast";
 import styles from "../../css/examrecords.css";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const ExamRecords = (props) => {
-  const sref = props.location.state.sref;
   const [exams, setExams] = useState([]);
   const [showToast, setToast] = useState(false);
   const [toastText, setToastText] = useState("");
   const fetchExams = () => {
-    const url = `http://localhost:3500/school/get/exams?sch=${sref}`;
+    const url = `http://localhost:3500/school/get/exams?sch=${school}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -18,10 +19,10 @@ const ExamRecords = (props) => {
       });
   };
   const LinkTo = (eid) => {
-    props.history.push("/dashboard/edit/exam", { sref: sref, exam: eid });
+    props.history.push("/dashboard/edit/exam", { exam: eid });
   };
   const deleteExam = (id) => {
-    const url = `http://localhost:3500/school/exam/delete?sch=${sref}&exam=${id}`;
+    const url = `http://localhost:3500/school/exam/delete?sch=${school}&exam=${id}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((res) => {
@@ -52,12 +53,12 @@ const ExamRecords = (props) => {
             exams.map((exam) => {
               return (
                 <Tile title={exam.name} styles={styles}>
-                  <button onClick={() => LinkTo(exam.id)}>edit</button>
+                  <button onClick={() => LinkTo(exam.ref)}>edit</button>
                   <button>reg link</button>
                   <button>see candidate list</button>
                   <button
                     onClick={() => {
-                      deleteExam(exam.id);
+                      deleteExam(exam.ref);
                     }}
                   >
                     delete

@@ -3,10 +3,7 @@ const QuizTile = (props) => {
   const quiz = props.quiz;
   const LinkTo = () => {
     props.history.push(
-      `/dashboard/quizzes/list?sid=${props.school}&quid=${quiz.id}`,
-      {
-        school: props.school,
-      }
+      `/dashboard/quizzes/list?sid=${props.school}&quid=${quiz.ref}`
     );
   };
   const openResult = props.openResult ? props.openResult : () => {};

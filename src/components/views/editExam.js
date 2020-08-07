@@ -1,7 +1,8 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const NewExam = (props) => {
-  let sref = props.location.state.sref;
   let exam = props.location.state.exam;
   const inputReducer = (state, action) => {
     switch (action.type) {
@@ -58,6 +59,8 @@ const NewExam = (props) => {
           quiz: action.quiz,
           existing: action.quiz,
           type: action.exam.type,
+          setRetry: action.exam.canRetry,
+          retries: action.exam.retries,
         };
       case "tocreate":
         const isinList = state.tocreate.some((id) => id === action.value);
@@ -91,6 +94,17 @@ const NewExam = (props) => {
           ...state,
           quizzes: action.quizzes,
         };
+      case "setRetry":
+        return {
+          ...state,
+          setRetry: !state.setRetry,
+          retries: !state.setRetry === true ? state.retries : 0,
+        };
+      case "retries":
+        return {
+          ...state,
+          retries: parseInt(action.value),
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -100,6 +114,9 @@ const NewExam = (props) => {
     tocreate: [],
     type: "",
     isLoading: true,
+    isOpen: false,
+    setRetry: false,
+    retries: 0,
   });
   const inputHandler = (e, name) => {
     dispatch({ type: "new", input: name, value: e.target.value });
@@ -118,7 +135,7 @@ const NewExam = (props) => {
   const getPublishedQuiz = (datas) => {
     const { quiz, exams } = datas;
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${sref}`;
+    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -128,7 +145,7 @@ const NewExam = (props) => {
       });
   };
   const save = () => {
-    const url = `http://localhost:3500/school/exam/save?sch=${sref}&exam=${exam}`;
+    const url = `http://localhost:3500/school/exam/save?sch=${school}&exam=${exam}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
@@ -148,11 +165,11 @@ const NewExam = (props) => {
       });
   };
   const fetchSingleExam = () => {
-    const url = `http://localhost:3500/school/get/exam?sch=${sref}&exam=${exam}`;
+    const url = `http://localhost:3500/school/get/exam?sch=${school}&exam=${exam}`;
     fetch(url)
       .then((res) => res.json())
-      .then((data) => {
-        getPublishedQuiz(data);
+      .then((resdata) => {
+        getPublishedQuiz(resdata);
       });
   };
   useEffect(() => {
@@ -165,6 +182,7 @@ const NewExam = (props) => {
         inputHandler={inputHandler}
         save={save}
         isedit={true}
+        dispatch={dispatch}
         checkboxHandler={checkboxHandler}
         data={{
           isOpen: data.isOpen,

@@ -7,7 +7,7 @@ const Switch = (props) => {
     <div className="switch">
       <input
         type="checkbox"
-        id="switch"
+        id={props.forRetry ? "retry" : "switch"}
         class="checkbox"
         checked={toggle ? true : false}
         onChange={() => {
@@ -24,7 +24,7 @@ const Switch = (props) => {
           });
         }}
       />
-      <label for="switch" class="toggle"></label>
+      <label for={props.forRetry ? "retry" : "switch"} class="toggle"></label>
     </div>
   );
 };

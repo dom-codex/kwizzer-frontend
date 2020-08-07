@@ -3,6 +3,12 @@ import Header from "../sub-components/header";
 import QuizOverlay from "../sub-components/QuizOverlay";
 import "../../css/registration.css";
 const Registration = (props) => {
+  //get url params
+  const {
+    match,
+    location: { search },
+  } = props;
+  const { sch, quiz } = match.params;
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "email":
@@ -44,21 +50,17 @@ const Registration = (props) => {
     subjects: [],
     overlay: false,
   });
-  //get url params
-  const {
-    match,
-    location: { search },
-  } = props;
-  const { sch, quiz } = match.params;
   const type = search.split("type=")[1];
   const register = (email) => {
     let body = { email, email };
-    let url = `http://localhost:3500/school/quiz/register?sid=${sch}&quid=${quiz}`;
-    if (type === "exam") {
-      url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
-    }
+    let url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
+
     if (data.quiz.type === "custom") {
-      body = { subjects: data.subjects, email: email, type: data.quiz.type };
+      body = {
+        subjects: data.subjects,
+        email: email,
+        type: data.quiz.type,
+      };
     }
     fetch(url, {
       method: "POST",
@@ -76,25 +78,29 @@ const Registration = (props) => {
   };
   const getPublishedQuiz = () => {
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${"c90f02be515dfb01383b87f884c9b0e959a3f948"}`;
+    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${sch}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        dispatch({ type: "published", published: data.published });
+        dispatch({
+          type: "published",
+          published: data.published,
+        });
         console.log(data);
       });
   };
 
   const findTest = () => {
-    let url = `http://localhost:3500/school/get/quiz?quid=${quiz}`;
-    if (type === "exam") {
-      url = `http://localhost:3500/school/find/exam?eid=${quiz}&ref=${sch}`;
-    }
+    const url = `http://localhost:3500/school/find/exam?eid=${quiz}&sch=${sch}`;
+
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        dispatch({ type: "quiz", quiz: data.quiz });
+        dispatch({
+          type: "quiz",
+          quiz: data.quiz,
+        });
         if (data.quiz.type === "custom") {
           getPublishedQuiz();
         }
@@ -102,9 +108,15 @@ const Registration = (props) => {
   };
   const checkboxHandler = (e) => {
     if (!e.target.checked) {
-      return dispatch({ type: "rmv", value: e.target.value });
+      return dispatch({
+        type: "rmv",
+        value: e.target.value,
+      });
     }
-    dispatch({ type: "subjects", value: e.target.value });
+    dispatch({
+      type: "subjects",
+      value: e.target.value,
+    });
   };
   const toggleOverlay = () => {
     dispatch({ type: "overlay" });
@@ -158,7 +170,10 @@ const Registration = (props) => {
               type="email"
               value={data.email}
               onInput={(e) =>
-                dispatch({ type: "email", email: e.target.value })
+                dispatch({
+                  type: "email",
+                  email: e.target.value,
+                })
               }
               placeholder="enter your email address"
             />

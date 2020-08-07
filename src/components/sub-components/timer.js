@@ -3,16 +3,16 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hours: this.props.time.hr,
-      minutes: this.props.time.min,
-      seconds: this.props.time.sec,
+      hours: parseInt(this.props.time.hr),
+      minutes: parseInt(this.props.time.min),
+      seconds: parseInt(this.props.time.sec),
     };
   }
   timer = setInterval(() => {
     if (
-      parseInt(this.state.minutes) === 0 &&
-      parseInt(this.state.hours) === 0 &&
-      parseInt(this.state.seconds) === 0
+      this.state.minutes === 0 &&
+      this.state.hours === 0 &&
+      this.state.seconds === 0
     ) {
       clearInterval(this.timer);
       this.props.submit();

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import Header from "../sub-components/header";
 import QuizTile from "../sub-components/studentQuizTile";
 import QuizOverView from "../sub-components/quizOverview";
+import { fetchData } from "../../utils/storage";
+const person = fetchData("person");
 const StudentExams = (props) => {
-  const userIdentity = props.location.state;
+  //const userIdentity = props.location.state;
   const [exams, setExams] = useState([]);
   const [showOverView, setOverView] = useState(false);
   const [overviewDATA, setOverviewData] = useState({});
   const getExams = () => {
-    const url = `http://localhost:3500/school/get/myexams?pid=${userIdentity.pid}`;
+    const url = `http://localhost:3500/school/get/myexams?pid=${person}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -19,10 +21,10 @@ const StudentExams = (props) => {
   const linkTo = (route, data) => {
     props.history.push(route, {
       quiz: data.quiz,
-      sch: data.sch,
       time: data.time,
+      sheet: data.sheet,
       title: data.title,
-      user: userIdentity,
+      user: person,
       retry: data.retry,
       isEmail: true,
     });
@@ -54,7 +56,8 @@ const StudentExams = (props) => {
               <QuizTile
                 key={i}
                 quiz={exam}
-                id={myexam.examId}
+                id={exam.ref}
+                sheet={myexam.examsheet}
                 title={exam.name}
                 n={exam.nQuiz}
                 isExam={true}

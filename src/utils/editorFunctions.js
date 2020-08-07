@@ -65,7 +65,7 @@ module.exports.save = (data, quid, history, school) => {
     });
 };
 module.exports.saveEdited = (data, quid, history, quiz, school) => {
-  const url = `http://localhost:3500/school/class/update/question?quid=${quid}`;
+  const url = `http://localhost:3500/school/class/update/question?quid=${quid}&quiz=${quiz}`;
   if (!data.question.length) {
     //visit later
   }
@@ -79,9 +79,7 @@ module.exports.saveEdited = (data, quid, history, quiz, school) => {
     .then((resp) => resp.json())
     .then((resp) => {
       if (resp.code === 201) {
-        history.push(`/dashboard/quizzes/list?quid=${quiz}`, {
-          school: school,
-        });
+        history.push(`/dashboard/quizzes/list?quid=${quiz}`);
       }
     });
 };

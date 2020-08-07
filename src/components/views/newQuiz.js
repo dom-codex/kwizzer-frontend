@@ -3,17 +3,40 @@ import Header from "../sub-components/header";
 import Switch from "../sub-components/switch";
 import Toast from "../sub-components/toast";
 import "../../css/quizCreationModal.css";
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const NewQuizWindow = (props) => {
-  const sref = props.location.state.sref;
-  const [toggle, setToggle] = useState(false);
+  //  const sref = props.location.state.sref;
+  //const [toggle, setToggle] = useState(false);
   const [isToast, setToast] = useState(false);
   const [text, setText] = useState("");
   const inputReducer = (state, action) => {
+    let value;
     switch (action.type) {
-      case "Input":
+      case "title":
         return {
           ...state,
-          [action.input]: action.value,
+          title: action.value,
+        };
+      case "mark":
+        value = parseFloat(action.value);
+        return {
+          ...state,
+          markPerQuestion: value,
+          totalMarks: value * state.noOfQuestionForStud,
+        };
+      case "toanswer":
+        value = parseInt(action.value);
+        return {
+          ...state,
+          noOfQuestionForStud: value,
+          totalMarks: state.markPerQuestion * value,
+        };
+      case "total":
+        value = parseInt(action.value);
+        return {
+          ...state,
+          totalMarks: value,
         };
       default:
         return state;
@@ -24,17 +47,10 @@ const NewQuizWindow = (props) => {
     markPerQuestion: "",
     noOfQuestionForStud: "",
     totalMarks: "",
-    resultDelivery: "",
-    hours: "",
-    min: "",
-    sec: "",
-    publish: "",
-    retry: toggle,
-    retries: 0,
-    school: sref,
+    school: school,
   });
   const handleInput = (e, name) => {
-    dispatch({ type: "Input", input: name, value: e.target.value });
+    //  dispatch({ type: "Input", input: name, value: e.target.value });
   };
   const createQuiz = () => {
     const body = inputState;
@@ -49,7 +65,7 @@ const NewQuizWindow = (props) => {
       .then((resp) => resp.json())
       .then((res) => {
         if (res.code === 200) {
-          props.history.push(`/dashboard?ref=${sref}`, { sref: sref });
+          props.history.push(`/dashboard`);
           return;
         }
         if (res.code === 403) {
@@ -74,7 +90,9 @@ const NewQuizWindow = (props) => {
               id="subject"
               type="text"
               value={inputState.title}
-              onInput={(e) => handleInput(e, "title", "new")}
+              onInput={(e) =>
+                dispatch({ type: "title", value: e.target.value })
+              }
               placeholder="course"
             />
           </div>
@@ -85,7 +103,7 @@ const NewQuizWindow = (props) => {
               step="0.01"
               type="number"
               value={inputState.markPerQuestion}
-              onInput={(e) => handleInput(e, "markPerQuestion")}
+              onInput={(e) => dispatch({ type: "mark", value: e.target.value })}
               placeholder="Mark(s) per question"
             />
           </div>
@@ -95,7 +113,9 @@ const NewQuizWindow = (props) => {
               id="mark"
               type="number"
               value={inputState.noOfQuestionForStud}
-              onInput={(e) => handleInput(e, "noOfQuestionForStud")}
+              onInput={(e) =>
+                dispatch({ type: "toanswer", value: e.target.value })
+              }
               placeholder="No of questions to be answered"
             />
           </div>
@@ -105,11 +125,13 @@ const NewQuizWindow = (props) => {
               id="total"
               type="number"
               value={inputState.totalMarks}
-              onInput={(e) => handleInput(e, "totalMarks")}
+              onInput={(e) =>
+                dispatch({ type: "total", value: e.target.value })
+              }
               placeholder="total quiz mark"
             />
           </div>
-          <div className="quiz-input time">
+          {/*}   <div className="quiz-input time">
             <label for="time">Time</label>
             <input
               id="hr"
@@ -161,7 +183,7 @@ const NewQuizWindow = (props) => {
               </div>
             </div>
           </div>
-
+          {/*
           <div className="quiz-radio publish">
             <label>Publish Mode</label>
             <div className="radio">
@@ -175,27 +197,17 @@ const NewQuizWindow = (props) => {
                   value="public"
                 />
               </div>
-              <div className="radio1">
-                <label for="private">private</label>
-                <input
-                  id="private"
-                  type="radio"
-                  onChange={(e) => handleInput(e, "publish")}
-                  name="publish"
-                  value="private"
-                />
-              </div>
             </div>
           </div>
-          <div className="swi">
+          {/*<div className="swi">
             <p>Retry</p>
             <Switch
               toggle={toggle}
               setToggle={setToggle}
               handleInput={handleInput}
             />
-          </div>
-          <div className={`max-retries ${toggle ? "" : "zero"}`}>
+          </div>*/}
+          {/*<div className={`max-retries ${toggle ? "" : "zero"}`}>
             <div>
               <label for="max-retries">Max retries</label>
               <input
@@ -205,7 +217,7 @@ const NewQuizWindow = (props) => {
                 placeholder="maximum number of retries"
               />
             </div>
-          </div>
+          </div>*/}
         </div>
         <div className="create-btn">
           <button onClick={createQuiz}>create quiz</button>

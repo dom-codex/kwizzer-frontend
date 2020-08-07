@@ -5,13 +5,14 @@ import Menutile from "../sub-components/menu-tile";
 import NewQuizWindow from "../views/newQuiz";
 import "../../css/dashboard.css";
 import "../../css/quizCreationModal.css";
-
+import { fetchData } from "../../utils/storage";
+const school = fetchData("school");
 const Dashboard = (props) => {
   const [quizModalIsOpen, setQuizModalIsOpen] = useState(false);
   const { search } = props.location;
   const id = search.split("=")[1]; //sch ref
   //const schId = props.location.state.sch;
-  const schRef = props.location.state.ref;
+  //const schRef = props.location.state.ref;
   const LinkTo = (route, id = "") => {
     props.history.push(route, { sref: id });
   };
@@ -34,31 +35,31 @@ const Dashboard = (props) => {
         <div className="dash-options">
           <Menutile
             title={"New Quiz"}
-            action={() => LinkTo(`/dashboard/create/quiz`, schRef)}
+            action={() => LinkTo(`/dashboard/create/quiz`)}
           />
           <Menutile
             title={"Notifications"}
-            action={() => LinkTo(`/admin/notifications`, schRef)}
+            action={() => LinkTo(`/admin/notifications`)}
           />
           <Menutile
             title={"Quizzes"}
-            action={() => LinkTo(`/dashboard/quizzes?id=${id}`, schRef)}
+            action={() => LinkTo(`/dashboard/quizzes`)}
           />
           <Menutile
             title={"Candidates"}
-            action={() => LinkTo("/dashboard/candidates", schRef)}
+            action={() => LinkTo("/dashboard/candidates")}
           />
           <Menutile
             title={"Scoreboard"}
-            action={() => LinkTo("/dashboard/scoreboard", schRef)}
+            action={() => LinkTo("/dashboard/scoreboard")}
           />
           <Menutile
             title={"set exam"}
-            action={() => LinkTo("/dashboard/set/exam", schRef)}
+            action={() => LinkTo("/dashboard/set/exam")}
           />
           <Menutile
             title={"Exam record"}
-            action={() => LinkTo("/dashboard/exam/records", schRef)}
+            action={() => LinkTo("/dashboard/exam/records")}
           />
         </div>
       </div>
