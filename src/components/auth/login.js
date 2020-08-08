@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import UserLoginForm from "./component/loginform";
 import AdminLoginForm from "./component/adminloginform";
+import Toast from "../sub-components/toast";
 import "../../css/login.css";
 function Login(props) {
+  const [showToast, setToast] = useState(true);
   const { search } = props.location;
   const adminLogin = search.split("=")[1];
   const redirect = (addr) => {

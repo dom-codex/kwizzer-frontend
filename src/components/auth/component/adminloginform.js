@@ -1,17 +1,30 @@
 import React, { useReducer } from "react";
+import Toast from "../../sub-components/toast";
 import {
   textHandler,
   inputReducer,
   login,
 } from "../../../utils/logincontrollers";
+const error = {
+  backgroundColor: "red",
+  color: "#fff",
+};
 const AdminLoginForm = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     email: "",
     password: "",
+    showToast: false,
+    message: "invalid login details",
   });
   const url = `http://localhost:3500/school/login`;
   return (
     <div className="login-content">
+      <Toast
+        isOpen={inputState.showToast}
+        action={() => dispatch({ type: "toast" })}
+        text={inputState.message}
+        styles={error}
+      />
       <div className="login-input">
         <label for="email">Email</label>
         <input
@@ -36,7 +49,7 @@ const AdminLoginForm = (props) => {
       <div className="btn-cont">
         <button
           class="submit-btn"
-          onClick={() => login(url, inputState, props.redirect)}
+          onClick={() => login(url, inputState, props.redirect, dispatch)}
         >
           submit
         </button>

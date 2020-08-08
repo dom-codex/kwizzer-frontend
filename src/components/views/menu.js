@@ -16,9 +16,9 @@ function Menu(props) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        if (data.code == 400) {
+        /*if (data.code == 400) {
           return props.routes.history.push("/login");
-        }
+        }*/
         user = data.user;
         setDetailsLoaded(true);
       });

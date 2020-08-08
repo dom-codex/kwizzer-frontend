@@ -1,10 +1,64 @@
 const { storeData, clearData } = require("./storage");
+const {
+  Validatename,
+  Validateemail,
+  Validatepassword,
+  comfirmpassword,
+} = require("../validators/signUp");
 module.exports.inputReducer = (state, action) => {
+  let result;
   switch (action.type) {
     case "Input":
       return {
         ...state,
         ...action.input,
+      };
+    case "name":
+      result = Validatename(action.value);
+      return {
+        ...state,
+        name: action.value,
+        ["notName"]: !result.result,
+        ["nameErrMsg"]: result.message,
+      };
+    case "email":
+      result = Validateemail(action.value);
+      return {
+        ...state,
+        email: action.value,
+        ["notEmail"]: !result.result,
+        ["emailErrMsg"]: result.message,
+      };
+    case "password":
+      result = Validatepassword(action.value);
+      return {
+        ...state,
+        password: action.value,
+        notPassword: !result.result,
+        ["passErrMsg"]: result.message,
+      };
+    case "cpassword":
+      result = comfirmpassword(state.password, action.value);
+      return {
+        ...state,
+        comfirm: action.value,
+        isconfirm: !result.result,
+        ["cErrMsg"]: result.message,
+      };
+    case "prefill":
+      return {
+        ...state,
+        name: action.data.name.value,
+        nameErrMsg: action.data.name.hasErr ? action.data.name.msg : "",
+        email: action.data.email.value,
+        emailErrMsg: action.data.email.hasErr ? action.data.email.msg : "",
+        phone: action.data.phone.value,
+        notName: action.data.name.hasErr ? true : false,
+        notEmail: action.data.email.hasErr ? true : false,
+        notPassword: action.data.password.hasErr ? true : false,
+        passErrMsg: action.data.password.hasErr ? action.data.password.msg : "",
+        password: "",
+        comfirm: "",
       };
     default:
       return state;
@@ -29,7 +83,16 @@ module.exports.textHandler = (e, name, dispatch) => {
       break;
   }
 };
-module.exports.submitValue = (url, details, redirect, ref = "") => {
+module.exports.submitValue = (url, details, redirect, dispatch, ref = "") => {
+  const data = { ...details };
+  delete data["notName"];
+  delete data["notEmail"];
+  delete data["notPassword"];
+  delete data["isconfirm"];
+  delete data["nameErrMsg"];
+  delete data["emailErrMsg"];
+  delete data["passErrMsg"];
+  delete data["cansubmit"];
   fetch(url, {
     method: "POST",
     headers: {
@@ -37,11 +100,15 @@ module.exports.submitValue = (url, details, redirect, ref = "") => {
     },
     body:
       !ref.length > 0
-        ? JSON.stringify(details)
-        : JSON.stringify({ ...details, owner: ref }),
+        ? JSON.stringify(data)
+        : JSON.stringify({ ...data, owner: ref }),
   })
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
+      if (data.code === 403) {
+        return dispatch({ type: "prefill", data: data.data });
+      }
       if (data.code === 201) {
         clearData("person");
         storeData("person", data.user.ref);

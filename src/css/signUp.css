@@ -66,3 +66,22 @@ section.signup label {
   border: 2px solid teal;
   color: #000;
 }
+.btn-cont button:disabled,
+button.disable:hover {
+  background-color: #ccc !important;
+  background-image: none !important;
+  border: none !important;
+  color: #fff !important;
+}
+/*validation*/
+.inputerr {
+  border: 2px solid red !important;
+  outline: red;
+}
+.input-error-indicator {
+  display: block;
+  text-align: left;
+  width: 80%;
+  margin: auto;
+  color: red;
+}
