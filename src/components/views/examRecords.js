@@ -49,7 +49,7 @@ const ExamRecords = (props) => {
       <hr />
       <div>
         <ul className="quizzes-list list-ul">
-          {exams.length &&
+          {exams.length ? (
             exams.map((exam) => {
               return (
                 <Tile title={exam.name} styles={styles}>
@@ -65,7 +65,10 @@ const ExamRecords = (props) => {
                   </button>
                 </Tile>
               );
-            })}
+            })
+          ) : (
+            <h1>you haven't created any exam</h1>
+          )}
         </ul>
       </div>
     </section>

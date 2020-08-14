@@ -9,6 +9,7 @@ const StudentExams = (props) => {
   const [exams, setExams] = useState([]);
   const [showOverView, setOverView] = useState(false);
   const [overviewDATA, setOverviewData] = useState({});
+  const [text, setText] = useState("Loading...!");
   const getExams = () => {
     const url = `http://localhost:3500/school/get/myexams?pid=${person}`;
     fetch(url)
@@ -70,7 +71,7 @@ const StudentExams = (props) => {
             );
           })
         ) : (
-          <h1>loading...</h1>
+          <h1>{text}</h1>
         )}
       </div>
     </section>

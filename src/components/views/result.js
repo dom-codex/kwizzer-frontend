@@ -61,7 +61,7 @@ const Result = (props) => {
         <Header />
         <Jumbo title={"Results"} />
       </div>
-      {state.exams.length &&
+      {state.exams.length ? (
         state.exams.map((r, i) => {
           return (
             <Tile
@@ -75,7 +75,10 @@ const Result = (props) => {
               viewSoln={linkTo}
             />
           );
-        })}
+        })
+      ) : (
+        <h1>no result found</h1>
+      )}
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { Link } from "react-router-dom";
 import Header from "../sub-components/header";
+import Toast from "../sub-components/toast";
 import "../../css/questionlist.css";
 import {
   inputReducer,
@@ -8,6 +9,10 @@ import {
   saveEditedQuiz,
 } from "../../utils/quizEditorController";
 import { fetchData } from "../../utils/storage";
+const error = {
+  backgroundColor: "red",
+  color: "#fff",
+};
 const school = fetchData("school");
 const QuestionTile = (props) => {
   const goToEditor = (question, quiz) => {
@@ -52,6 +57,9 @@ const QuizList = (props) => {
     total: "",
     mark: "",
     nQuestions: "",
+    showToast: false,
+    hasErr: false,
+    message: "",
   });
   //retrieve necessary params
   const { search } = props.location;
@@ -70,6 +78,15 @@ const QuizList = (props) => {
   useEffect(getQuiz, []);
   return (
     <section className="quiz-editor">
+      <Toast
+        isOpen={quiz.showToast}
+        action={() => dispatch({ type: "toast" })}
+        text={quiz.message}
+        styles={quiz.hasErr ? error : {}}
+        animate={"showToast-top"}
+        main={"toast-top"}
+        top={{ top: "25px" }}
+      />
       <button className="create-fab">
         <Link to={`/dashboard/question/${quid}/?new=true&quid=${quid}`}>+</Link>
       </button>
@@ -118,7 +135,9 @@ const QuizList = (props) => {
           />
         </div>
         <button
-          onClick={() => saveEditedQuiz(quiz, quid, school, props.history)}
+          onClick={() =>
+            saveEditedQuiz(quiz, quid, school, props.history, dispatch)
+          }
         >
           save
         </button>

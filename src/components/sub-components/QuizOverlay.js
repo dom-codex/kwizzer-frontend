@@ -23,7 +23,9 @@ const QuizOverlay = (props) => {
                     type="checkbox"
                     value={quiz.quiz.id.toString()}
                     checked={isChosed ? true : false}
-                    onChange={(e) => props.textHandler(e, `quiz${i + 1}`)}
+                    onChange={(e) =>
+                      props.textHandler(e, `quiz${i + 1}`, quiz.quiz.totalMarks)
+                    }
                   />
                 }
               </div>

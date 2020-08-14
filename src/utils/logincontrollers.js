@@ -51,7 +51,6 @@ module.exports.login = (url, body, redirect, dispatch) => {
         });
       }
       if (resp.code === 200) {
-        const sch = resp.school;
         storeData("school", resp.school);
         return redirect(`/dashboard`);
       }

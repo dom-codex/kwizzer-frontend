@@ -54,11 +54,16 @@ const QuizList = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
+        if (data.code === 403) {
+          setTEXT(data.message);
+          setToast(true);
+          return;
+        }
         if (data.code === 201) {
           setTEXT(data.message);
           setToast(true);
           setQuizzes((prev) => {
-            const quizzes = prev.filter((quiz) => quiz.id !== quid);
+            const quizzes = prev.filter((quiz) => quiz.ref !== quid);
             return quizzes;
           });
         }
@@ -66,7 +71,16 @@ const QuizList = (props) => {
   };
   return (
     <section className="quizzes">
-      {isToast && <Toast isOpen={isToast} text={toastTEXT} action={setToast} />}
+      {isToast && (
+        <Toast
+          isOpen={isToast}
+          text={toastTEXT}
+          action={setToast}
+          animate={"showToast"}
+          main={"toast"}
+          top={{ bottom: "25px" }}
+        />
+      )}
       <div className="showcase">
         <Header />
         <Jumbo title={"Quizzes"} />

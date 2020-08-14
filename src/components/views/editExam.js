@@ -1,6 +1,9 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import Dialog from "../sub-components/dialog";
 import { fetchData } from "../../utils/storage";
+import { validateExamForm } from "../../validators/exam";
+
 const school = fetchData("school");
 const NewExam = (props) => {
   let exam = props.location.state.exam;
@@ -105,10 +108,26 @@ const NewExam = (props) => {
           ...state,
           retries: parseInt(action.value),
         };
+      case "err":
+        return {
+          ...state,
+          err: action.errors,
+        };
+      case "clearerr":
+        return {
+          ...state,
+          err: {},
+        };
+      case "showDialog":
+        return {
+          ...state,
+          showDialog: !state.showDialog,
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
-    quiz: {},
+    quiz: [],
+    quizzes: [],
     todelete: [],
     existing: [],
     tocreate: [],
@@ -117,6 +136,15 @@ const NewExam = (props) => {
     isOpen: false,
     setRetry: false,
     retries: 0,
+    title: "",
+    nquiz: "",
+    total: 0,
+    hr: "",
+    min: "",
+    sec: "",
+    choice: "",
+    err: {},
+    showDialog: false,
   });
   const inputHandler = (e, name) => {
     dispatch({ type: "new", input: name, value: e.target.value });
@@ -145,13 +173,15 @@ const NewExam = (props) => {
       });
   };
   const save = () => {
+    dispatch({ type: "clearerr" });
     const url = `http://localhost:3500/school/exam/save?sch=${school}&exam=${exam}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
     delete body["isLoading"];
     delete body["switch"];
-
+    delete body["err"];
+    delete body["showDialog"];
     fetch(url, {
       method: "POST",
       headers: {
@@ -162,6 +192,10 @@ const NewExam = (props) => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        if (res.code === 403) {
+          dispatch({ type: "err", errors: res.errors });
+        }
+        dispatch({ type: "showDialog" });
       });
   };
   const fetchSingleExam = () => {
@@ -169,6 +203,7 @@ const NewExam = (props) => {
     fetch(url)
       .then((res) => res.json())
       .then((resdata) => {
+        console.log(resdata);
         getPublishedQuiz(resdata);
       });
   };
@@ -177,6 +212,13 @@ const NewExam = (props) => {
   }, []);
   return (
     <section>
+      {data.showDialog && (
+        <Dialog
+          title={"Notice"}
+          text={"Your changes were saved successfully!!!"}
+          action={() => props.history.replace("/dashboard/exam/records")}
+        />
+      )}
       <NewExamForm
         title={"Edit Examination"}
         inputHandler={inputHandler}
@@ -191,6 +233,7 @@ const NewExam = (props) => {
           setList: () => dispatch({ type: "isopen" }),
           data: data,
         }}
+        isValidated={validateExamForm(data)}
       />
     </section>
   );

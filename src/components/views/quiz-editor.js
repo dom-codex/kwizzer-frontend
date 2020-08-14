@@ -1,34 +1,57 @@
 import React, { useState, useReducer, useEffect } from "react";
 import Jumbo from "../sub-components/Jumbo";
+import Toast from "../sub-components/toast";
 import "../../css/quiz-editor.css";
 import {
   inputReducer,
   textHandler,
   save,
   saveEdited,
+  retrieveValue,
 } from "../../utils/editorFunctions";
-const generateOptions = (inputState, option, dispatch) => {
+import { validateQuestion } from "../../validators/question";
+const generateOptions = (inputState, option, dispatch, setoption) => {
   const options = [];
-  for (let i = 0; i < option; i++) {
+  for (let i = 0; i < inputState.opts.length; i++) {
     options.push(
       <li key={i}>
         <input
           type="text"
           onInput={(e) =>
-            textHandler(e, `option${i + 1}`, "option", dispatch, "newOption")
+            dispatch({
+              type: "opt",
+              value: e.target.value,
+              key: `option${i + 1}`,
+              i: i,
+              id: inputState.opts[i].id ? inputState.opts[i].id : 0,
+            })
           }
-          value={inputState.options[`option${i + 1}`]}
+          value={inputState.opts[i].value}
         />
+        <button
+          onClick={() => {
+            dispatch({
+              type: "delete",
+              i: i,
+              id: inputState.existing.length > i ? inputState.opts[i].id : 0,
+            });
+            //setoption((prev) => prev - 1);
+          }}
+        >
+          del
+        </button>
       </li>
     );
   }
   return options;
 };
-const generateAnswer = (option) => {
+const generateAnswer = (option, data) => {
   const answersOptions = [];
-  for (let i = 0; i < option; i++) {
+  for (let i = 0; i < data.length; i++) {
     answersOptions.push(
-      <option key={i} value={`option${i + 1}`}>{`option${i + 1}`}</option>
+      <option key={i} value={data[i] ? data[i].value : null}>
+        {`option${i + 1}`}
+      </option>
     );
   }
   return answersOptions;
@@ -47,13 +70,28 @@ const QuizEditor = (props) => {
   const [option, setoptions] = useState(0);
   let [inputState, dispatch] = useReducer(inputReducer, {
     question: "",
-    options: {},
-    answer: null,
+    answer: "",
+    message: "",
+    showToast: false,
+    isEdit: false,
+    opts: [],
+    existing: [],
+    todelete: [],
   });
   const addOptions = () => {
-    setoptions((prevstate) => {
-      if (prevstate >= 5) return 5;
-      return (prevstate += 1);
+    if (inputState.opts.length > 4) {
+      return dispatch({
+        type: "toast",
+        message: "no of input field exceeded!!!",
+      });
+    }
+    dispatch({
+      type: "newopt",
+      data: {
+        name: `option${inputState.opts.length + 1}`,
+        value: "",
+        id: 0,
+      },
     });
   };
   const fetchQuestion = () => {
@@ -61,40 +99,57 @@ const QuizEditor = (props) => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         const { question } = data;
         const options = question.options;
-
-        let optionObj = {};
-        let answer;
+        let answer = "";
+        const opts = [];
+        const existing = [];
         //format the options structure
         options.forEach((option, index) => {
           if (option.isAnswer) {
-            answer = `option${index + 1}`;
+            answer = option.option;
           }
-          const opt = {
-            [`option${index + 1}`]: option.option,
-          };
-          optionObj = {
-            ...optionObj,
-            ...opt,
-          };
+          opts.push({
+            name: `option${index + 1}`,
+            value: option.option,
+            id: option.id,
+            i: index,
+          });
+          existing.push(option.id);
         });
         setoptions(question.options.length);
         dispatch({
           type: "edit",
           question: question.question,
-          options: optionObj,
+          opts: opts,
           answer: answer,
+          existing: existing,
         });
       });
   };
+  const canCreate = validateQuestion(
+    inputState.opts,
+    inputState.answer,
+    inputState.question
+  );
   useEffect(() => {
     if (isNew != "true") {
       fetchQuestion();
     }
   }, []);
+  console.log(inputState);
   return (
     <div className="quiz-editor-cont">
+      <Toast
+        isOpen={inputState.showToast}
+        action={() => dispatch({ type: "toast" })}
+        text={inputState.message}
+        styles={{}}
+        animate={"showToast-top"}
+        main={"toast-top"}
+        top={{ top: "25px" }}
+      />
       <div className="quiz-editor">
         <Jumbo title={"Question editor"} />
         <div className="question-tile">
@@ -102,7 +157,7 @@ const QuizEditor = (props) => {
             <label for="question">Question</label>
             <textarea
               onInput={(e) =>
-                textHandler(e, "", "question", dispatch, "addQuestion")
+                dispatch({ type: "addQuestion", value: e.target.value })
               }
               rows="5"
               id="question"
@@ -114,14 +169,23 @@ const QuizEditor = (props) => {
             {isNew === "true" ? (
               <div>
                 <ul className="options-list">
-                  {generateOptions(inputState, option, dispatch)}
+                  {generateOptions(inputState, option, dispatch, setoptions)}
                 </ul>
                 <button onClick={addOptions} className="add-option">
                   add option
                 </button>
               </div>
             ) : (
-              <ul>{generateOptions(inputState, option, dispatch)}</ul>
+              <div>
+                <ul>
+                  {generateOptions(inputState, option, dispatch, setoptions)}
+                </ul>
+                <div>
+                  <button onClick={addOptions} className="add-option">
+                    add option
+                  </button>
+                </div>
+              </div>
             )}
             <ul className="options-list">
               <li>
@@ -129,11 +193,11 @@ const QuizEditor = (props) => {
                 <select
                   value={inputState.answer}
                   onChange={(e) =>
-                    textHandler(e, "", "answer", dispatch, "answer")
+                    dispatch({ type: "ans", answer: e.target.value })
                   }
                 >
-                  <option value={null}>none</option>
-                  {generateAnswer(option)}
+                  <option value={""}>none</option>
+                  {generateAnswer(option, inputState.opts)}
                 </select>
               </li>
             </ul>
@@ -141,22 +205,37 @@ const QuizEditor = (props) => {
           <hr />
           <div className="editor-controls">
             <button>cancel</button>
-            <button
-              onClick={
-                isNew === "true"
-                  ? () => save(inputState, quid, props.history, props.school)
-                  : () =>
-                      saveEdited(
-                        inputState,
-                        quid,
-                        props.history,
-                        match.params.quiz,
-                        props.school
-                      )
-              }
-            >
-              {isNew === "true" ? "Create" : "Save changes"}
-            </button>
+            {canCreate ? (
+              <button
+                onClick={
+                  isNew === "true"
+                    ? () =>
+                        save(
+                          inputState,
+                          quid,
+                          props.history,
+                          props.school,
+                          dispatch,
+                          setoptions
+                        )
+                    : () =>
+                        saveEdited(
+                          inputState,
+                          quid,
+                          props.history,
+                          match.params.quiz,
+                          props.school
+                        )
+                }
+              >
+                {isNew === "true" ? "Create" : "Save changes"}
+              </button>
+            ) : (
+              <button style={{ backgroundColor: "grey" }}>
+                {" "}
+                {isNew === "true" ? "Create" : "Save changes"}
+              </button>
+            )}
           </div>
         </div>
       </div>

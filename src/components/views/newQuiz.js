@@ -1,15 +1,18 @@
 import React, { useReducer, useState } from "react";
 import Header from "../sub-components/header";
-import Switch from "../sub-components/switch";
 import Toast from "../sub-components/toast";
+import Dialog from "../sub-components/dialog";
 import "../../css/quizCreationModal.css";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
+const stylesheet = {
+  backgroundColor: "red",
+  color: "#fff",
+};
 const NewQuizWindow = (props) => {
   //  const sref = props.location.state.sref;
   //const [toggle, setToggle] = useState(false);
   const [isToast, setToast] = useState(false);
-  const [text, setText] = useState("");
   const inputReducer = (state, action) => {
     let value;
     switch (action.type) {
@@ -38,6 +41,18 @@ const NewQuizWindow = (props) => {
           ...state,
           totalMarks: value,
         };
+      case "dialog":
+        return {
+          ...state,
+          showDialog: !state.showDialog,
+          message: action.message,
+        };
+      case "toast":
+        return {
+          ...state,
+          showToast: !state.showToast,
+          message: action.message,
+        };
       default:
         return state;
     }
@@ -48,6 +63,9 @@ const NewQuizWindow = (props) => {
     noOfQuestionForStud: "",
     totalMarks: "",
     school: school,
+    showDialog: false,
+    message: "",
+    showToast: false,
   });
   const handleInput = (e, name) => {
     //  dispatch({ type: "Input", input: name, value: e.target.value });
@@ -65,18 +83,36 @@ const NewQuizWindow = (props) => {
       .then((resp) => resp.json())
       .then((res) => {
         if (res.code === 200) {
-          props.history.push(`/dashboard`);
+          dispatch({ type: "dialog", message: "Quiz created succesfully!!!" });
+          //props.history.push(`/dashboard`);
           return;
         }
         if (res.code === 403) {
-          setText(res.message);
-          setToast(true);
+          dispatch({ type: "toast", message: res.message });
+          // setText(res.message);
+          //  setToast(true);
         }
       });
   };
   return (
     <div className="new-quiz-window">
-      {isToast && <Toast text={text} isOpen={isToast} action={setToast} />}
+      {inputState.showDialog && (
+        <Dialog
+          title={"Success"}
+          text={"Quiz created sucessfully!!!"}
+          action={() => props.history.push(`/dashboard`)}
+        />
+      )}
+      {inputState.showToast && (
+        <Toast
+          text={inputState.message}
+          isOpen={inputState.showToast}
+          action={() => dispatch({ type: "toast", message: "" })}
+          styles={stylesheet}
+          animate={"showToast-top"}
+          main={"toast-top"}
+        />
+      )}
       <Header />
       <div className="new-quiz">
         <div className="new-quiz-header">
@@ -131,93 +167,6 @@ const NewQuizWindow = (props) => {
               placeholder="total quiz mark"
             />
           </div>
-          {/*}   <div className="quiz-input time">
-            <label for="time">Time</label>
-            <input
-              id="hr"
-              type="number"
-              value={inputState.hours}
-              onInput={(e) => handleInput(e, "hours")}
-              placeholder="hr"
-            />
-            <label for="hr">hr</label>
-            <input
-              id="min"
-              type="number"
-              value={inputState.min}
-              onInput={(e) => handleInput(e, "min")}
-              placeholder="min"
-            />
-            <label for="min">min</label>
-            <input
-              id="sec"
-              type="number"
-              value={inputState.sec}
-              onInput={(e) => handleInput(e, "sec")}
-              placeholder="sec"
-            />
-            <label for="s">sec</label>
-          </div>
-          <div className="quiz-radio">
-            <label>Deliver result on submition</label>
-            <div className="radio">
-              <div className="radio1">
-                <label for="yes">yes</label>
-                <input
-                  id="yes"
-                  type="radio"
-                  onChange={(e) => handleInput(e, "resultDelivery")}
-                  name="choice"
-                  value="onsubmit"
-                />
-              </div>
-              <div className="radio1">
-                <label for="no">no</label>
-                <input
-                  id="no"
-                  type="radio"
-                  onChange={(e) => handleInput(e, "resultDelivery")}
-                  name="choice"
-                  value="manual"
-                />
-              </div>
-            </div>
-          </div>
-          {/*
-          <div className="quiz-radio publish">
-            <label>Publish Mode</label>
-            <div className="radio">
-              <div className="radio1">
-                <label for="public">public</label>
-                <input
-                  id="public"
-                  type="radio"
-                  onChange={(e) => handleInput(e, "publish")}
-                  name="publish"
-                  value="public"
-                />
-              </div>
-            </div>
-          </div>
-          {/*<div className="swi">
-            <p>Retry</p>
-            <Switch
-              toggle={toggle}
-              setToggle={setToggle}
-              handleInput={handleInput}
-            />
-          </div>*/}
-          {/*<div className={`max-retries ${toggle ? "" : "zero"}`}>
-            <div>
-              <label for="max-retries">Max retries</label>
-              <input
-                type="number"
-                id="max-retries"
-                onChange={(e) => handleInput(e, "retries")}
-                placeholder="maximum number of retries"
-              />
-            </div>
-          </div>*/}
         </div>
         <div className="create-btn">
           <button onClick={createQuiz}>create quiz</button>

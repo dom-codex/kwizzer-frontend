@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import { validateExamForm } from "../../validators/exam";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
 const NewExam = (props) => {
@@ -15,11 +16,13 @@ const NewExam = (props) => {
         return {
           ...state,
           quiz: [...state.quiz, action.value],
+          total: parseInt(state.total) + parseInt(action.total),
         };
       case "rmv":
         return {
           ...state,
           quiz: state.quiz.filter((id) => id !== action.value),
+          total: parseInt(state.total) - parseInt(action.total),
         };
       case "switch":
         const type = !state.switch;
@@ -54,10 +57,27 @@ const NewExam = (props) => {
           ...state,
           retries: parseInt(action.value),
         };
+      case "err":
+        return {
+          ...state,
+          err: action.errors,
+        };
+      case "clearerr":
+        return {
+          ...state,
+          err: {},
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
     quiz: [],
+    title: "",
+    nquiz: "",
+    total: 0,
+    hr: "",
+    min: "",
+    sec: "",
+    choice: "",
     switch: false,
     type: "standard",
     isLoading: true,
@@ -65,15 +85,25 @@ const NewExam = (props) => {
     quizzes: [],
     setRetry: false,
     retries: 0,
+    err: {},
   });
   const inputHandler = (e, name) => {
-    dispatch({ type: "new", value: e.target.value, input: name });
-  };
-  const checkboxHandler = (e, name) => {
-    if (!e.target.checked) {
-      return dispatch({ type: "rmv", value: e.target.value });
+    let value = e.target.value;
+    if (name === "total") {
+      value = parseInt(e.target.value || 0);
     }
-    dispatch({ type: "quiz", input: name, value: e.target.value });
+    dispatch({ type: "new", value: value, input: name });
+  };
+  const checkboxHandler = (e, name, total) => {
+    if (!e.target.checked) {
+      return dispatch({ type: "rmv", value: e.target.value, total: total });
+    }
+    dispatch({
+      type: "quiz",
+      input: name,
+      value: e.target.value,
+      total: total,
+    });
   };
   const toggle = () => {
     dispatch({ type: "switch" });
@@ -86,17 +116,18 @@ const NewExam = (props) => {
       .then((data) => {
         dispatch({ type: "isloading" });
         dispatch({ type: "quizzes", quizzes: data.published });
-        console.log(data);
+        console.log("published", data);
       });
   };
   const save = () => {
+    dispatch({ type: "clearerr" });
     const url = `http://localhost:3500/school/set/examination?sch=${school}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
     delete body["isLoading"];
     delete body["switch"];
-
+    delete body["err"];
     fetch(url, {
       method: "POST",
       headers: {
@@ -106,7 +137,9 @@ const NewExam = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        if (res.code === 403) {
+          dispatch({ type: "err", errors: res.errors });
+        }
       });
   };
   useEffect(() => {
@@ -128,6 +161,7 @@ const NewExam = (props) => {
           setList: () => dispatch({ type: "isopen" }),
           data: data,
         }}
+        isValidated={validateExamForm(data)}
       />
     </section>
   );

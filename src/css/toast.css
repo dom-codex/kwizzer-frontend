@@ -1,10 +1,13 @@
-.toast {
+.toast,
+.toast-top {
   position: fixed;
   width: 100%;
   height: 42px;
-  bottom: 25px;
   z-index: 1;
   transform: translateY(180%);
+}
+.toast-top {
+  transform: translateY(-200%);
 }
 .toast-content {
   width: 50%;
@@ -36,5 +39,24 @@
   }
   100% {
     transform: translateY(180%);
+  }
+}
+.showToast-top {
+  animation-name: quiz;
+  animation-duration: 2.78s;
+  height: 42px;
+}
+@keyframes quiz {
+  0% {
+    transform: translateY(-200%);
+  }
+  35% {
+    transform: translateY(40%);
+  }
+  85% {
+    transform: translateY(40%);
+  }
+  100% {
+    transform: translateY(-200%);
   }
 }

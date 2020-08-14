@@ -24,6 +24,9 @@ const AdminLoginForm = (props) => {
         action={() => dispatch({ type: "toast" })}
         text={inputState.message}
         styles={error}
+        animate={"showToast"}
+        main={"toast"}
+        top={{ bottom: "25px" }}
       />
       <div className="login-input">
         <label for="email">Email</label>

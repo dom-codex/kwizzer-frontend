@@ -8,6 +8,7 @@ import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
 const ScoreBoard = (props) => {
   const [isToast, setToast] = useState(false);
+  const [text, setText] = useState("No student has submitted!!!");
   const [Exams, setExams] = useState([]);
   /*const fetchAllQuiz = (exams) => {
     const url = `http://localhost:3500/school/class/quiz/all?sid=${ref}`;
@@ -25,6 +26,10 @@ const ScoreBoard = (props) => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
+        if (data.code === 403) {
+          setText(data.message);
+          setToast(true);
+        }
         setExams(data.exams);
       });
   };
@@ -40,8 +45,11 @@ const ScoreBoard = (props) => {
       {isToast && (
         <Toast
           isOpen={isToast}
-          text={"No student has submitted!!!"}
+          text={text}
           action={setToast}
+          animate={"showToast-top"}
+          main={"toast-top"}
+          top={{ top: "25px" }}
         />
       )}
       <div className="showcase">

@@ -6,6 +6,8 @@ import QuizOverlay from "../sub-components/QuizOverlay";
 
 const ExamForm = (props) => {
   const { state } = props;
+  const { err } = state;
+  console.log(err);
   return (
     <div className="examform">
       <div className="form-header">
@@ -38,7 +40,10 @@ const ExamForm = (props) => {
             value={state.title}
             onInput={(e) => props.textHandler(e, "title")}
             placeholder="exam name"
+            style={err.title ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
+          <br />
+          <small>{err.title ? err.title.msg : ""}</small>
         </div>
         <div className="exam-forms">
           <label>No of Quiz</label>
@@ -47,7 +52,9 @@ const ExamForm = (props) => {
             value={state.nquiz}
             onInput={(e) => props.textHandler(e, "nquiz")}
             placeholder="no of quiz"
+            style={err.nquiz ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
+          <small>{err.nquiz ? err.nquiz.msg : ""}</small>
         </div>
         <div className="exam-forms">
           <label>Total Marks</label>
@@ -56,7 +63,9 @@ const ExamForm = (props) => {
             placeholder="total marks"
             value={state.total}
             onInput={(e) => props.textHandler(e, "total")}
+            style={err.total ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
+          <small>{err.total ? err.total.msg : ""}</small>
         </div>
         <div className="exam-forms-duration">
           <span>Duration</span>
@@ -66,6 +75,7 @@ const ExamForm = (props) => {
             placeholder="hrs"
             onInput={(e) => props.textHandler(e, "hr")}
             value={state.hr}
+            style={err.hr ? { borderColor: "red" } : {}}
           />
           <label>hrs</label>
           <input
@@ -73,6 +83,7 @@ const ExamForm = (props) => {
             placeholder="min"
             onInput={(e) => props.textHandler(e, "min")}
             value={state.min}
+            style={err.min ? { borderColor: "red" } : {}}
           />
           <label>min</label>
           <input
@@ -80,8 +91,9 @@ const ExamForm = (props) => {
             placeholder="sec"
             onInput={(e) => props.textHandler(e, "sec")}
             value={state.sec}
+            style={err.sec ? { borderColor: "red" } : {}}
           />
-          <label>sec</label>
+          <label>sec</label> <br />
         </div>
         {!props.edit && state.type !== "custom" && (
           <div className="exam-forms-result">
@@ -145,7 +157,11 @@ const ExamForm = (props) => {
           />
         </div>
         <div className="exam-btn">
-          <button onClick={props.save}>SET</button>
+          {props.isValidated ? (
+            <button onClick={props.save}>SET</button>
+          ) : (
+            <button disabled={true}>set</button>
+          )}
         </div>
       </div>
     </div>
@@ -176,6 +192,7 @@ const Exam = (props) => {
               textHandler={props.inputHandler}
               state={data.data}
               save={props.save}
+              isValidated={props.isValidated}
             />
           </div>
         </div>

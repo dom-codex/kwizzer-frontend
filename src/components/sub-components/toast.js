@@ -8,7 +8,14 @@ const Toast = (props) => {
     }, 2800);
   }
   return (
-    <div className={props.isOpen ? "toast showToast" : "toast "}>
+    <div
+      style={props.top}
+      className={
+        props.isOpen
+          ? `${props.main} ${props.isOpen && props.animate}`
+          : props.main
+      }
+    >
       <div className="toast-content" style={props.styles}>
         <p className="toast-text">{props.text}</p>
       </div>

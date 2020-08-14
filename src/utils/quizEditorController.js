@@ -27,12 +27,19 @@ module.exports.inputReducer = (state, action) => {
         ...state,
         ...action.values,
       };
+    case "toast":
+      return {
+        ...state,
+        showToast: !state.showToast,
+        message: action.message,
+        hasErr: action.hasErr,
+      };
     default:
       return state;
   }
 };
 module.exports.textHandler = (e, name, dispatch, type) => {};
-module.exports.saveEditedQuiz = (data, quizid, schid, history) => {
+module.exports.saveEditedQuiz = (data, quizid, schid, history, dispatch) => {
   const url = `http://localhost:3500/school/class/quiz/edit?quizid=${quizid}`;
   fetch(url, {
     method: "POST",
@@ -43,8 +50,16 @@ module.exports.saveEditedQuiz = (data, quizid, schid, history) => {
   })
     .then((res) => res.json())
     .then((data) => {
+      if (data.code === 403) {
+        dispatch({
+          type: "toast",
+          message: data.message,
+          hasErr: true,
+        });
+      }
       if (data.code === 201) {
-        history.push(`/dashboard/quizzes`);
+        dispatch({ type: "toast", message: data.message, hasErr: false });
+        //history.push(`/dashboard/quizzes`);
       }
     });
 };

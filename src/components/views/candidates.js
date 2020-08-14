@@ -42,6 +42,7 @@ const Published = (props) => {
   };
   const getParam = (data) => {
     setParam(data);
+
     fetchRegCandidates(data.quiz);
   };
   useEffect(() => {
@@ -54,6 +55,9 @@ const Published = (props) => {
           isOpen={isToast}
           action={setToast}
           text={"No candidate has regisetered for the quiz"}
+          animate={"showToast-top"}
+          main={"toast-top"}
+          top={{ top: "25px" }}
         />
       )}
       {showList && (

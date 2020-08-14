@@ -36,7 +36,7 @@ const Notification = (props) => {
         <Header />
         <Jumbo title="Notifications" />
       </div>
-      {notification.length &&
+      {notification.length ? (
         notification.map((noti) => {
           return (
             <div className="notification-card">
@@ -52,7 +52,10 @@ const Notification = (props) => {
               </div>
             </div>
           );
-        })}
+        })
+      ) : (
+        <h1>you don't have any notification</h1>
+      )}
     </section>
   );
 };
