@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../../icon.svg";
+import Icon from "../../assets/icon.svg";
 import "../../css/menu-tile.css";
 
 const Menutile = (props) => {

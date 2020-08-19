@@ -4,15 +4,23 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1;
+  top: 0;
+  left: 0;
 }
 .dialog-content {
   background-color: #fff;
   padding: 0 15px 15px 15px;
-  width: 90%;
+  width: 98%;
+  margin-left: 5px;
   border-radius: 5px;
+}
+.dialog-title {
+  margin: 12px 0;
+}
+.dialog-cancel {
+  margin-right: 10px;
 }
 .dialog-controls {
   display: flex;

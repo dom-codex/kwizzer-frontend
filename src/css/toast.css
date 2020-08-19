@@ -2,16 +2,16 @@
 .toast-top {
   position: fixed;
   width: 100%;
-  height: 42px;
+  height: 52px;
   z-index: 1;
-  transform: translateY(180%);
+  transform: translateY(200%);
 }
 .toast-top {
-  transform: translateY(-200%);
+  transform: translateY(-220%);
 }
 .toast-content {
   width: 50%;
-  height: 100%;
+  min-height: 65px;
   margin: auto !important;
   background-color: rgb(255, 166, 0);
   display: flex;
@@ -29,7 +29,7 @@
 }
 @keyframes show {
   0% {
-    transform: translateY(180%);
+    transform: translateY(200%);
   }
   35% {
     transform: translateY(0%);
@@ -38,7 +38,7 @@
     transform: translateY(0%);
   }
   100% {
-    transform: translateY(180%);
+    transform: translateY(200%);
   }
 }
 .showToast-top {
@@ -48,7 +48,7 @@
 }
 @keyframes quiz {
   0% {
-    transform: translateY(-200%);
+    transform: translateY(-220%);
   }
   35% {
     transform: translateY(40%);
@@ -57,6 +57,6 @@
     transform: translateY(40%);
   }
   100% {
-    transform: translateY(-200%);
+    transform: translateY(-220%);
   }
 }

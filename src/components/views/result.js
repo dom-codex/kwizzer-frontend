@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
-import Header from "../sub-components/header";
 import Jumbo from "../sub-components/Jumbo";
+import Layout from "../sub-components/layout";
 import { resulReducer } from "../../utils/studentResults";
 import "../../css/result.css";
 import { fetchData } from "../../utils/storage";
@@ -56,30 +56,32 @@ const Result = (props) => {
   };
   useEffect(getExamResults, []);
   return (
-    <section className="result">
-      <div className="showcase">
-        <Header />
-        <Jumbo title={"Results"} />
-      </div>
-      {state.exams.length ? (
-        state.exams.map((r, i) => {
-          return (
-            <Tile
-              key={i}
-              title={r.title}
-              answered={r.totalAnswered}
-              fails={r.fails}
-              score={r.score.$numberDecimal}
-              total={r.totalMarks}
-              paperId={r._id}
-              viewSoln={linkTo}
-            />
-          );
-        })
-      ) : (
-        <h1>no result found</h1>
-      )}
-    </section>
+    <Layout>
+      <section className="result">
+        <div className="showcase">
+          <Jumbo title={"Results"} />
+        </div>
+        <hr />
+        {state.exams.length ? (
+          state.exams.map((r, i) => {
+            return (
+              <Tile
+                key={i}
+                title={r.title}
+                answered={r.totalAnswered}
+                fails={r.fails}
+                score={r.score.$numberDecimal}
+                total={r.totalMarks}
+                paperId={r._id}
+                viewSoln={linkTo}
+              />
+            );
+          })
+        ) : (
+          <h1>no result found</h1>
+        )}
+      </section>
+    </Layout>
   );
 };
 export default Result;

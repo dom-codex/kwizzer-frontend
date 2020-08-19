@@ -4,15 +4,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #000;
 }
 .tile {
   position: relative;
-  box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.69);
   width: 90%;
-  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 0 2px 0px rgba(0, 0, 0, 0.69);
   border-radius: 5px;
-  margin-bottom: 10px;
   overflow: hidden;
+  margin: 0 0 10px 8px;
 }
 .sub-tile {
   position: absolute;

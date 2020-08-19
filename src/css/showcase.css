@@ -1,4 +1,4 @@
 .menu {
-  height: 200px;
   color: #fff;
+  width: calc(100% - 93px);
 }

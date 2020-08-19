@@ -1,0 +1,45 @@
+.side-panel {
+  position: fixed;
+  height: 100%;
+  background-color: #050114;
+  z-index: 1;
+  top: 0;
+  text-align: center;
+  padding-top: 36px;
+  width: 92px;
+}
+.side-panel-logo {
+  color: #ccc;
+}
+.side-panel ul {
+  padding: 0;
+}
+.side-panel ul li {
+  height: 30px;
+  margin: 22px 0;
+  color: #fff;
+  position: relative;
+  padding: 5px 5px;
+  background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.1));
+  text-decoration: none;
+  color: #fff;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+.side-panel ul li a {
+  display: block;
+  text-decoration: none;
+  color: #ccc;
+  height: 30px;
+  width: 93px;
+}
+
+.side-panel ul li:hover,
+.side-panel ul li:active {
+  background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.5));
+}
+.body {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}

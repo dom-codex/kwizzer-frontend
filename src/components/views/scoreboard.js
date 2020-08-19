@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import Jumbo from "../sub-components/Jumbo";
 import "../../css/scoreboard.css";
 import Toast from "../sub-components/toast";
@@ -41,29 +41,30 @@ const ScoreBoard = (props) => {
     fetchAllExams();
   }, []);
   return (
-    <section className="scoreboard">
-      {isToast && (
-        <Toast
-          isOpen={isToast}
-          text={text}
-          action={setToast}
-          animate={"showToast-top"}
-          main={"toast-top"}
-          top={{ top: "25px" }}
-        />
-      )}
-      <div className="showcase">
-        <Header />
-        <Jumbo title={"ScoreBoard"} />
-      </div>
-      {
-        <ExamScore
-          quizzes={Exams}
-          setToast={setToast}
-          viewResults={viewResults}
-        />
-      }
-    </section>
+    <Layout>
+      <section className="scoreboard">
+        {isToast && (
+          <Toast
+            isOpen={isToast}
+            text={text}
+            action={setToast}
+            animate={"showToast-top"}
+            main={"toast-top"}
+            top={{ top: "25px" }}
+          />
+        )}
+        <div className="showcase">
+          <Jumbo title={"ScoreBoard"} />
+        </div>
+        {
+          <ExamScore
+            quizzes={Exams}
+            setToast={setToast}
+            viewResults={viewResults}
+          />
+        }
+      </section>
+    </Layout>
   );
 };
 export default ScoreBoard;

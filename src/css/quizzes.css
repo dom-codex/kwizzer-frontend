@@ -1,3 +1,11 @@
+section.quizzes {
+  width: calc(100vw - 93px);
+}
+.quizzes-list,
+.quizzes-title {
+  width: 100%;
+  display: block !important;
+}
 .quizzes .title h2 {
   font-size: 2em;
   padding-left: 12px;
@@ -5,28 +13,56 @@
   letter-spacing: 1px;
   margin: 5px 0;
 }
+.quizzes-heading {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 12px;
+  padding-left: 0px;
+  background-color: thistle;
+  width: 100%;
+}
+.quizzes-heading p {
+  text-align: center;
+}
+.quizzes-heading p:nth-child(2) {
+  grid-column: 2/4;
+}
 .quizzes ul {
   list-style: none;
+  padding-left: 0px;
+  width: 100%;
+}
+.quizzes-list li {
   padding-left: 5px;
+  padding-bottom: 8px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 12px;
+  border-bottom: thin solid #efefee;
+}
+.quizzes-list li div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quizzes-list li div:nth-child(2) {
+  grid-column: 2/4;
+}
+.quizzes-list li div:nth-child(5) {
+  cursor: pointer;
+  position: relative;
 }
 .student-quiz-controls {
   list-style: none;
 }
-.quizzes ul li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 95%;
-  border: thin solid #ccc;
-  padding: 8px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
-}
 .quizzes button {
-  margin-left: 10px;
   height: 40px;
-  width: 50px;
-  border-radius: 50%;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: thin solid #efefee;
 }
 ul.student-quiz-controls li {
   border: none;

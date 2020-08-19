@@ -45,6 +45,23 @@ module.exports.examsReducer = (state, action) => {
         ...state,
         showDialog: true,
       };
+    case "select":
+      return {
+        ...state,
+        currentQuestionIndex: action.index,
+        openSelector: !state.openSelector,
+      };
+    case "openSelector":
+      return {
+        ...state,
+        openSelector: !state.openSelector,
+      };
+    case "toast":
+      return {
+        ...state,
+        showToast: !state.showToast,
+        text: action.txt,
+      };
     default:
       return state;
   }

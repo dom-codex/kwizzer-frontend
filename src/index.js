@@ -30,7 +30,7 @@ const routing = (
   <Router>
     <div>
       <Route exact path="/menu" component={App} />
-      <Route exact path="/quiz/register/:sch/:quiz" component={Registration} />
+      <Route exact path="/exam/register/:sch/:quiz" component={Registration} />
       <Route exact path="/menu/results" component={Result} />
       <Route exact path="/menu/notifications" component={Notification} />
       <Route

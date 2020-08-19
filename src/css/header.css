@@ -1,19 +1,32 @@
 .showcase-nav {
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: teal;
-  box-shadow: 5px 0 2px 1px #000;
+  background-color: #fff;
+  border-bottom: thin solid #efefef;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  margin-bottom: 5px;
 }
-.showcase-nav1 {
-  padding-left: 10px;
-  position: absolute;
+.logo {
+  margin-left: 93.5px;
 }
 .showcase-nav2 {
-  text-align: center;
+  text-align: right;
   width: 100%;
   font-weight: bold;
 }
-.app-name {
+.notifications {
+  margin-right: 13px;
+  position: relative;
   display: inline-block;
+}
+.notifications span {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  color: #fff;
+  border-radius: 5px;
+  padding: 2px;
+  font-size: 0.69em;
 }

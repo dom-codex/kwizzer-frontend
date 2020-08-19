@@ -14,32 +14,35 @@ const generateOptions = (inputState, option, dispatch, setoption) => {
   const options = [];
   for (let i = 0; i < inputState.opts.length; i++) {
     options.push(
-      <li key={i}>
-        <input
-          type="text"
-          onInput={(e) =>
-            dispatch({
-              type: "opt",
-              value: e.target.value,
-              key: `option${i + 1}`,
-              i: i,
-              id: inputState.opts[i].id ? inputState.opts[i].id : 0,
-            })
-          }
-          value={inputState.opts[i].value}
-        />
-        <button
-          onClick={() => {
-            dispatch({
-              type: "delete",
-              i: i,
-              id: inputState.existing.length > i ? inputState.opts[i].id : 0,
-            });
-            //setoption((prev) => prev - 1);
-          }}
-        >
-          del
-        </button>
+      <li className="design-2">
+        <div className="opt">
+          <label>{`option ${i + 1}`}</label>
+          <input
+            type="text"
+            onInput={(e) =>
+              dispatch({
+                type: "opt",
+                value: e.target.value,
+                key: `option${i + 1}`,
+                i: i,
+                id: inputState.opts[i].id ? inputState.opts[i].id : 0,
+              })
+            }
+            value={inputState.opts[i].value}
+          />
+          <button
+            onClick={() => {
+              dispatch({
+                type: "delete",
+                i: i,
+                id: inputState.existing.length > i ? inputState.opts[i].id : 0,
+              });
+              //setoption((prev) => prev - 1);
+            }}
+          >
+            del
+          </button>
+        </div>
       </li>
     );
   }
@@ -153,7 +156,7 @@ const QuizEditor = (props) => {
       <div className="quiz-editor">
         <Jumbo title={"Question editor"} />
         <div className="question-tile">
-          <div className="question">
+          <div className="question design-2">
             <label for="question">Question</label>
             <textarea
               onInput={(e) =>
@@ -188,8 +191,8 @@ const QuizEditor = (props) => {
               </div>
             )}
             <ul className="options-list">
-              <li>
-                <label>Answer</label>
+              <li className="ans design-2">
+                <label>Answer</label>&nbsp;
                 <select
                   value={inputState.answer}
                   onChange={(e) =>
@@ -204,7 +207,7 @@ const QuizEditor = (props) => {
           </div>
           <hr />
           <div className="editor-controls">
-            <button>cancel</button>
+            <button onClick={() => props.history.goBack()}>cancel</button>
             {canCreate ? (
               <button
                 onClick={

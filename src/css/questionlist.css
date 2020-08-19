@@ -1,5 +1,12 @@
-.question-header {
-  padding-left: 10px;
+section.quiz-editor {
+  width: calc(100% - 93px);
+}
+.quiz-name-edit input {
+  width: 95%;
+  height: 35px;
+  border: none;
+  color: grey;
+  font-size: 1.3em;
 }
 .question-header h2 {
   margin-bottom: 0;
@@ -8,14 +15,20 @@
   margin-top: 5px;
 }
 .quiz-name-edit {
-  height: 350px;
   display: flex;
   flex-direction: column;
-  padding-left: 15px;
-  background-color: tomato;
 }
-.name-quiz {
-  width: 100%;
+.design-1 {
+  background-color: rgb(240, 240, 240);
+  width: 95%;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 5px solid thistle;
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 0 5px;
 }
 .name-quiz label,
 label[for="perMark"],
@@ -23,14 +36,6 @@ label[for="total"],
 label[for="nQuest"] {
   font-size: 1.3em;
   font-weight: bold;
-  width: 100%;
-  display: block;
-}
-.name-quiz input {
-  height: 30px;
-  width: 55%;
-  margin-right: 5px;
-  font-size: 1.2em;
 }
 .name-quiz input:disabled {
   border: none;
@@ -40,57 +45,30 @@ label[for="nQuest"] {
   height: 40px;
   border-radius: 50%;
 }
-
-.edit-time,
-.publish-mode {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
 .bar {
   width: 50px;
-}
-.edit-time h2 {
-  margin: 0;
-}
-.edit-time input {
-  width: 50px;
-  height: 25px;
-  background: none;
-  border: thin solid gray;
-  border-radius: 5px;
-}
-.edit-time label {
-  margin-right: 8px;
-}
-.publish-mode input[type="radio"] {
-  width: 20px;
-  height: 40px;
-}
-label[for="public"] {
-  margin-left: 20px;
-}
-label[for="private"] {
-  margin-left: 22px;
-}
-#private,
-#public,
-label[for="public"],
-label[for="private"] {
-  margin-bottom: -5px;
 }
 .questions-tile {
   border: thin solid #ccc;
   width: 98%;
   margin: auto;
+  margin-bottom: 5px;
+  position: relative;
+  padding: 5px 0 10px 10px;
 }
-
+.question-edit-btn,
+.question-delete-btn {
+  position: absolute;
+  right: 8px;
+}
+.question-delete-btn {
+  right: 60px;
+  background: none;
+  border: none;
+  color: red;
+}
 .questions-tile ul {
   list-style: none;
-}
-.quiz-nav ul {
-  display: flex;
-  justify-content: flex-end;
 }
 .quiz-nav li {
   margin-right: 12px;
@@ -103,9 +81,9 @@ label[for="private"] {
 }
 .create-fab {
   position: fixed;
-  z-index: 10;
+  z-index: 1;
   bottom: 20px;
-  right: 10px;
+  right: 28px;
   height: 50px;
   width: 50px;
   border-radius: 50%;

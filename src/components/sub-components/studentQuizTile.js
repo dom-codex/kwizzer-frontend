@@ -1,6 +1,6 @@
 import React from "react";
+import Styles from "../../css/studentQuizTile.module.css";
 const StudentQuizTile = (props) => {
-  console.log(props);
   const hours = props.quiz.hours;
   const minutes = props.quiz.minutes;
   const seconds = props.quiz.seconds;
@@ -28,43 +28,18 @@ const StudentQuizTile = (props) => {
     props.showOverView(true, data);
   };
   return (
-    <ul className="student-quiz-controls">
-      <li>
-        <h1>{title}</h1>
-      </li>
+    <li className={Styles.examli}>
+      <h1>{title}</h1>
       {props.children}
-      <li>Time allocated: {time}</li>
-      {props.isExam && (
-        <button onClick={props.completed ? null : () => showOverView(false)}>
-          {props.completed ? "taken" : "take exam"}
-        </button>
+      <div>Time allocated: {time}</div>
+      {!props.completed && (
+        <button onClick={() => showOverView(false)}>take exam</button>
       )}
-      {/*<li
-        className={
-          props.completed && props.quiz.canRetake
-            ? "take-quiz"
-            : "take-quiz disabled"
-        }
-      >
-        {
-          <button
-            onClick={
-              !props.completed
-                ? () => showOverView(false)
-                : props.completed && props.quiz.canReTake
-                ? () => showOverView(true)
-                : null
-            }
-          >
-            {!props.completed
-              ? "take quiz"
-              : props.completed && props.quiz.canReTake
-              ? "retake"
-              : "Already taken"}
-          </button>
-        }
-      </li>*/}
-    </ul>
+      {props.canRetake && props.completed && (
+        <button onClick={() => showOverView(true)}>Retry</button>
+      )}
+      {props.completed && !props.canRetake && <button>taken</button>}
+    </li>
   );
 };
 export default StudentQuizTile;

@@ -1,11 +1,10 @@
 import React from "react";
 const QuizOverView = (props) => {
-  console.log("--------", props.data);
   return (
     <div className="quizOverView">
       <div className="quiz-overview">
         <div className="overview-header">
-          <h2>{props.heading}</h2>
+          <p>{props.heading}</p>
         </div>
         <div className="overview-title">
           <h1>{props.data.title}</h1>

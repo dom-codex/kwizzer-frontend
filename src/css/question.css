@@ -4,12 +4,13 @@ section.question {
   box-sizing: border-box;
 }
 .header {
-  background-color: teal;
+  background-color: #050114;
   display: flex;
   align-items: center;
   position: relative;
   height: 50px;
   padding-left: 10px;
+  color: #fff;
 }
 .header button {
   position: absolute;
@@ -25,7 +26,7 @@ section.question {
 }
 .timer-cont {
   text-align: center;
-  background-color: tomato;
+  background-color: turquoise;
 }
 .timer-cont p {
   font-size: 1.55em;
@@ -33,9 +34,15 @@ section.question {
 .question-selector {
   display: flex;
   justify-content: space-between;
-  padding: 10px 15px;
   color: grey;
   background-color: rgba(233, 233, 233, 0.616);
+  padding-right: 5px;
+}
+.question-selector button {
+  height: 42px;
+  padding: 9px;
+  border: none;
+  background-color: #ccc;
 }
 .question-area h4 {
   margin-top: 10px;
@@ -54,7 +61,7 @@ section.question {
   display: flex;
   border: thin solid #ccc;
   width: 90%;
-  margin: auto;
+  margin-left: 20px;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
@@ -64,7 +71,7 @@ section.question {
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  background-color: tomato;
+  background-color: turquoise;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,4 +83,49 @@ section.question {
   margin-left: 12px;
   width: 90px;
   height: 28px;
+}
+.jump {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  height: 50px;
+}
+.jump-cont {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.jumper {
+  display: flex;
+  align-items: flex-end;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform: translateY(100%);
+  transition: all 0.3s ease-in-out;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.jumper-btn {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+  width: 100%;
+  height: 85%;
+  overflow-y: scroll;
+  background-color: #050114c5;
+  padding: 5px;
+}
+.jumper button {
+  width: 100%;
+  height: 32px;
+}
+.slideup {
+  transform: translateY(0%);
 }

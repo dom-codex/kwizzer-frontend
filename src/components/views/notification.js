@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Opensocket from "socket.io-client";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import Jumbo from "../sub-components/Jumbo";
 import "../../css/notification.css";
 import { fetchData } from "../../utils/storage";
@@ -31,32 +31,34 @@ const Notification = (props) => {
     });
   }, []);
   return (
-    <section className="notification">
-      <div className="showcase">
-        <Header />
-        <Jumbo title="Notifications" />
-      </div>
-      {notification.length ? (
-        notification.map((noti) => {
-          return (
-            <div className="notification-card">
-              <div className="n-card-title">
-                <h3>From {noti.schoolName}:</h3>
-                <p>{noti.time}</p>
+    <Layout>
+      <section className="notification">
+        <div className="showcase">
+          <Jumbo title="Notifications" />
+          <hr />
+        </div>
+        {notification.length ? (
+          notification.map((noti) => {
+            return (
+              <div className="notification-card">
+                <div className="n-card-title">
+                  <h3>From {noti.schoolName}:</h3>
+                  <p>{noti.time}</p>
+                </div>
+                <div className="n-card-body">
+                  <p className="n-card-text">
+                    {noti.message}
+                    &nbsp; <a href="/menu">check it out</a>
+                  </p>
+                </div>
               </div>
-              <div className="n-card-body">
-                <p className="n-card-text">
-                  {noti.message}
-                  &nbsp; <a href="/menu">check it out</a>
-                </p>
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <h1>you don't have any notification</h1>
-      )}
-    </section>
+            );
+          })
+        ) : (
+          <h1>you don't have any notification</h1>
+        )}
+      </section>
+    </Layout>
   );
 };
 export default Notification;

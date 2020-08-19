@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Header from "../sub-components/header";
-import Jumbo from "../sub-components/Jumbo";
+import Layout from "../sub-components/layout";
 import QuizTile from "../sub-components/quiz-tile";
 import Toast from "../sub-components/toast";
 import "../../css/quizzes.css";
 import { fetchData } from "../../utils/storage";
-let sref;
 const school = fetchData("school");
 const QuizList = (props) => {
   const [quizzes, setQuizzes] = useState([]);
@@ -70,47 +68,54 @@ const QuizList = (props) => {
       });
   };
   return (
-    <section className="quizzes">
-      {isToast && (
-        <Toast
-          isOpen={isToast}
-          text={toastTEXT}
-          action={setToast}
-          animate={"showToast"}
-          main={"toast"}
-          top={{ bottom: "25px" }}
-        />
-      )}
-      <div className="showcase">
-        <Header />
-        <Jumbo title={"Quizzes"} />
-      </div>
-      <div className="quizzes-list">
-        <div className="title">
-          <h2>List</h2>
-          {!quizzes.length ? (
-            <h1>NO quiz</h1>
-          ) : (
-            quizzes.map((quiz) => {
-              return (
-                <QuizTile
-                  key={quiz.ref}
-                  school={school}
-                  history={props.history}
-                  quiz={quiz}
-                  user={user}
-                  showOverview={props.showOverView}
-                  publish={() => publish(quiz.ref)}
-                  delete={() => {
-                    deleteQuiz(quiz.ref);
-                  }}
-                />
-              );
-            })
-          )}
+    <Layout>
+      <section className="quizzes">
+        {isToast && (
+          <Toast
+            isOpen={isToast}
+            text={toastTEXT}
+            action={setToast}
+            animate={"showToast"}
+            main={"toast"}
+            top={{ bottom: "25px" }}
+          />
+        )}
+        <div className="quizzes-list">
+          <div className="quizzes-title">
+            <h2>Quizzes</h2>
+            <hr />
+            <div className="quizzes-heading">
+              <p>s/n</p>
+              <p>name</p>
+              <p>questions</p>
+              <p>published</p>
+            </div>
+            {!quizzes.length ? (
+              <h1>NO quiz</h1>
+            ) : (
+              <ul>
+                {quizzes.map((quiz) => {
+                  return (
+                    <QuizTile
+                      key={quiz.ref}
+                      school={school}
+                      history={props.history}
+                      quiz={quiz}
+                      user={user}
+                      showOverview={props.showOverView}
+                      publish={() => publish(quiz.ref)}
+                      delete={() => {
+                        deleteQuiz(quiz.ref);
+                      }}
+                    />
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Layout>
   );
 };
 export default QuizList;

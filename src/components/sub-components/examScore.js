@@ -1,29 +1,41 @@
 import React from "react";
-import QuizTile from "../sub-components/quiz-tile";
+import Tile from "../sub-components/tiles";
+import Styles from "../../css/tile.module.css";
+
 const ExamScore = (props) => {
   const { quizzes, setToast, viewResults } = props;
 
   return (
     <div>
       {" "}
-      {quizzes.length ? (
-        quizzes.map((quiz) => {
-          return (
-            <QuizTile
-              key={quiz.id}
-              quiz={quiz}
-              showOverview={props.showOverView}
-              score={true}
-              openResult={() =>
-                viewResults("/dashboard/mycandidates/result", quiz.ref, "exam")
-              }
-              showToast={() => setToast(true)}
-            />
-          );
-        })
-      ) : (
-        <h1>No quiz</h1>
-      )}
+      <ul className={Styles.ulGrid}>
+        {quizzes.length ? (
+          quizzes.map((quiz) => {
+            return (
+              <Tile
+                key={quiz.id}
+                Styles={{}}
+                li={Styles.li}
+                action={{
+                  showToast: setToast,
+                  openResult: () =>
+                    viewResults(
+                      "/dashboard/mycandidates/result",
+                      quiz.ref,
+                      "exam"
+                    ),
+                  NumberOfSubmitted: quiz.NumberOfSubmitted,
+                  noOfStudents: quiz.noOfStudents,
+                }}
+              >
+                <div>{quiz.name}</div>
+              </Tile>
+            );
+          })
+        ) : (
+          <h1>No quiz</h1>
+        )}
+      </ul>
     </div>
   );
 };

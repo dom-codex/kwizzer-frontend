@@ -1,9 +1,22 @@
-.showcase {
-  background-color: tomato;
-  height: 180px;
+.dashboard {
+  background-color: #efefef;
+}
+.stats-cont {
+  color: grey;
+  font-size: 1.4em;
+  letter-spacing: 1.5px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.stats-cont h3 {
+  margin: 0;
+  padding: 0;
 }
 .dash-options {
   margin-top: 30px;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin: auto;
+  width: calc(96.7vw - 93px);
 }

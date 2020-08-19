@@ -1,3 +1,6 @@
+.submenu h2 {
+  padding-bottom: 8px;
+}
 hr {
   border-color: rgba(0, 0, 0, 0.05);
 }

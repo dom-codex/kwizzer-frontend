@@ -1,7 +1,8 @@
 import React, { useEffect, useReducer } from "react";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
+import "../../css/solution.css";
 import { fetchData } from "../../utils/storage";
 const correct = {
   backgroundColor: "green",
@@ -13,7 +14,7 @@ const person = fetchData("person");
 const QuestionDisplay = (props) => {
   return (
     <div>
-      {props.children}
+      <div className="quiz-tab">{props.children}</div>
       <QuestionDisplayArea index={props.index} question={props.question} />
       <div className="question-options">
         <ul>
@@ -125,37 +126,24 @@ const Solutions = (props) => {
   };
   useEffect(getQuestionPaper, []);
   return (
-    <section>
-      <Header />
-      <div className="question-paper">
-        {data.questions.length && (
-          <QuestionDisplay
-            index={data.currentQuestionIndex + 1}
-            question={data.question.question}
-            options={data.question.options}
-            answer={data.question.answer}
-            answered={data.question.isAnswered}
-            nav={switchQuestion}
-          >
-            {genQuizSelectors(data.quizzes)}
-          </QuestionDisplay>
-        )}
-        {/*data.questions.length
-          ? data.questions.map((paper, i) => {
-              return (
-                <QuestionDisplay
-                  key={i}
-                  index={i + 1}
-                  question={paper.question}
-                  options={paper.options}
-                  answer={paper.answer}
-                  answered={paper.answered}
-                />
-              );
-            })
-          : null*/}
-      </div>
-    </section>
+    <Layout>
+      <section className="solution">
+        <div className="question-paper">
+          {data.questions.length && (
+            <QuestionDisplay
+              index={data.currentQuestionIndex + 1}
+              question={data.question.question}
+              options={data.question.options}
+              answer={data.question.answer}
+              answered={data.question.isAnswered}
+              nav={switchQuestion}
+            >
+              {genQuizSelectors(data.quizzes)}
+            </QuestionDisplay>
+          )}
+        </div>
+      </section>
+    </Layout>
   );
 };
 export default Solutions;

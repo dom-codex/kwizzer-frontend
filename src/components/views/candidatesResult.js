@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import "../../css/candidate_result.css";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
@@ -44,56 +44,75 @@ const CandidatesResults = (props) => {
   };
   useEffect(fetchResult, []);
   return (
-    <section>
-      <Header />
-      <div className="results-topic">
-        <h1>Results</h1>
-        <small>total submitted: {result.length}</small>
-        <div>
-          <button onClick={ApproveResults}>Approve all results</button>
+    <Layout>
+      <section className="candidates-result">
+        <div className="candidates-results-details">
+          <h1>Results</h1>
+          <div>
+            <small>total submitted: {result.length ? result.length : 0}</small>
+            <br />
+            {result.length ? (
+              <button onClick={ApproveResults}>Approve all results</button>
+            ) : (
+              <button disabled={true}>approve results</button>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="result-content">
-        <ul>
-          {result.length ? (
-            result.map((r) => {
-              const correct = r.totalAnswered - r.fails;
-              return (
-                <li onClick={r.isComplete ? () => linkTo(r._id) : null}>
-                  <div className="res-details">
-                    <small>correct :{correct <= 0 ? 0 : correct}</small>
-                    <small>fails: {r.fails}</small>
-                    <small>total: {r.totalMarks}</small>
-                    <small>
-                      %:{" "}
-                      {Math.round(
-                        (r.score.$numberDecimal / r.totalMarks) * 100
-                      )}
-                    </small>
-                  </div>
-                  <div className="res-title">
-                    <h2>Score</h2>
-                  </div>
-                  <div className="res-score">
-                    <h2>{r.score.$numberDecimal}</h2>
-                  </div>
-                  <div className="res-owner">
-                    <p>
-                      <small>Name</small>:<span> {r.studentName}</span>
-                    </p>
-                    <button onClick={() => ApproveSingleResult(r._id)}>
-                      approve
-                    </button>
-                  </div>
-                </li>
-              );
-            })
-          ) : (
-            <h1>no result yet</h1>
-          )}
-        </ul>
-      </div>
-    </section>
+        <hr />
+        <div className="result-content">
+          <ul>
+            {result.length ? (
+              result.map((r) => {
+                const correct = r.totalAnswered - r.fails;
+                return (
+                  <li
+                    onClick={
+                      r.isComplete
+                        ? (e) => {
+                            if (e.target.className === "approve-btn") return;
+                            linkTo(r._id);
+                          }
+                        : null
+                    }
+                  >
+                    <div className="res-details">
+                      <small>correct :{correct <= 0 ? 0 : correct}</small>
+                      <small>fails: {r.fails}</small>
+                      <small>total: {r.totalMarks}</small>
+                      <small>
+                        %:{" "}
+                        {Math.round(
+                          (r.score.$numberDecimal / r.totalMarks) * 100
+                        )}
+                      </small>
+                    </div>
+                    <div className="res-title">
+                      <h2>Score</h2>
+                    </div>
+                    <div className="res-score">
+                      <h2>{r.score.$numberDecimal}</h2>
+                    </div>
+                    <div className="res-owner">
+                      <p>
+                        <small>Name</small>:<span> {r.studentName}</span>
+                      </p>
+                      <button
+                        className="approve-btn"
+                        onClick={() => ApproveSingleResult(r._id)}
+                      >
+                        approve
+                      </button>
+                    </div>
+                  </li>
+                );
+              })
+            ) : (
+              <h1>no result yet</h1>
+            )}
+          </ul>
+        </div>
+      </section>
+    </Layout>
   );
 };
 export default CandidatesResults;

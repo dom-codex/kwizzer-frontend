@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./header";
 import Switch from "../sub-components/switch";
 import "../../css/exam.css";
 import QuizOverlay from "../sub-components/QuizOverlay";
@@ -7,12 +6,10 @@ import QuizOverlay from "../sub-components/QuizOverlay";
 const ExamForm = (props) => {
   const { state } = props;
   const { err } = state;
-  console.log(err);
   return (
     <div className="examform">
       <div className="form-header">
-        <h1>Quizzer</h1>
-        <h2>{props.title}</h2>
+        <h1>{props.title}</h1>
       </div>
 
       <div className="new-exam-switch">
@@ -136,19 +133,22 @@ const ExamForm = (props) => {
         }
         <div className="exam-forms-result">
           <span>Deliver Result on submition</span>
-          <br />
-          <label>yes</label>
+          <div style={{ height: "10px" }}></div>
+          <label for="yes">yes</label>
           <input
             type="radio"
+            id="yes"
             value="onsubmition"
             checked={state.choice === "onsubmition" ? true : false}
             onChange={() =>
               props.textHandler({ target: { value: "onsubmition" } }, "choice")
             }
           />
-          <label>no</label>
+
+          <label for="no">no</label>
           <input
             type="radio"
+            id="no"
             value="manual"
             checked={state.choice === "manual" ? true : false}
             onChange={() =>
@@ -181,7 +181,6 @@ const Exam = (props) => {
               quizzes={data.quizzes}
             />
           )}
-          <Header />
           <div className="exam-content">
             <ExamForm
               title={props.title}

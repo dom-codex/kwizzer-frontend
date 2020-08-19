@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import QuizTile from "../sub-components/studentQuizTile";
 import QuizOverView from "../sub-components/quizOverview";
 import { fetchData } from "../../utils/storage";
@@ -36,45 +36,49 @@ const StudentExams = (props) => {
   };
   useEffect(getExams, []);
   return (
-    <section className="examinations">
-      {showOverView && (
-        <QuizOverView
-          data={overviewDATA}
-          isExam={true}
-          heading={"Exam time"}
-          type={"Quiz"}
-          linkTo={linkTo}
-          route={"/menu/examination"}
-          closeOverview={() => setOverView(false)}
-        />
-      )}
-      <Header />
-      <div className="content">
-        {exams.length ? (
-          exams.map((myexam, i) => {
-            const { exam } = myexam;
-            return (
-              <QuizTile
-                key={i}
-                quiz={exam}
-                id={exam.ref}
-                sheet={myexam.examsheet}
-                title={exam.name}
-                n={exam.nQuiz}
-                isExam={true}
-                showOverView={showOverview}
-                completed={myexam.completed}
-              >
-                <li>created by : {exam.name}</li>
-                <li>Total Quiz: {exam.nQuiz}</li>
-              </QuizTile>
-            );
-          })
-        ) : (
-          <h1>{text}</h1>
+    <Layout>
+      <section className="examinations" style={{ width: "calc(100% - 93px)" }}>
+        {showOverView && (
+          <QuizOverView
+            data={overviewDATA}
+            isExam={true}
+            heading={"Exam"}
+            type={"Quiz"}
+            linkTo={linkTo}
+            route={"/menu/examination"}
+            closeOverview={() => setOverView(false)}
+          />
         )}
-      </div>
-    </section>
+        <div className="content">
+          <ul>
+            {exams.length ? (
+              exams.map((myexam, i) => {
+                const { exam } = myexam;
+                return (
+                  <QuizTile
+                    key={i}
+                    quiz={exam}
+                    id={exam.ref}
+                    sheet={myexam.examsheet}
+                    title={exam.name}
+                    n={exam.nQuiz}
+                    isExam={true}
+                    showOverView={showOverview}
+                    completed={myexam.completed}
+                    canRetake={myexam.canRetake}
+                  >
+                    <li>created by : {myexam.school.name}</li>
+                    <li>Total Quiz: {exam.nQuiz}</li>
+                  </QuizTile>
+                );
+              })
+            ) : (
+              <h1>{text}</h1>
+            )}
+          </ul>
+        </div>
+      </section>
+    </Layout>
   );
 };
 

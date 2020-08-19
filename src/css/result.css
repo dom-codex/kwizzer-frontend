@@ -1,7 +1,9 @@
+.result {
+  width: calc(100% - 93px);
+}
 .stud-result {
   padding-bottom: 12px;
   border: thin solid #efefef;
-  width: 95%;
   margin: auto;
   margin-top: 10px;
   text-align: center;

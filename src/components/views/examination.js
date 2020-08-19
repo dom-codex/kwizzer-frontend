@@ -3,6 +3,7 @@ import Timer from "../sub-components/timer";
 import Dialog from "../sub-components/dialog";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
+import Toast from "../sub-components/toast";
 import { examsReducer } from "../../utils/examstore";
 import "../../css/question.css";
 const myStyle = {
@@ -11,9 +12,22 @@ const myStyle = {
 let message =
   "This marks the end of the exam!!! Good luck on checking your result";
 let heading = "Congratulations";
+const generateJumpers = (n, dispatch, ci) => {
+  const jumpers = [];
+  for (let i = 0; i < n; i++) {
+    jumpers.push(
+      <button
+        style={ci === i ? { backgroundColor: "#ccc" } : {}}
+        onClick={() => dispatch({ type: "select", index: i })}
+      >
+        {1 + i}
+      </button>
+    );
+  }
+  return jumpers;
+};
 const Examination = (props) => {
   const { state } = props.location;
-  console.log("this is state ", state);
   const [data, dispatch] = useReducer(examsReducer, {
     id: "",
     quizzes: [],
@@ -23,10 +37,15 @@ const Examination = (props) => {
     currentQuizIndex: 0,
     currentQuestionIndex: 0,
     showDialog: false,
+    openSelector: false,
+    showToast: false,
+    text: "",
   });
   const LoadExam = () => {
-    const url = `http://localhost:3500/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
-
+    let url = `http://localhost:3500/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
+    if (state.retry) {
+      url = `http://localhost:3500/school/exam/retry?sheet=${state.sheet}`;
+    }
     fetch(url)
       .then((res) => res.json())
       .then((exam) => {
@@ -53,7 +72,7 @@ const Examination = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 200) {
-          alert("submitted");
+          dispatch({ type: "toast", txt: "Saved!!!" });
         }
       });
   };
@@ -105,6 +124,15 @@ const Examination = (props) => {
   useEffect(LoadExam, []);
   return (
     <section className="question">
+      <Toast
+        isOpen={data.showToast}
+        action={() => dispatch({ type: "toast", txt: "" })}
+        text={data.text}
+        styles={{}}
+        animate={"showToast"}
+        main={"toast"}
+        top={{ bottom: "25px" }}
+      />
       {data.showDialog && (
         <Dialog title={heading} text={message} action={redirect} />
       )}
@@ -157,6 +185,23 @@ const Examination = (props) => {
       <div className="question-controls">
         <button onClick={() => switchQuestion("backward")}>Prev</button>
         <button onClick={() => switchQuestion("forward")}>Next</button>
+      </div>
+      <div className="jump">
+        <div
+          className="jump-cont"
+          onClick={() => dispatch({ type: "openSelector" })}
+        >
+          Goto
+        </div>
+        <div className={`jumper ${data.openSelector ? "slideup" : ""}`}>
+          <div className="jumper-btn">
+            {generateJumpers(
+              data.questions.length,
+              dispatch,
+              data.currentQuestionIndex
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

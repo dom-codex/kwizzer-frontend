@@ -33,6 +33,7 @@ function SubMenu(props) {
     <div class="submenu">
       <h2 class="submenu-heading">Menu</h2>
       <hr />
+      <br />
       <div class="menu-options">
         <Menutile
           title={"Dashboard"}
@@ -50,8 +51,6 @@ function SubMenu(props) {
           title={"Quizzes"}
           action={() => LinkTo("/menu/quiz?user=student", userIdentities)}
         />*/}
-        <Menutile title={"Apply"} />
-
         <Menutile
           title={"My Exams"}
           action={() => LinkTo("/menu/myexams", userIdentities)}

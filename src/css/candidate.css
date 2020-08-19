@@ -1,10 +1,13 @@
+.candidates {
+  width: calc(100% - 93px);
+}
 .pub-card,
 .pub-card-item-btn {
   display: flex;
   width: 100%;
 }
 .pub-card {
-  width: 94%;
+  width: 98%;
   margin: auto;
   margin-bottom: 5px;
   justify-content: space-between;
@@ -15,7 +18,6 @@
   border-radius: 5px;
 }
 .pub-card button {
-  padding: 6px;
   background: none;
   border: none;
   color: royalblue;
@@ -23,7 +25,6 @@
 .pub-card-item-btn {
   width: 35%;
   padding-right: 5px;
-  padding-top: 18px;
 }
 .pub-card-item-btn {
   align-items: flex-start;
@@ -35,9 +36,11 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
+  top: 0;
+  left: 0;
 }
 .list-body {
-  background-color: ivory;
+  background-color: #fff;
   height: 90%;
   width: 90%;
   margin: auto;
@@ -45,10 +48,13 @@
   padding-top: 20px;
   border-radius: 5px;
   position: relative;
+  overflow-y: scroll;
 }
 .list-body button {
   position: absolute;
   right: 8px;
+  height: 25px;
+  width: 32px;
 }
 .list-body h2 {
   margin: 0;

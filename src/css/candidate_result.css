@@ -1,3 +1,13 @@
+section.candidates-result {
+  width: calc(100% - 93px);
+}
+.candidates-results-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 55px;
+  padding-right: 6px;
+}
 .result-content ul {
   list-style: none;
   display: grid;
@@ -10,6 +20,7 @@
   padding-left: 8px;
   padding-top: 8px;
   box-shadow: 0 0 12px -5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 .res-details {
   display: grid;

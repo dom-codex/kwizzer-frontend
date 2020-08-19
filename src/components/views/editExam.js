@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import Layout from "../sub-components/layout";
 import Dialog from "../sub-components/dialog";
 import { fetchData } from "../../utils/storage";
 import { validateExamForm } from "../../validators/exam";
@@ -211,31 +212,33 @@ const NewExam = (props) => {
     fetchSingleExam();
   }, []);
   return (
-    <section>
-      {data.showDialog && (
-        <Dialog
-          title={"Notice"}
-          text={"Your changes were saved successfully!!!"}
-          action={() => props.history.replace("/dashboard/exam/records")}
+    <Layout>
+      <section className="exam-form-cont">
+        {data.showDialog && (
+          <Dialog
+            title={"Notice"}
+            text={"Your changes were saved successfully!!!"}
+            action={() => props.history.replace("/dashboard/exam/records")}
+          />
+        )}
+        <NewExamForm
+          title={"Edit Examination"}
+          inputHandler={inputHandler}
+          save={save}
+          isedit={true}
+          dispatch={dispatch}
+          checkboxHandler={checkboxHandler}
+          data={{
+            isOpen: data.isOpen,
+            isLoading: data.isLoading,
+            quizzes: data.quizzes,
+            setList: () => dispatch({ type: "isopen" }),
+            data: data,
+          }}
+          isValidated={validateExamForm(data)}
         />
-      )}
-      <NewExamForm
-        title={"Edit Examination"}
-        inputHandler={inputHandler}
-        save={save}
-        isedit={true}
-        dispatch={dispatch}
-        checkboxHandler={checkboxHandler}
-        data={{
-          isOpen: data.isOpen,
-          isLoading: data.isLoading,
-          quizzes: data.quizzes,
-          setList: () => dispatch({ type: "isopen" }),
-          data: data,
-        }}
-        isValidated={validateExamForm(data)}
-      />
-    </section>
+      </section>
+    </Layout>
   );
 };
 

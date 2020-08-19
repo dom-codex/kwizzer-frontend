@@ -1,5 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import Layout from "../sub-components/layout";
+import Toast from "../sub-components/toast";
 import { validateExamForm } from "../../validators/exam";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
@@ -67,6 +69,31 @@ const NewExam = (props) => {
           ...state,
           err: {},
         };
+      case "toast":
+        return {
+          ...state,
+          showToast: !state.showToast,
+          message: action.msg,
+        };
+      case "clear":
+        return {
+          ...state,
+          title: "",
+          nquiz: "",
+          total: 0,
+          hr: "",
+          min: "",
+          sec: "",
+          choice: "",
+          switch: false,
+          type: "standard",
+          isOpen: false,
+          setRetry: false,
+          retries: 0,
+          err: {},
+          showToast: true,
+          message: action.msg,
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -86,6 +113,8 @@ const NewExam = (props) => {
     setRetry: false,
     retries: 0,
     err: {},
+    showToast: false,
+    message: "",
   });
   const inputHandler = (e, name) => {
     let value = e.target.value;
@@ -139,31 +168,45 @@ const NewExam = (props) => {
       .then((res) => {
         if (res.code === 403) {
           dispatch({ type: "err", errors: res.errors });
+        } else if (res.code === 401) {
+          dispatch({ type: "toast", msg: res.message });
         }
+        dispatch({ type: "clear", msg: "exam created!!!" });
       });
   };
   useEffect(() => {
     getPublishedQuiz();
   }, []);
   return (
-    <section>
-      <NewExamForm
-        title={"Set Examination"}
-        inputHandler={inputHandler}
-        save={save}
-        toggle={toggle}
-        dispatch={dispatch}
-        checkboxHandler={checkboxHandler}
-        data={{
-          isOpen: data.isOpen,
-          isLoading: data.isLoading,
-          quizzes: data.quizzes,
-          setList: () => dispatch({ type: "isopen" }),
-          data: data,
-        }}
-        isValidated={validateExamForm(data)}
-      />
-    </section>
+    <Layout>
+      <section className="exam-form-cont">
+        <Toast
+          isOpen={data.showToast}
+          action={() => dispatch({ type: "toast" })}
+          text={data.message}
+          styles={{}}
+          animate={"showToast-top"}
+          main={"toast-top"}
+          top={{ top: "25px", left: "30px" }}
+        />
+        <NewExamForm
+          title={"Set Examination"}
+          inputHandler={inputHandler}
+          save={save}
+          toggle={toggle}
+          dispatch={dispatch}
+          checkboxHandler={checkboxHandler}
+          data={{
+            isOpen: data.isOpen,
+            isLoading: data.isLoading,
+            quizzes: data.quizzes,
+            setList: () => dispatch({ type: "isopen" }),
+            data: data,
+          }}
+          isValidated={validateExamForm(data)}
+        />
+      </section>
+    </Layout>
   );
 };
 

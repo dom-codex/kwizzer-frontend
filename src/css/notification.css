@@ -1,5 +1,9 @@
+.notification {
+  border-top: thin solid #efefef;
+  width: calc(100% - 93px);
+}
 .notification-card {
-  width: 95%;
+  width: 98%;
   margin: auto;
   margin-top: 10px;
   border-radius: 5px;

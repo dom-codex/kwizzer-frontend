@@ -1,7 +1,10 @@
 import React, { useReducer, useEffect } from "react";
-import Header from "../sub-components/header";
+import Layout from "../sub-components/layout";
 import QuizOverlay from "../sub-components/QuizOverlay";
+
 import "../../css/registration.css";
+import { validateRegistrationInput } from "../../utils/validateRegistration";
+import Toast from "../sub-components/toast";
 const Registration = (props) => {
   //get url params
   const {
@@ -41,6 +44,12 @@ const Registration = (props) => {
           ...state,
           subjects: state.subjects.filter((id) => id !== action.value),
         };
+      case "err":
+        return {
+          ...state,
+          showToast: !state.showToast,
+          msg: action.msg,
+        };
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -49,19 +58,19 @@ const Registration = (props) => {
     published: [],
     subjects: [],
     overlay: false,
+    showToast: false,
+    msg: "",
   });
-  const type = search.split("type=")[1];
   const register = (email) => {
-    let body = { email, email };
     let url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
 
-    if (data.quiz.type === "custom") {
-      body = {
-        subjects: data.subjects,
-        email: email,
-        type: data.quiz.type,
-      };
-    }
+    let body = {
+      subjects: data.subjects,
+      email: email,
+      type: data.quiz.type,
+      quiz: quiz,
+    };
+
     fetch(url, {
       method: "POST",
       headers: {
@@ -71,6 +80,10 @@ const Registration = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        if (res.code === 403) {
+          dispatch({ type: "err", msg: res.message });
+          return;
+        }
         if (res.code === 201) {
           alert("sucessfully  registered");
         }
@@ -123,67 +136,87 @@ const Registration = (props) => {
   };
   useEffect(findTest, []);
   return (
-    <section className="reg-page">
-      {data.overlay && (
-        <QuizOverlay
-          quizzes={data.published}
-          isExam={true}
-          textHandler={checkboxHandler}
-          state={data.subjects}
-          action={toggleOverlay}
+    <Layout>
+      <section className="reg-page">
+        <Toast
+          isOpen={data.showToast}
+          action={() => dispatch({ type: "err", msg: "" })}
+          text={data.msg}
+          styles={{}}
+          animate={"showToast-top"}
+          main={"toast-top"}
+          top={{ top: "25px", left: "10px" }}
         />
-      )}
-      <Header />
-      <div className="reg-content">
-        <div className="reg-header">
-          <h1>Quiz</h1>
-          <h2>Application</h2>
-        </div>
-        <div className="reg-body">
-          <div className="quiz-name">
-            <h4>Name:</h4>
-            <span>cloud computing</span>
-          </div>
-          <div className="quiz-name">
-            <h4>Total Questions:</h4>
-            <span>20</span>
-          </div>
-          <div className="quiz-name">
-            <h4>Total Marks</h4>
-            <span>100</span>
-          </div>
-          <div className="quiz-name">
-            <h4>Time</h4>
-            <span>2hrs 30mins</span>
-          </div>
-          <hr />
-
-          <div className="candidate-email">
-            {data.quiz.type === "custom" && (
-              <div className="quiz-selector">
-                <p>select quiz(s):</p>
-                <button onClick={toggleOverlay}>select</button>
+        {data.overlay && (
+          <QuizOverlay
+            quizzes={data.published}
+            isExam={true}
+            textHandler={checkboxHandler}
+            state={data.subjects}
+            action={toggleOverlay}
+          />
+        )}
+        <div className="reg-content">
+          <div>
+            <div className="reg-header">
+              <h1>Exam</h1>
+              <h2>Application</h2>
+            </div>
+            <div className="reg-body">
+              <div className="exam-details">
+                <h4>Name:</h4>
+                <span>{data.quiz.name}</span>
               </div>
-            )}
-            <label>Email</label>
-            <input
-              type="email"
-              value={data.email}
-              onInput={(e) =>
-                dispatch({
-                  type: "email",
-                  email: e.target.value,
-                })
-              }
-              placeholder="enter your email address"
-            />
-          </div>
-          <div className="reg-btn">
-            <button onClick={() => register(data.email)}>Submit</button>
+              <div className="exam-details">
+                <h4>Total Quiz</h4>
+                <span>{data.quiz.nQuiz}</span>
+              </div>
+              <div className="exam-details">
+                <h4>Total Marks</h4>
+                <span>{data.quiz.TotalMarks}</span>
+              </div>
+              <div className="exam-details">
+                <h4>Time</h4>
+                <span>
+                  {data.quiz.hours > 0 ? data.quiz.hours + " hrs " : ""}
+                  {data.quiz.minutes > 0 ? data.quiz.minutes + " min " : ""}
+                  {data.quiz.seconds > 0 ? data.quiz.seconds + " secs " : ""}
+                </span>
+              </div>
+            </div>
+            <hr />
+            <div className="candidate-email">
+              {data.quiz.type === "custom" && (
+                <div className="quiz-selector">
+                  <p>select quiz(s):</p>
+                  <button onClick={toggleOverlay}>select</button>
+                </div>
+              )}
+              <label>Email</label>
+
+              <input
+                type="email"
+                value={data.email}
+                onInput={(e) =>
+                  dispatch({
+                    type: "email",
+                    email: e.target.value,
+                  })
+                }
+                placeholder="enter your email address"
+              />
+            </div>
+            <div className="reg-btn">
+              {validateRegistrationInput(data) ? (
+                <button onClick={() => register(data.email)}>Register</button>
+              ) : (
+                <button disabled={true}>register</button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Layout>
   );
 };
 export default Registration;
