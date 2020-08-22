@@ -124,7 +124,7 @@ export const textHandler = (e, input, name, dispatch, type) => {
   }
 };
 export const save = (data, quid, history, school, dispatch, setoptions) => {
-  const url = `http://localhost:3500/school/class/create/question?quid=${quid}`;
+  const url = `${process.env.REACT_APP_HEAD}/school/class/create/question?quid=${quid}`;
   const body = { ...data };
   delete body["showToast"];
   delete body["isEdit"];
@@ -150,7 +150,7 @@ export const save = (data, quid, history, school, dispatch, setoptions) => {
     });
 };
 export const saveEdited = (data, quid, history, quiz, school) => {
-  const url = `http://localhost:3500/school/class/update/question?quid=${quid}&quiz=${quiz}`;
+  const url = `${process.env.REACT_APP_HEAD}/school/class/update/question?quid=${quid}&quiz=${quiz}`;
   const body = { ...data };
   delete body["showToast"];
   delete body["isEdit"];

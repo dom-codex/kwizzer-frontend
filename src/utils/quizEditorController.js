@@ -40,7 +40,7 @@ export const inputReducer = (state, action) => {
 };
 export const textHandler = (e, name, dispatch, type) => {};
 export const saveEditedQuiz = (data, quizid, schid, history, dispatch) => {
-  const url = `http://localhost:3500/school/class/quiz/edit?quizid=${quizid}`;
+  const url = `${process.env.REACT_APP_HEAD}/school/class/quiz/edit?quizid=${quizid}`;
   fetch(url, {
     method: "POST",
     headers: {

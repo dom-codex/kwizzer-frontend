@@ -13,7 +13,7 @@ function SignUp(props) {
     <section className="signup">
       <div className="signup-body">
         <div className="signup-header">
-          <h1>Quizzer</h1>
+          <h1>Kwizzer</h1>
           <p>Promoting educational transparency</p>
           <p className="title">
             {!adminSignUp ? "Signup form" : "Admin Signup"}

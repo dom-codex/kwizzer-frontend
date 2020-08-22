@@ -43,7 +43,8 @@
     display: block;
   }
   .showcase-nav {
-    background-color: #050144;
+    /* background-color: #050144;*/
+    background-color: #050114;
     color: #fff;
   }
 }

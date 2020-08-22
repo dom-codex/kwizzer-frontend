@@ -13,7 +13,7 @@ function Login(props) {
     <section className="login">
       <div className="login-body">
         <div className="login-header">
-          <h1>Learned</h1>
+          <h1>Kwizzer</h1>
           <p>Promoting educational transparency</p>
           <p className="title">{!adminLogin ? "User Login" : "Admin Login"}</p>
         </div>
