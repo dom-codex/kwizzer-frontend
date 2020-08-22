@@ -1,5 +1,5 @@
 const { storeData } = require("./storage");
-module.exports.inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   switch (action.type) {
     case "Input":
       return {
@@ -23,7 +23,7 @@ module.exports.inputReducer = (state, action) => {
       return state;
   }
 };
-module.exports.textHandler = (e, name, dispatch) => {
+export const textHandler = (e, name, dispatch) => {
   switch (name) {
     case "email":
       dispatch({ type: "Input", input: { email: e.target.value } });
@@ -35,7 +35,7 @@ module.exports.textHandler = (e, name, dispatch) => {
       console.log("default");
   }
 };
-module.exports.login = (url, body, redirect, dispatch) => {
+export const login = (url, body, redirect, dispatch) => {
   fetch(url, {
     method: "POST",
     headers: {

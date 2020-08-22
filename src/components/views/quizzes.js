@@ -31,6 +31,7 @@ const QuizList = (props) => {
     setHeading("Quizzes");
     switchMode(false);
     fetchAllQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const publish = (ref) => {
     const url = `${process.env.REACT_APP_HEAD}/school/quiz/publish`;

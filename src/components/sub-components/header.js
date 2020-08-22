@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../../css/header.css";
-import Image from "../../assets/notification.svg";
 import { fetchData } from "../../utils/storage";
 import Opensocket from "socket.io-client";
 
@@ -40,6 +39,7 @@ function Header(props) {
     socket.on("notify", () => {
       setNotifications((prev) => prev + 1);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="showcase-nav">

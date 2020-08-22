@@ -1,11 +1,11 @@
-const { storeData, clearData } = require("./storage");
+const { storeData } = require("./storage");
 const {
   Validatename,
   Validateemail,
   Validatepassword,
   comfirmpassword,
 } = require("../validators/signUp");
-module.exports.inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   let result;
   switch (action.type) {
     case "Input":
@@ -18,16 +18,16 @@ module.exports.inputReducer = (state, action) => {
       return {
         ...state,
         name: action.value,
-        ["notName"]: !result.result,
-        ["nameErrMsg"]: result.message,
+        notName: !result.result,
+        nameErrMsg: result.message,
       };
     case "email":
       result = Validateemail(action.value);
       return {
         ...state,
         email: action.value,
-        ["notEmail"]: !result.result,
-        ["emailErrMsg"]: result.message,
+        notEmail: !result.result,
+        emailErrMsg: result.message,
       };
     case "password":
       result = Validatepassword(action.value);
@@ -35,7 +35,7 @@ module.exports.inputReducer = (state, action) => {
         ...state,
         password: action.value,
         notPassword: !result.result,
-        ["passErrMsg"]: result.message,
+        passErrMsg: result.message,
       };
     case "cpassword":
       result = comfirmpassword(state.password, action.value);
@@ -43,7 +43,7 @@ module.exports.inputReducer = (state, action) => {
         ...state,
         comfirm: action.value,
         isconfirm: !result.result,
-        ["cErrMsg"]: result.message,
+        cErrMsg: result.message,
       };
     case "prefill":
       return {
@@ -64,7 +64,7 @@ module.exports.inputReducer = (state, action) => {
       return state;
   }
 };
-module.exports.textHandler = (e, name, dispatch) => {
+export const textHandler = (e, name, dispatch) => {
   switch (name) {
     case "name":
       dispatch({ type: "Input", input: { name: e.target.value } });
@@ -81,9 +81,11 @@ module.exports.textHandler = (e, name, dispatch) => {
     case "comfirm":
       dispatch({ type: "Input", input: { comfirm: e.target.value } });
       break;
+    default:
+      return;
   }
 };
-module.exports.submitValue = (url, details, redirect, dispatch, ref = "") => {
+export const submitValue = (url, details, redirect, dispatch, ref = "") => {
   const data = { ...details };
   delete data["notName"];
   delete data["notEmail"];

@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+//react-hooks/exhaustive-deps
 import React, { useReducer, useEffect, useContext } from "react";
 import NewExamForm from "../sub-components/examform";
 import { modeContext } from "../../context/mode";
@@ -124,11 +126,19 @@ const NewExam = (props) => {
     if (name === "total") {
       value = parseInt(e.target.value || 0);
     }
-    dispatch({ type: "new", value: value, input: name });
+    dispatch({
+      type: "new",
+      value: value,
+      input: name,
+    });
   };
   const checkboxHandler = (e, name, total) => {
     if (!e.target.checked) {
-      return dispatch({ type: "rmv", value: e.target.value, total: total });
+      return dispatch({
+        type: "rmv",
+        value: e.target.value,
+        total: total,
+      });
     }
     dispatch({
       type: "quiz",
@@ -147,7 +157,10 @@ const NewExam = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         dispatch({ type: "isloading" });
-        dispatch({ type: "quizzes", quizzes: data.published });
+        dispatch({
+          type: "quizzes",
+          quizzes: data.published,
+        });
         console.log("published", data);
       });
   };
@@ -170,17 +183,27 @@ const NewExam = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 403) {
-          return dispatch({ type: "err", errors: res.errors });
+          return dispatch({
+            type: "err",
+            errors: res.errors,
+          });
         } else if (res.code === 401) {
-          return dispatch({ type: "toast", msg: res.message });
+          return dispatch({
+            type: "toast",
+            msg: res.message,
+          });
         }
-        dispatch({ type: "clear", msg: "exam created!!!" });
+        dispatch({
+          type: "clear",
+          msg: "exam created!!!",
+        });
       });
   };
   useEffect(() => {
     setHeading("Set Exam");
     switchMode(false);
     getPublishedQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="exam-form-cont">

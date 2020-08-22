@@ -77,7 +77,7 @@ const Question = (props) => {
     submitAQuestion(index, value);
   };
   const switchQuestion = (direction) => {
-    if (direction == "forward") {
+    if (direction === "forward") {
       if (index === question.questions.length - 1) {
         return setIndex(1);
       }

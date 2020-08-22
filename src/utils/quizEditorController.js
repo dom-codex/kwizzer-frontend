@@ -1,4 +1,4 @@
-module.exports.inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   switch (action.type) {
     case "title":
       return {
@@ -38,8 +38,8 @@ module.exports.inputReducer = (state, action) => {
       return state;
   }
 };
-module.exports.textHandler = (e, name, dispatch, type) => {};
-module.exports.saveEditedQuiz = (data, quizid, schid, history, dispatch) => {
+export const textHandler = (e, name, dispatch, type) => {};
+export const saveEditedQuiz = (data, quizid, schid, history, dispatch) => {
   const url = `http://localhost:3500/school/class/quiz/edit?quizid=${quizid}`;
   fetch(url, {
     method: "POST",

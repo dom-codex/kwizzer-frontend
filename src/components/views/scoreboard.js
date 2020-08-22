@@ -30,6 +30,7 @@ const ScoreBoard = (props) => {
     setHeading("ScoreBoard");
     switchMode(false);
     fetchAllExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="scoreboard">

@@ -47,6 +47,7 @@ const CandidatesResults = (props) => {
     setHeading("Results");
     switchMode(false);
     fetchResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="candidates-result">

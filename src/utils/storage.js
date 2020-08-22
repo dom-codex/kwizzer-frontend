@@ -1,9 +1,9 @@
-module.exports.storeData = (type, data) => {
+export const storeData = (type, data) => {
   localStorage.setItem(type, data);
 };
-module.exports.fetchData = (key) => {
+export const fetchData = (key) => {
   return localStorage.getItem(key);
 };
-module.exports.clearData = (key) => {
+export const clearData = (key) => {
   localStorage.removeItem(key);
 };

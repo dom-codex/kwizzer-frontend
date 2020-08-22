@@ -67,9 +67,13 @@ const QuizList = (props) => {
       .then((resp) => resp.json())
       .then((data) => {
         setQuestions(data.questions);
-        dispatch({ type: "prefill", values: data.quiz });
+        dispatch({
+          type: "prefill",
+          values: data.quiz,
+        });
       });
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(getQuiz, []);
   return (
     <section className="quiz-editor">
@@ -93,7 +97,12 @@ const QuizList = (props) => {
             id="quiz-name"
             type="text"
             value={quiz.name}
-            onChange={(e) => dispatch({ type: "title", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({
+                type: "title",
+                value: e.target.value,
+              })
+            }
             maxLength="30"
           />
         </div>
@@ -104,7 +113,10 @@ const QuizList = (props) => {
             id="nQuest"
             value={quiz.nQuestions}
             onChange={(e) =>
-              dispatch({ type: "toanswer", value: e.target.value })
+              dispatch({
+                type: "toanswer",
+                value: e.target.value,
+              })
             }
           />
         </div>
@@ -115,7 +127,12 @@ const QuizList = (props) => {
             id="perMark"
             step="0.01"
             value={quiz.mark}
-            onChange={(e) => dispatch({ type: "mark", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({
+                type: "mark",
+                value: e.target.value,
+              })
+            }
           />
         </div>
         <div className="total-marks design-1">
@@ -124,7 +141,12 @@ const QuizList = (props) => {
             type="number"
             id="total"
             value={quiz.total}
-            onChange={(e) => dispatch({ type: "total", value: e.target.value })}
+            onChange={(e) =>
+              dispatch({
+                type: "total",
+                value: e.target.value,
+              })
+            }
           />
         </div>
         <button

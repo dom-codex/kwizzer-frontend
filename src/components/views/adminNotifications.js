@@ -32,6 +32,7 @@ const Notification = (props) => {
       });
       socket.emit("adminreceived", data.id);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="notification">

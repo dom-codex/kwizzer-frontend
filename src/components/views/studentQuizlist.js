@@ -40,6 +40,7 @@ const StudentQuizList = (props) => {
         setQuizzes(data.quizzes);
       });
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(fetchRegisteredQuiz, []);
   return (
     <div>

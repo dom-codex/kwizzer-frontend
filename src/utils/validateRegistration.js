@@ -1,5 +1,5 @@
-exports.validateRegistrationInput = (data) => {
-  const { email, overlay, quiz, subjects } = data;
+export const validateRegistrationInput = (data) => {
+  const { email, quiz, subjects } = data;
   if (
     email.length > 5 &&
     quiz.type === "custom" &&

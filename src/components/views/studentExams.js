@@ -45,6 +45,7 @@ const StudentExams = (props) => {
     setHeading("Exams");
     switchMode(true);
     getExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="examinations">

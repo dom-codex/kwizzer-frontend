@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from "react";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
 import "../../css/solution.css";
-import { fetchData } from "../../utils/storage";
 const correct = {
   backgroundColor: "green",
 };
@@ -99,7 +98,10 @@ const Solutions = (props) => {
       .then((res) => res.json())
       .then((datas) => {
         console.log(datas);
-        dispatch({ type: "load", quizzes: datas.solution.quizzes });
+        dispatch({
+          type: "load",
+          quizzes: datas.solution.quizzes,
+        });
 
         //setQuestionpaper(data.questions.questions);
       });
@@ -124,6 +126,7 @@ const Solutions = (props) => {
       return dispatch({ type: "prev" });
     }
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(getQuestionPaper, []);
   return (
     <section className="solution">

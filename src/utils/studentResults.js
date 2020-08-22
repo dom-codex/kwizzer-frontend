@@ -1,4 +1,4 @@
-module.exports.resulReducer = (state, action) => {
+export const resulReducer = (state, action) => {
   switch (action.type) {
     case "load":
       return {

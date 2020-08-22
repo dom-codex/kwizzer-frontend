@@ -15,7 +15,6 @@ const AdminSignup = (props) => {
     cansubmit: false,
   });
   const url = `${process.env.REACT_APP_HEAD}/school/create`;
-  const { search } = props.routes.location;
   //const ref = search.split("user=")[1];
   const cansubmit = canSubmit(inputState);
 

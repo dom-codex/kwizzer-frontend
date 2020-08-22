@@ -59,7 +59,11 @@ const Examination = (props) => {
         const {
           quizzes: { quizzes, _id },
         } = exam;
-        dispatch({ type: "init", quizzes: quizzes, sheet: _id });
+        dispatch({
+          type: "init",
+          quizzes: quizzes,
+          sheet: _id,
+        });
       });
   };
   const submit = (choice) => {
@@ -79,7 +83,10 @@ const Examination = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 200) {
-          return dispatch({ type: "toast", txt: "Saved!!!" });
+          return dispatch({
+            type: "toast",
+            txt: "Saved!!!",
+          });
         }
       });
   };
@@ -107,7 +114,11 @@ const Examination = (props) => {
     props.history.replace(`/menu`);
   };
   const selectAnswer = (i, option) => {
-    dispatch({ type: "answer_a_question", answer: option, submit: submit });
+    dispatch({
+      type: "answer_a_question",
+      answer: option,
+      submit: submit,
+    });
   };
   const switchQuestion = (direction) => {
     if (
@@ -120,7 +131,10 @@ const Examination = (props) => {
     }
   };
   const selectQuiz = (index) => {
-    dispatch({ type: "change_quiz", index: index });
+    dispatch({
+      type: "change_quiz",
+      index: index,
+    });
   };
   const genQuizSelectors = (quizzes) => {
     const selectors = quizzes.map((quiz, i) => {
@@ -141,6 +155,7 @@ const Examination = (props) => {
   useEffect(() => {
     switchMode(false);
     LoadExam();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="question">
@@ -184,9 +199,12 @@ const Examination = (props) => {
       </div>
       {data.questions.length && (
         <div style={{ position: "relative" }}>
-          <p style={{ position: "absolute", right: "12px" }}>{`${
-            data.currentQuestionIndex + 1
-          } / ${data.questions.length}`}</p>
+          <p
+            style={{
+              position: "absolute",
+              right: "12px",
+            }}
+          >{`${data.currentQuestionIndex + 1} / ${data.questions.length}`}</p>
           <QuestionDisplayArea
             index={data.currentQuestionIndex + 1}
             question={

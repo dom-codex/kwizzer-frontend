@@ -64,9 +64,6 @@ const NewQuizWindow = (props) => {
     message: "",
     showToast: false,
   });
-  const handleInput = (e, name) => {
-    //  dispatch({ type: "Input", input: name, value: e.target.value });
-  };
   const createQuiz = () => {
     const body = inputState;
     const url = `${process.env.REACT_APP_HEAD}/school/class/create/quiz`;
@@ -95,6 +92,7 @@ const NewQuizWindow = (props) => {
   useEffect(() => {
     setHeading("Kwizzer");
     switchMode(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="new-quiz-window">

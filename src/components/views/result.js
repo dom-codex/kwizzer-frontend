@@ -59,6 +59,7 @@ const Result = (props) => {
     setHeading("Results");
     switchMode(true);
     getExamResults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="result">

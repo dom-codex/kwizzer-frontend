@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Header from "../sub-components/header";
 import { modeContext } from "../../context/mode";
-import Img from "../../assets/icon.svg";
 import Logo1 from "../../assets/kwi-lo.jpg";
 import "../../css/layout.css";
 const Layout = (props) => {
@@ -21,7 +20,7 @@ const Layout = (props) => {
       >
         <div className="side-panel">
           <div className="side-panel-logo">
-            <img src={Logo1} />
+            <img src={Logo1} alt="logo" />
           </div>
           <ul className="side-link">
             <li>

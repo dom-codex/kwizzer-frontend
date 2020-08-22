@@ -5,7 +5,6 @@ import Toast from "../sub-components/toast";
 import Dialog from "../sub-components/dialog";
 import Styles from "../../css/tile.module.css";
 import styles from "../../css/examrecords.css";
-import Img from "../../assets/icon.svg";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
 const ExamRecords = (props) => {
@@ -80,6 +79,7 @@ const ExamRecords = (props) => {
     setHeading("Records");
     switchMode(false);
     fetchExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="exam-records">

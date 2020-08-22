@@ -41,6 +41,7 @@ const Published = (props) => {
     switchMode(false);
     setHeading("Candidates");
     fetchExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="candidates">

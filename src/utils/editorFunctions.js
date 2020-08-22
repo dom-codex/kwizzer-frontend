@@ -1,9 +1,9 @@
-module.exports.retrieveValue = (key, options) => {
-  const option = options.find((opt) => opt.name == key);
+export const retrieveValue = (key, options) => {
+  const option = options.find((opt) => opt.name.toString() === key.toString());
   if (!option) return "";
   return option.value;
 };
-module.exports.inputReducer = (state, action) => {
+export const inputReducer = (state, action) => {
   let alreadyExisting;
   let todelete = [];
   switch (action.type) {
@@ -70,7 +70,9 @@ module.exports.inputReducer = (state, action) => {
           todelete.push(action.id);
         }
       }
-      const latest = state.opts.filter((option, i) => i != action.i);
+      const latest = state.opts.filter(
+        (_, i) => i.toString() !== action.i.toString()
+      );
       return {
         ...state,
         opts: latest,
@@ -103,7 +105,7 @@ module.exports.inputReducer = (state, action) => {
       return state;
   }
 };
-module.exports.textHandler = (e, input, name, dispatch, type) => {
+export const textHandler = (e, input, name, dispatch, type) => {
   switch (name) {
     case "question":
       dispatch({ type: type, question: e.target.value });
@@ -117,9 +119,11 @@ module.exports.textHandler = (e, input, name, dispatch, type) => {
       }
       dispatch({ type: type, answer: e.target.value });
       break;
+    default:
+      return;
   }
 };
-module.exports.save = (data, quid, history, school, dispatch, setoptions) => {
+export const save = (data, quid, history, school, dispatch, setoptions) => {
   const url = `http://localhost:3500/school/class/create/question?quid=${quid}`;
   const body = { ...data };
   delete body["showToast"];
@@ -145,7 +149,7 @@ module.exports.save = (data, quid, history, school, dispatch, setoptions) => {
       }
     });
 };
-module.exports.saveEdited = (data, quid, history, quiz, school) => {
+export const saveEdited = (data, quid, history, quiz, school) => {
   const url = `http://localhost:3500/school/class/update/question?quid=${quid}&quiz=${quiz}`;
   const body = { ...data };
   delete body["showToast"];

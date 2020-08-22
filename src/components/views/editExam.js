@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
-import Layout from "../sub-components/layout";
 import Dialog from "../sub-components/dialog";
 import { fetchData } from "../../utils/storage";
 import { validateExamForm } from "../../validators/exam";
@@ -25,9 +24,6 @@ const NewExam = (props) => {
             : [...state.todelete],
         };
       case "rmv":
-        const istobecreated = state.tocreate.some(
-          (id) => id.toString() === action.value
-        );
         const wasChosed = state.existing.some(
           (id) => id.toString() === action.value
         );
@@ -124,6 +120,8 @@ const NewExam = (props) => {
           ...state,
           showDialog: !state.showDialog,
         };
+      default:
+        return state;
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -210,6 +208,7 @@ const NewExam = (props) => {
   };
   useEffect(() => {
     fetchSingleExam();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="exam-form-cont">

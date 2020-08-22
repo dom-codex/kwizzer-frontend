@@ -131,6 +131,7 @@ const QuizEditor = (props) => {
     if (isNew.toString() !== "true") {
       fetchQuestion();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="quiz-editor-cont">

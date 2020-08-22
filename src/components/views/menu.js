@@ -28,6 +28,7 @@ function Menu(props) {
     setHeading("Home");
     switchMode(true);
     LoadInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="menu">

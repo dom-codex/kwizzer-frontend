@@ -1,4 +1,4 @@
-module.exports.examsReducer = (state, action) => {
+export const examsReducer = (state, action) => {
   switch (action.type) {
     case "init":
       const quizzes = action.quizzes;

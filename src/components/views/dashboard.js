@@ -34,6 +34,7 @@ const Dashboard = (props) => {
     setHeading("Dashboard");
     switchMode(false);
     fetchStatistics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <section className="dashboard">
