@@ -12,3 +12,8 @@
   width: 120px;
   height: 30px;
 }
+@media all and (max-width: 450px) {
+  .result {
+    width: 100%;
+  }
+}

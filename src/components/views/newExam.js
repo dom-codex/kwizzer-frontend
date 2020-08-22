@@ -1,12 +1,13 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
 import NewExamForm from "../sub-components/examform";
-import Layout from "../sub-components/layout";
+import { modeContext } from "../../context/mode";
 import Toast from "../sub-components/toast";
 import { validateExamForm } from "../../validators/exam";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
 const NewExam = (props) => {
   //  let sref = props.location.state.sref;
+  const { switchMode, setHeading } = useContext(modeContext);
   const inputReducer = (state, action) => {
     switch (action.type) {
       case "new":
@@ -94,6 +95,8 @@ const NewExam = (props) => {
           showToast: true,
           message: action.msg,
         };
+      default:
+        return state;
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
@@ -139,7 +142,7 @@ const NewExam = (props) => {
   };
   const getPublishedQuiz = () => {
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/get/all/publishedquiz?sch=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -150,7 +153,7 @@ const NewExam = (props) => {
   };
   const save = () => {
     dispatch({ type: "clearerr" });
-    const url = `http://localhost:3500/school/set/examination?sch=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/set/examination?sch=${school}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
@@ -167,46 +170,45 @@ const NewExam = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 403) {
-          dispatch({ type: "err", errors: res.errors });
+          return dispatch({ type: "err", errors: res.errors });
         } else if (res.code === 401) {
-          dispatch({ type: "toast", msg: res.message });
+          return dispatch({ type: "toast", msg: res.message });
         }
         dispatch({ type: "clear", msg: "exam created!!!" });
       });
   };
   useEffect(() => {
+    setHeading("Set Exam");
+    switchMode(false);
     getPublishedQuiz();
   }, []);
   return (
-    <Layout>
-      <section className="exam-form-cont">
-        <Toast
-          isOpen={data.showToast}
-          action={() => dispatch({ type: "toast" })}
-          text={data.message}
-          styles={{}}
-          animate={"showToast-top"}
-          main={"toast-top"}
-          top={{ top: "25px", left: "30px" }}
-        />
-        <NewExamForm
-          title={"Set Examination"}
-          inputHandler={inputHandler}
-          save={save}
-          toggle={toggle}
-          dispatch={dispatch}
-          checkboxHandler={checkboxHandler}
-          data={{
-            isOpen: data.isOpen,
-            isLoading: data.isLoading,
-            quizzes: data.quizzes,
-            setList: () => dispatch({ type: "isopen" }),
-            data: data,
-          }}
-          isValidated={validateExamForm(data)}
-        />
-      </section>
-    </Layout>
+    <section className="exam-form-cont">
+      <Toast
+        isOpen={data.showToast}
+        action={() => dispatch({ type: "toast" })}
+        text={data.message}
+        styles={{}}
+        animate={"showToast-top"}
+        main={"toast-top"}
+        top={{ top: "25px", left: "30px" }}
+      />
+      <NewExamForm
+        inputHandler={inputHandler}
+        save={save}
+        toggle={toggle}
+        dispatch={dispatch}
+        checkboxHandler={checkboxHandler}
+        data={{
+          isOpen: data.isOpen,
+          isLoading: data.isLoading,
+          quizzes: data.quizzes,
+          setList: () => dispatch({ type: "isopen" }),
+          data: data,
+        }}
+        isValidated={validateExamForm(data)}
+      />
+    </section>
   );
 };
 

@@ -157,3 +157,36 @@
     transform: translateY(0%);
   }
 }
+@media all and (max-width: 450px) {
+  .exam-form-cont {
+    width: 100%;
+  }
+  .quiz-overlay-content {
+    width: 100%;
+  }
+}
+@media all and (max-width: 370px) {
+  .new-exam-switch {
+    flex-direction: column;
+    align-items: center;
+  }
+  .new-exam-switch span {
+    margin-bottom: 5px;
+  }
+  .exam-forms-duration {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  label[for="hours"],
+  label[for="minutes"],
+  label[for="seconds"] {
+    display: none;
+  }
+  .exam-forms-duration input {
+    width: 98%;
+    height: 38px;
+    margin-bottom: 12px;
+    border-radius: 0;
+  }
+}

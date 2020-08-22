@@ -33,7 +33,9 @@ const StudentQuizTile = (props) => {
       {props.children}
       <div>Time allocated: {time}</div>
       {!props.completed && (
-        <button onClick={() => showOverView(false)}>take exam</button>
+        <button onClick={props.canStart ? () => showOverView(false) : null}>
+          {props.canStart ? "take exam" : "cannot start exam now"}{" "}
+        </button>
       )}
       {props.canRetake && props.completed && (
         <button onClick={() => showOverView(true)}>Retry</button>

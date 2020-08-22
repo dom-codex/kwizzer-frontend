@@ -5,6 +5,16 @@
   z-index: 7;
   overflow-y: scroll;
   margin-bottom: 20px;
+  background-color: #fff;
+  top: 0;
+}
+.quiz-editor-heading {
+  background-color: #150143;
+  color: #fff;
+  font-weight: bold;
+  font-size: 2em;
+  height: 70px;
+  padding-left: 5px;
 }
 .design-2 {
   background-color: #f6f6f6;

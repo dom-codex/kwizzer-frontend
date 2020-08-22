@@ -7,13 +7,12 @@ const ExamScore = (props) => {
 
   return (
     <div>
-      {" "}
       <ul className={Styles.ulGrid}>
         {quizzes.length ? (
           quizzes.map((quiz) => {
             return (
               <Tile
-                key={quiz.id}
+                key={quiz.ref}
                 Styles={{}}
                 li={Styles.li}
                 action={{

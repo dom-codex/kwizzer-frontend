@@ -30,29 +30,29 @@ function SubMenu(props) {
   };
   const userIdentities = props.stateData;
   return (
-    <div class="submenu">
-      <h2 class="submenu-heading">Menu</h2>
+    <div className="submenu">
+      <h2 className="submenu-heading">Menu</h2>
       <hr />
       <br />
-      <div class="menu-options">
+      <div className="menu-options">
         <Menutile
           title={"Dashboard"}
+          icon={"dashboard"}
           subtile={<Subtile title={title} user={props.user} />}
         />
         <Menutile
           title={"Notifications"}
+          icon={"event"}
           action={() => LinkTo("/menu/notifications", userIdentities)}
         />
         <Menutile
           title={"Results"}
+          icon={"wysiwyg"}
           action={() => LinkTo("/menu/results", userIdentities)}
         />
-        {/*<Menutile
-          title={"Quizzes"}
-          action={() => LinkTo("/menu/quiz?user=student", userIdentities)}
-        />*/}
         <Menutile
           title={"My Exams"}
+          icon={"list_alt"}
           action={() => LinkTo("/menu/myexams", userIdentities)}
         />
       </div>

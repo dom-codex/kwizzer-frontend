@@ -56,22 +56,23 @@ module.exports.examsReducer = (state, action) => {
         ...state,
         openSelector: !state.openSelector,
       };
+    case "openQuizTray":
+      return {
+        ...state,
+        openQuizSelector: !state.openQuizSelector,
+      };
     case "toast":
       return {
         ...state,
         showToast: !state.showToast,
         text: action.txt,
       };
+    case "hidetoast":
+      return {
+        ...state,
+        showToast: false,
+      };
     default:
       return state;
   }
 };
-/*state
-{
-    quizzes,
-    currentquiz,
-    currentquestion,
-    currentQuizIndex:0,
-    currentQuestionIndex:0
-}
-*/

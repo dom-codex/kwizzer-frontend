@@ -1,28 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../sub-components/layout";
-import Jumbo from "../sub-components/Jumbo";
+import React, { useEffect, useState, useContext } from "react";
+import { modeContext } from "../../context/mode";
 import "../../css/scoreboard.css";
 import Toast from "../sub-components/toast";
 import ExamScore from "../sub-components/examScore";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
 const ScoreBoard = (props) => {
+  const { switchMode, setHeading } = useContext(modeContext);
   const [isToast, setToast] = useState(false);
   const [text, setText] = useState("No student has submitted!!!");
   const [Exams, setExams] = useState([]);
-  /*const fetchAllQuiz = (exams) => {
-    const url = `http://localhost:3500/school/class/quiz/all?sid=${ref}`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => {
-        const quizzes = res.quizzes;
-        console.log(quizzes);
-        setQuizzes(quizzes);
-        setExams(exams);
-      });
-  };*/
   const fetchAllExams = () => {
-    const url = `http://localhost:3500/school/get/exams?sch=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/get/exams?sch=${school}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -38,33 +27,30 @@ const ScoreBoard = (props) => {
     props.history.push(route, { quizId: id, mode: mode });
   };
   useEffect(() => {
+    setHeading("ScoreBoard");
+    switchMode(false);
     fetchAllExams();
   }, []);
   return (
-    <Layout>
-      <section className="scoreboard">
-        {isToast && (
-          <Toast
-            isOpen={isToast}
-            text={text}
-            action={setToast}
-            animate={"showToast-top"}
-            main={"toast-top"}
-            top={{ top: "25px" }}
-          />
-        )}
-        <div className="showcase">
-          <Jumbo title={"ScoreBoard"} />
-        </div>
-        {
-          <ExamScore
-            quizzes={Exams}
-            setToast={setToast}
-            viewResults={viewResults}
-          />
-        }
-      </section>
-    </Layout>
+    <section className="scoreboard">
+      {isToast && (
+        <Toast
+          isOpen={isToast}
+          text={text}
+          action={setToast}
+          animate={"showToast-top"}
+          main={"toast-top"}
+          top={{ top: "25px" }}
+        />
+      )}
+      {
+        <ExamScore
+          quizzes={Exams}
+          setToast={setToast}
+          viewResults={viewResults}
+        />
+      }
+    </section>
   );
 };
 export default ScoreBoard;

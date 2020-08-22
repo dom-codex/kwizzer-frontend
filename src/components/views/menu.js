@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../sub-components/layout";
+import React, { useEffect, useState, useContext } from "react";
 import Jumbo from "../sub-components/Jumbo";
 import Submenu from "../sub-components/submenu";
+import { modeContext } from "../../context/mode";
 import "../../css/showcase.css";
 import { fetchData } from "../../utils/storage";
 const stateData = fetchData("person");
 function Menu(props) {
+  const { switchMode, setHeading } = useContext(modeContext);
   //retrieve user details from state
   const [detailLoaded, setDetailsLoaded] = useState(false);
   const [user, setUser] = useState({});
   //const { location } = props.routes;
   const LoadInfo = () => {
     //  const query = location.search.split("=")[1];
-    const url = `http://localhost:3500/user/find?ref=${stateData}`;
+    const url = `${process.env.REACT_APP_HEAD}/user/find?ref=${stateData}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -24,15 +25,15 @@ function Menu(props) {
       });
   };
   useEffect(() => {
+    setHeading("Home");
+    switchMode(true);
     LoadInfo();
   }, []);
   return (
-    <Layout user={true}>
-      <section className="menu">
-        <Jumbo title={detailLoaded ? `${"Hi " + user.name}` : "Loading..."} />
-        {detailLoaded && <Submenu user={user} routes={props.routes} />}
-      </section>
-    </Layout>
+    <section className="menu">
+      <Jumbo title={detailLoaded ? `${"Hi " + user.name}` : "Loading..."} />
+      {detailLoaded && <Submenu user={user} routes={props.routes} />}
+    </section>
   );
 }
 export default Menu;

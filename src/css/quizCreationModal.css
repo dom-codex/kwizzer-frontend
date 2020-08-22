@@ -1,7 +1,7 @@
 section.new-quiz-window {
   height: calc(100vh - 22px);
   width: calc(100% - 93px);
-  background-color: #ccc;
+  background-color: #fff;
 }
 .new-quiz {
   width: 100%;
@@ -27,7 +27,6 @@ section.new-quiz-window {
   display: block;
   width: 90%;
   max-width: 400px;
-
   text-align: left;
   margin: 5px 20px;
 }
@@ -39,7 +38,6 @@ section.new-quiz-window {
   border: 2px solid teal;
 }
 .create-btn {
-  margin: 10px 0 30px 20px;
   width: 350px;
   margin: 15px auto;
 }
@@ -61,4 +59,26 @@ section.new-quiz-window {
 }
 label.toggle {
   margin: 0 !important;
+}
+@media all and (max-width: 450px) {
+  .quiz-new-window {
+    width: 100% !important;
+  }
+  .new-quiz {
+    width: 98vw;
+    background-color: #fafafa;
+  }
+  .quiz-input {
+    text-align: left;
+    padding-left: 18px;
+  }
+  .quiz-form label {
+    margin-left: 0;
+    text-align: left;
+    width: 90%;
+  }
+  .create-btn {
+    width: 87%;
+    margin-left: 18px;
+  }
 }

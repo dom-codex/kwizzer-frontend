@@ -8,7 +8,7 @@ const Switch = (props) => {
       <input
         type="checkbox"
         id={props.forRetry ? "retry" : "switch"}
-        class="checkbox"
+        className="checkbox"
         checked={toggle ? true : false}
         onChange={() => {
           if (props.isExam) {
@@ -24,7 +24,10 @@ const Switch = (props) => {
           });
         }}
       />
-      <label for={props.forRetry ? "retry" : "switch"} class="toggle"></label>
+      <label
+        htmlFor={props.forRetry ? "retry" : "switch"}
+        className="toggle"
+      ></label>
     </div>
   );
 };

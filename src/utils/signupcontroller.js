@@ -105,12 +105,10 @@ module.exports.submitValue = (url, details, redirect, dispatch, ref = "") => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.code === 403) {
         return dispatch({ type: "prefill", data: data.data });
       }
       if (data.code === 201) {
-        clearData("person");
         storeData("person", data.user.ref);
         redirect(`/menu`);
       } else if (data.code === 200) {

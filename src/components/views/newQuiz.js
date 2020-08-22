@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from "react";
-import Layout from "../sub-components/layout";
+import React, { useReducer, useContext, useEffect } from "react";
+import { modeContext } from "../../context/mode";
 import Toast from "../sub-components/toast";
 import Dialog from "../sub-components/dialog";
 import "../../css/quizCreationModal.css";
@@ -10,9 +10,6 @@ const stylesheet = {
   color: "#fff",
 };
 const NewQuizWindow = (props) => {
-  //  const sref = props.location.state.sref;
-  //const [toggle, setToggle] = useState(false);
-  const [isToast, setToast] = useState(false);
   const inputReducer = (state, action) => {
     let value;
     switch (action.type) {
@@ -26,13 +23,13 @@ const NewQuizWindow = (props) => {
         return {
           ...state,
           markPerQuestion: value,
-          totalMarks: value * state.noOfQuestionForStud,
+          totalMarks: value * state.noOfQuestionforStud,
         };
       case "toanswer":
         value = parseInt(action.value);
         return {
           ...state,
-          noOfQuestionForStud: value,
+          noOfQuestionforStud: value,
           totalMarks: state.markPerQuestion * value,
         };
       case "total":
@@ -60,7 +57,7 @@ const NewQuizWindow = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     title: "",
     markPerQuestion: "",
-    noOfQuestionForStud: "",
+    noOfQuestionforStud: "",
     totalMarks: "",
     school: school,
     showDialog: false,
@@ -72,7 +69,7 @@ const NewQuizWindow = (props) => {
   };
   const createQuiz = () => {
     const body = inputState;
-    const url = "http://localhost:3500/school/class/create/quiz";
+    const url = `${process.env.REACT_APP_HEAD}/school/class/create/quiz`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -94,88 +91,91 @@ const NewQuizWindow = (props) => {
         }
       });
   };
+  const { switchMode, setHeading } = useContext(modeContext);
+  useEffect(() => {
+    setHeading("Kwizzer");
+    switchMode(false);
+  }, []);
   return (
-    <Layout>
-      <section className="new-quiz-window">
-        {inputState.showDialog && (
-          <Dialog
-            title={"Success"}
-            text={"Quiz created sucessfully!!!"}
-            action={() => props.history.push(`/dashboard`)}
-          />
-        )}
-        {inputState.showToast && (
-          <Toast
-            text={inputState.message}
-            isOpen={inputState.showToast}
-            action={() => dispatch({ type: "toast", message: "" })}
-            styles={stylesheet}
-            animate={"showToast-top"}
-            main={"toast-top"}
-          />
-        )}
-        <div className="new-quiz">
-          <div className="new-quiz-header">
-            <h1 className="app-title">Quizzer</h1>
-            <h1 className="form-title">New Quiz </h1>
+    <section className="new-quiz-window">
+      {inputState.showDialog && (
+        <Dialog
+          title={"Success"}
+          text={"Quiz created sucessfully!!!"}
+          action={() => props.history.push(`/dashboard`)}
+        />
+      )}
+      {inputState.showToast && (
+        <Toast
+          text={inputState.message}
+          isOpen={inputState.showToast}
+          action={() => dispatch({ type: "toast", message: "" })}
+          styles={stylesheet}
+          animate={"showToast-top"}
+          main={"toast-top"}
+        />
+      )}
+      <div className="new-quiz">
+        <div className="new-quiz-header">
+          <h1 className="app-title">Quizzer</h1>
+          <h1 className="form-title">New Quiz </h1>
+        </div>
+        <div className="quiz-form">
+          <div className="quiz-input">
+            <label htmlFor={"subject"}>Title</label>
+            <input
+              id="subject"
+              type="text"
+              value={inputState.title}
+              onChange={(e) =>
+                dispatch({ type: "title", value: e.target.value })
+              }
+              placeholder="course"
+            />
           </div>
-          <div className="quiz-form">
-            <div className="quiz-input">
-              <label for="subject">Title</label>
-              <input
-                id="subject"
-                type="text"
-                value={inputState.title}
-                onInput={(e) =>
-                  dispatch({ type: "title", value: e.target.value })
-                }
-                placeholder="course"
-              />
-            </div>
-            <div className="quiz-input">
-              <label for="mark">Mark per Question</label>
-              <input
-                id="mark"
-                step="0.01"
-                type="number"
-                value={inputState.markPerQuestion}
-                onInput={(e) =>
-                  dispatch({ type: "mark", value: e.target.value })
-                }
-                placeholder="Mark(s) per question"
-              />
-            </div>
-            <div className="quiz-input">
-              <label for="mark">No of question to be answered</label>
-              <input
-                id="mark"
-                type="number"
-                value={inputState.noOfQuestionForStud}
-                onInput={(e) =>
-                  dispatch({ type: "toanswer", value: e.target.value })
-                }
-                placeholder="No of questions to be answered"
-              />
-            </div>
-            <div className="quiz-input">
-              <label for="total">Total Marks</label>
-              <input
-                id="total"
-                type="number"
-                value={inputState.totalMarks}
-                onInput={(e) =>
-                  dispatch({ type: "total", value: e.target.value })
-                }
-                placeholder="total quiz mark"
-              />
-            </div>
+          <div className="quiz-input">
+            <label htmlFor="mark">Mark per Question</label>
+            <input
+              id="mark"
+              step="0.01"
+              type="number"
+              value={inputState.markPerQuestion}
+              onChange={(e) =>
+                dispatch({ type: "mark", value: e.target.value })
+              }
+              placeholder="Mark(s) per question"
+            />
           </div>
-          <div className="create-btn">
-            <button onClick={createQuiz}>create quiz</button>
+          <div className="quiz-input">
+            <label htmlFor="mark">No of question to be answered</label>
+            <input
+              id="mark"
+              type="number"
+              value={inputState.noOfQuestionforStud}
+              onChange={(e) =>
+                dispatch({ type: "toanswer", value: e.target.value })
+              }
+              placeholder="No of questions to be answered"
+            />
+          </div>
+          <div className="quiz-input">
+            <label htmlFor="total">Total Marks</label>
+            <input
+              id="total"
+              type="number"
+              value={inputState.totalMarks}
+              onChange={(e) =>
+                dispatch({ type: "total", value: e.target.value })
+              }
+              placeholder="total quiz mark"
+            />
           </div>
         </div>
-      </section>
-    </Layout>
+        <div className="create-btn">
+          <button onClick={createQuiz}>create quiz</button>
+        </div>
+      </div>
+    </section>
   );
 };
 

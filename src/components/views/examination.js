@@ -1,4 +1,5 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useContext } from "react";
+import { modeContext } from "../../context/mode";
 import Timer from "../sub-components/timer";
 import Dialog from "../sub-components/dialog";
 import QuestionDisplayArea from "../sub-components/question-display";
@@ -17,6 +18,7 @@ const generateJumpers = (n, dispatch, ci) => {
   for (let i = 0; i < n; i++) {
     jumpers.push(
       <button
+        key={i}
         style={ci === i ? { backgroundColor: "#ccc" } : {}}
         onClick={() => dispatch({ type: "select", index: i })}
       >
@@ -27,6 +29,7 @@ const generateJumpers = (n, dispatch, ci) => {
   return jumpers;
 };
 const Examination = (props) => {
+  const { switchMode } = useContext(modeContext);
   const { state } = props.location;
   const [data, dispatch] = useReducer(examsReducer, {
     id: "",
@@ -38,17 +41,21 @@ const Examination = (props) => {
     currentQuestionIndex: 0,
     showDialog: false,
     openSelector: false,
+    openQuizSelector: false,
     showToast: false,
     text: "",
   });
   const LoadExam = () => {
-    let url = `http://localhost:3500/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
+    let url = `${process.env.REACT_APP_HEAD}/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
     if (state.retry) {
-      url = `http://localhost:3500/school/exam/retry?sheet=${state.sheet}`;
+      url = `${process.env.REACT_APP_HEAD}/school/exam/retry?sheet=${state.sheet}`;
     }
     fetch(url)
       .then((res) => res.json())
       .then((exam) => {
+        if (exam.code === 403) {
+          return props.history.replace(`/menu/myexams`, { denied: true });
+        }
         const {
           quizzes: { quizzes, _id },
         } = exam;
@@ -56,7 +63,7 @@ const Examination = (props) => {
       });
   };
   const submit = (choice) => {
-    const url = `http://localhost:3500/school/submit/exam/question`;
+    const url = `${process.env.REACT_APP_HEAD}/school/submit/exam/question`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -72,12 +79,12 @@ const Examination = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 200) {
-          dispatch({ type: "toast", txt: "Saved!!!" });
+          return dispatch({ type: "toast", txt: "Saved!!!" });
         }
       });
   };
   const submitExam = () => {
-    const url = `http://localhost:3500/school/submit/examination`;
+    const url = `${process.env.REACT_APP_HEAD}/school/submit/examination`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -117,16 +124,29 @@ const Examination = (props) => {
   };
   const genQuizSelectors = (quizzes) => {
     const selectors = quizzes.map((quiz, i) => {
-      return <button onClick={() => selectQuiz(i)}>{quiz.title}</button>;
+      return (
+        <button
+          key={i}
+          onClick={() => {
+            selectQuiz(i);
+            dispatch({ type: "openQuizTray" });
+          }}
+        >
+          {quiz.title}
+        </button>
+      );
     });
     return selectors;
   };
-  useEffect(LoadExam, []);
+  useEffect(() => {
+    switchMode(false);
+    LoadExam();
+  }, []);
   return (
     <section className="question">
       <Toast
         isOpen={data.showToast}
-        action={() => dispatch({ type: "toast", txt: "" })}
+        action={() => dispatch({ type: "hidetoast" })}
         text={data.text}
         styles={{}}
         animate={"showToast"}
@@ -147,11 +167,26 @@ const Examination = (props) => {
         )
       }
       <div className="question-selector">
-        <div className="question-list">{genQuizSelectors(data.quizzes)}</div>
-        <p>{`${data.currentQuestionIndex + 1} / ${data.questions.length}`}</p>
+        <div className="selectors">
+          <button onClick={() => dispatch({ type: "openQuizTray" })}>
+            select Quiz
+          </button>
+          <button
+            className="jump-cont"
+            onClick={() => dispatch({ type: "openSelector" })}
+          >
+            select Question
+          </button>
+        </div>
+        <div className={`jumper ${data.openQuizSelector ? "slideup" : ""}`}>
+          <div className="jumper-btn">{genQuizSelectors(data.quizzes)}</div>
+        </div>
       </div>
       {data.questions.length && (
-        <div>
+        <div style={{ position: "relative" }}>
+          <p style={{ position: "absolute", right: "12px" }}>{`${
+            data.currentQuestionIndex + 1
+          } / ${data.questions.length}`}</p>
           <QuestionDisplayArea
             index={data.currentQuestionIndex + 1}
             question={
@@ -159,6 +194,7 @@ const Examination = (props) => {
                 .question /*question.questions[index].question*/
             }
           />
+
           <div className="question-options">
             <ul>
               {data.questions[data.currentQuestionIndex].options.map((q, i) => {
@@ -187,12 +223,6 @@ const Examination = (props) => {
         <button onClick={() => switchQuestion("forward")}>Next</button>
       </div>
       <div className="jump">
-        <div
-          className="jump-cont"
-          onClick={() => dispatch({ type: "openSelector" })}
-        >
-          Goto
-        </div>
         <div className={`jumper ${data.openSelector ? "slideup" : ""}`}>
           <div className="jumper-btn">
             {generateJumpers(

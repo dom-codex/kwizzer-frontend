@@ -9,10 +9,10 @@ function Header(props) {
   const [notifications, setNotifications] = useState(0);
   const fetchNewNotifications = () => {
     ref = fetchData("person");
-    let url = `http://localhost:3500/school/students/new/notifications?pref=${ref}`;
+    let url = `${process.env.REACT_APP_HEAD}/school/students/new/notifications?pref=${ref}`;
     if (!props.user) {
       ref = fetchData("school");
-      url = `http://localhost:3500/school/admin/new/notifications?sref=${ref}`;
+      url = `${process.env.REACT_APP_HEAD}/school/admin/new/notifications?sref=${ref}`;
     }
     fetch(url)
       .then((res) => res.json())
@@ -31,16 +31,28 @@ function Header(props) {
     } else {
       ref = fetchData("school");
     }
-    const socket = Opensocket(`http://localhost:3500?ref=${ref}`);
+  });
+  useEffect(() => {
+    const socket = Opensocket(`${process.env.REACT_APP_HEAD}?ref=${ref}`);
     socket.on("clear", () => {
       setNotifications(0);
+    });
+    socket.on("notify", () => {
+      setNotifications((prev) => prev + 1);
     });
   }, []);
   return (
     <div className="showcase-nav">
-      <div className="logo">
-        <p>Q</p>
+      <div
+        className="menu-icon"
+        onClick={() => {
+          const sidepane = document.querySelector(".side-panel-cont");
+          sidepane.classList.add("side-panel-slide");
+        }}
+      >
+        <i className="material-icons">menu</i>
       </div>
+      <div className="heading">{props.heading}</div>
       <div className="showcase-nav2">
         <a
           href={props.user ? "/menu/notifications" : "/admin/notifications"}
@@ -49,7 +61,12 @@ function Header(props) {
           <span style={notifications ? { backgroundColor: "orangered" } : {}}>
             {notifications}
           </span>
-          <img src={Image} style={{ height: "50px" }} />
+          <i
+            style={{ fontSize: "3.2em", color: "#ccc" }}
+            className="material-icons"
+          >
+            campaign
+          </i>
         </a>
       </div>
     </div>

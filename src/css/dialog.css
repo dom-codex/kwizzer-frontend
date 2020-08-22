@@ -23,12 +23,13 @@
   margin-right: 10px;
 }
 .dialog-controls {
-  display: flex;
-  justify-content: flex-end;
+  display: flex !important;
+  justify-content: flex-end !important;
 }
 .dialog-controls button {
   height: 32px;
-  width: 80px;
+  width: 80px !important;
+  background-color: #efefef !important;
   border: none;
   border-radius: 5px;
 }

@@ -164,7 +164,7 @@ const NewExam = (props) => {
   const getPublishedQuiz = (datas) => {
     const { quiz, exams } = datas;
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/get/all/publishedquiz?sch=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -175,7 +175,7 @@ const NewExam = (props) => {
   };
   const save = () => {
     dispatch({ type: "clearerr" });
-    const url = `http://localhost:3500/school/exam/save?sch=${school}&exam=${exam}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/exam/save?sch=${school}&exam=${exam}`;
     let body = { ...data };
     delete body["quizzes"];
     delete body["isOpen"];
@@ -200,7 +200,7 @@ const NewExam = (props) => {
       });
   };
   const fetchSingleExam = () => {
-    const url = `http://localhost:3500/school/get/exam?sch=${school}&exam=${exam}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/get/exam?sch=${school}&exam=${exam}`;
     fetch(url)
       .then((res) => res.json())
       .then((resdata) => {
@@ -212,33 +212,31 @@ const NewExam = (props) => {
     fetchSingleExam();
   }, []);
   return (
-    <Layout>
-      <section className="exam-form-cont">
-        {data.showDialog && (
-          <Dialog
-            title={"Notice"}
-            text={"Your changes were saved successfully!!!"}
-            action={() => props.history.replace("/dashboard/exam/records")}
-          />
-        )}
-        <NewExamForm
-          title={"Edit Examination"}
-          inputHandler={inputHandler}
-          save={save}
-          isedit={true}
-          dispatch={dispatch}
-          checkboxHandler={checkboxHandler}
-          data={{
-            isOpen: data.isOpen,
-            isLoading: data.isLoading,
-            quizzes: data.quizzes,
-            setList: () => dispatch({ type: "isopen" }),
-            data: data,
-          }}
-          isValidated={validateExamForm(data)}
+    <section className="exam-form-cont">
+      {data.showDialog && (
+        <Dialog
+          title={"Notice"}
+          text={"Your changes were saved successfully!!!"}
+          action={() => props.history.replace("/dashboard/exam/records")}
         />
-      </section>
-    </Layout>
+      )}
+      <NewExamForm
+        title={"Edit Examination"}
+        inputHandler={inputHandler}
+        save={save}
+        isedit={true}
+        dispatch={dispatch}
+        checkboxHandler={checkboxHandler}
+        data={{
+          isOpen: data.isOpen,
+          isLoading: data.isLoading,
+          quizzes: data.quizzes,
+          setList: () => dispatch({ type: "isopen" }),
+          data: data,
+        }}
+        isValidated={validateExamForm(data)}
+      />
+    </section>
   );
 };
 

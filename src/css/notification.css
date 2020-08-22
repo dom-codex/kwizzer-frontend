@@ -23,3 +23,8 @@
 .n-card-body {
   margin: 12px 0;
 }
+@media all and (max-width: 450px) {
+  .notification {
+    width: 100%;
+  }
+}

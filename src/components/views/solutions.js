@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from "react";
-import Layout from "../sub-components/layout";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
 import "../../css/solution.css";
@@ -93,7 +92,7 @@ const Solutions = (props) => {
   const getQuestionPaper = () => {
     /*let url = `http://localhost:3500/school/get/student/questionpaper?paper=${question}`;*/
 
-    const url = `http://localhost:3500/school/exam/result?sheet=${question}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/exam/result?sheet=${question}`;
 
     fetch(url)
       .then((res) => res.json())
@@ -126,24 +125,22 @@ const Solutions = (props) => {
   };
   useEffect(getQuestionPaper, []);
   return (
-    <Layout>
-      <section className="solution">
-        <div className="question-paper">
-          {data.questions.length && (
-            <QuestionDisplay
-              index={data.currentQuestionIndex + 1}
-              question={data.question.question}
-              options={data.question.options}
-              answer={data.question.answer}
-              answered={data.question.isAnswered}
-              nav={switchQuestion}
-            >
-              {genQuizSelectors(data.quizzes)}
-            </QuestionDisplay>
-          )}
-        </div>
-      </section>
-    </Layout>
+    <section className="solution">
+      <div className="question-paper">
+        {data.questions.length && (
+          <QuestionDisplay
+            index={data.currentQuestionIndex + 1}
+            question={data.question.question}
+            options={data.question.options}
+            answer={data.question.answer}
+            answered={data.question.isAnswered}
+            nav={switchQuestion}
+          >
+            {genQuizSelectors(data.quizzes)}
+          </QuestionDisplay>
+        )}
+      </div>
+    </section>
   );
 };
 export default Solutions;

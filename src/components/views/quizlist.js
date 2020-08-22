@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { Link } from "react-router-dom";
-import Layout from "../sub-components/layout";
 import Toast from "../sub-components/toast";
 import "../../css/questionlist.css";
-import {
-  inputReducer,
-  textHandler,
-  saveEditedQuiz,
-} from "../../utils/quizEditorController";
+import { inputReducer, saveEditedQuiz } from "../../utils/quizEditorController";
 import { fetchData } from "../../utils/storage";
 const error = {
   backgroundColor: "red",
@@ -67,7 +62,7 @@ const QuizList = (props) => {
   //const { school } = props.location.state;
   //const sid = search.split("sid=")[1].split("&")[0];
   const getQuiz = () => {
-    const url = `http://localhost:3500/school/class/questions/all?quid=${quid}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/class/questions/all?quid=${quid}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -77,102 +72,95 @@ const QuizList = (props) => {
   };
   useEffect(getQuiz, []);
   return (
-    <Layout>
-      <section className="quiz-editor">
-        <Toast
-          isOpen={quiz.showToast}
-          action={() => dispatch({ type: "toast" })}
-          text={quiz.message}
-          styles={quiz.hasErr ? error : {}}
-          animate={"showToast-top"}
-          main={"toast-top"}
-          top={{ top: "25px" }}
-        />
-        <button className="create-fab">
-          <Link to={`/dashboard/question/${quid}/?new=true&quid=${quid}`}>
-            +
-          </Link>
-        </button>
-        <div className="quiz-name-edit">
-          <div className="name-quiz design-1">
-            <label for="quiz-name">Quiz name:</label>
+    <section className="quiz-editor">
+      <Toast
+        isOpen={quiz.showToast}
+        action={() => dispatch({ type: "toast" })}
+        text={quiz.message}
+        styles={quiz.hasErr ? error : {}}
+        animate={"showToast-top"}
+        main={"toast-top"}
+        top={{ top: "25px" }}
+      />
+      <button className="create-fab">
+        <Link to={`/dashboard/question/${quid}/?new=true&quid=${quid}`}>+</Link>
+      </button>
+      <div className="quiz-name-edit">
+        <div className="name-quiz design-1">
+          <label htmlFor="quiz-name">Quiz name:</label>
 
-            <input
-              id="quiz-name"
-              type="text"
-              value={quiz.name}
-              onInput={(e) =>
-                dispatch({ type: "title", value: e.target.value })
-              }
-              maxLength="30"
-            />
-          </div>
-          <div className="num-to-ans design-1">
-            <label for="nQuest">To answer</label>
-            <input
-              type="number"
-              id="nQuest"
-              value={quiz.nQuestions}
-              onInput={(e) =>
-                dispatch({ type: "toanswer", value: e.target.value })
-              }
-            />
-          </div>
-          <div className="mark-per-question design-1">
-            <label for="perMark">Mark(s) per question</label>
-            <input
-              type="number"
-              id="perMark"
-              step="0.01"
-              value={quiz.mark}
-              onInput={(e) => dispatch({ type: "mark", value: e.target.value })}
-            />
-          </div>
-          <div className="total-marks design-1">
-            <label for="total">total marks</label>
-            <input
-              type="number"
-              id="total"
-              value={quiz.total}
-              onInput={(e) =>
-                dispatch({ type: "total", value: e.target.value })
-              }
-            />
-          </div>
-          <button
-            onClick={() =>
-              saveEditedQuiz(quiz, quid, school, props.history, dispatch)
+          <input
+            id="quiz-name"
+            type="text"
+            value={quiz.name}
+            onChange={(e) => dispatch({ type: "title", value: e.target.value })}
+            maxLength="30"
+          />
+        </div>
+        <div className="num-to-ans design-1">
+          <label htmlFor="nQuest">To answer</label>
+          <input
+            type="number"
+            id="nQuest"
+            value={quiz.nQuestions}
+            onChange={(e) =>
+              dispatch({ type: "toanswer", value: e.target.value })
             }
-          >
-            save
-          </button>
+          />
         </div>
+        <div className="mark-per-question design-1">
+          <label htmlFor="perMark">Mark(s) per question</label>
+          <input
+            type="number"
+            id="perMark"
+            step="0.01"
+            value={quiz.mark}
+            onChange={(e) => dispatch({ type: "mark", value: e.target.value })}
+          />
+        </div>
+        <div className="total-marks design-1">
+          <label htmlFor="total">total marks</label>
+          <input
+            type="number"
+            id="total"
+            value={quiz.total}
+            onChange={(e) => dispatch({ type: "total", value: e.target.value })}
+          />
+        </div>
+        <button
+          onClick={() =>
+            saveEditedQuiz(quiz, quid, school, props.history, dispatch)
+          }
+        >
+          save
+        </button>
+      </div>
 
-        <div className="question-header">
-          <h2>Questions</h2>
-          <p>Total: {questions.length}</p>
-        </div>
-        <hr />
-        <div className="questions-list">
-          {questions.length ? (
-            questions.map((question) => {
-              return (
-                <QuestionTile
-                  id={question.id}
-                  history={props.history}
-                  question={question.question}
-                  options={question.options}
-                  quiz={quid}
-                  school={school}
-                />
-              );
-            })
-          ) : (
-            <h1>No Question</h1>
-          )}
-        </div>
-      </section>
-    </Layout>
+      <div className="question-header">
+        <h2>Questions</h2>
+        <p>Total: {questions.length}</p>
+      </div>
+      <hr />
+      <div className="questions-list">
+        {questions.length ? (
+          questions.map((question) => {
+            return (
+              <QuestionTile
+                key={question.id}
+                id={question.id}
+                history={props.history}
+                question={question.question}
+                options={question.options}
+                quiz={quid}
+                school={school}
+              />
+            );
+          })
+        ) : (
+          <h1>No Question</h1>
+        )}
+      </div>
+    </section>
   );
 };
 export default QuizList;

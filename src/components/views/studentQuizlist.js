@@ -32,7 +32,7 @@ const StudentQuizList = (props) => {
     setShowOverview(choice);
   };
   const fetchRegisteredQuiz = () => {
-    const url = `http://localhost:3500/school/student/get/quiz?pid=${userIdentity.pid}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/student/get/quiz?pid=${userIdentity.pid}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {

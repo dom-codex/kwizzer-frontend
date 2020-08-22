@@ -1,3 +1,97 @@
 .exam-records {
   width: calc(100% - 93px);
 }
+.tilecontrols {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.control-btns {
+  padding-right: 8px;
+  height: 25px;
+  position: relative;
+  text-align: right;
+}
+.records-more {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  padding: 5px 2px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  visibility: hidden;
+}
+
+.control-btns:hover .records-more {
+  visibility: visible;
+}
+.control-btns button {
+  height: 40px;
+  padding: 5px 2px;
+  border: none;
+  border-bottom: thin solid #ccc;
+}
+.more-btn {
+  cursor: pointer;
+  margin-right: 15px;
+  position: absolute;
+  top: -110%;
+  right: 0;
+}
+.exam-info {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  padding-right: 5px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.exam-info div {
+  width: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.reg-link {
+  position: relative;
+  width: 100%;
+}
+.reg-link button {
+  width: 100%;
+}
+.reg-link input {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  background-color: #000;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 5px;
+  color: #fff;
+  visibility: hidden;
+}
+.reg-link:hover input,
+.reg-link:active input {
+  visibility: visible;
+}
+@media all and (max-width: 450px) {
+  .exam-records {
+    width: 100%;
+    background-color: #fafafa;
+    height: calc(100vh - 65px);
+  }
+}
+@media all and (max-width: 350px) {
+  .tilecontrols {
+    padding: 0;
+  }
+  .exam-info {
+    align-items: center;
+  }
+}

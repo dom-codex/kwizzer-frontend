@@ -1,5 +1,4 @@
 import React from "react";
-import Icon from "../../assets/icon.svg";
 import "../../css/menu-tile.css";
 
 const Menutile = (props) => {
@@ -7,7 +6,8 @@ const Menutile = (props) => {
     <div className="tile" onClick={props.action}>
       {props.subtile}
       <div className="tile-icon">
-        <img src={Icon} style={{ height: 100 }} />
+        {/*<img src={Icon} style={{ height: 100 }} />*/}
+        <i className="material-icons">{props.icon}</i>
       </div>
       <div className="tile-desc">
         <p>{props.title}</p>

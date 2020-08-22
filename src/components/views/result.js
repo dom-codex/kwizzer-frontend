@@ -1,6 +1,5 @@
-import React, { useEffect, useReducer } from "react";
-import Jumbo from "../sub-components/Jumbo";
-import Layout from "../sub-components/layout";
+import React, { useEffect, useReducer, useContext } from "react";
+import { modeContext } from "../../context/mode";
 import { resulReducer } from "../../utils/studentResults";
 import "../../css/result.css";
 import { fetchData } from "../../utils/storage";
@@ -29,11 +28,13 @@ const Tile = (props) => {
   );
 };
 const Result = (props) => {
+  const { switchMode, setHeading } = useContext(modeContext);
+
   const [state, dispatch] = useReducer(resulReducer, {
     exams: [],
   });
   const getExamResults = () => {
-    const url = `http://localhost:3500/school/student/myexams?pid=${person}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/student/myexams?pid=${person}`;
     fetch(url)
       .then((res) => res.json())
       .then((exams) => {
@@ -54,34 +55,32 @@ const Result = (props) => {
   const linkTo = (data) => {
     props.history.push("/quiz/solutions", data);
   };
-  useEffect(getExamResults, []);
+  useEffect(() => {
+    setHeading("Results");
+    switchMode(true);
+    getExamResults();
+  }, []);
   return (
-    <Layout>
-      <section className="result">
-        <div className="showcase">
-          <Jumbo title={"Results"} />
-        </div>
-        <hr />
-        {state.exams.length ? (
-          state.exams.map((r, i) => {
-            return (
-              <Tile
-                key={i}
-                title={r.title}
-                answered={r.totalAnswered}
-                fails={r.fails}
-                score={r.score.$numberDecimal}
-                total={r.totalMarks}
-                paperId={r._id}
-                viewSoln={linkTo}
-              />
-            );
-          })
-        ) : (
-          <h1>no result found</h1>
-        )}
-      </section>
-    </Layout>
+    <section className="result">
+      {state.exams.length ? (
+        state.exams.map((r, i) => {
+          return (
+            <Tile
+              key={i}
+              title={r.title}
+              answered={r.totalAnswered}
+              fails={r.fails}
+              score={r.score.$numberDecimal}
+              total={r.totalMarks}
+              paperId={r._id}
+              viewSoln={linkTo}
+            />
+          );
+        })
+      ) : (
+        <h1>no result found</h1>
+      )}
+    </section>
   );
 };
 export default Result;

@@ -1,12 +1,10 @@
 import React from "react";
-
 const QuizOverlay = (props) => {
   const { state } = props;
   const quizzes = props.quizzes;
-  let len;
   return (
     <div className="exam-quiz-overlay">
-      <div className="quiz-overlay-content">
+      <div style={props.overlay} className="quiz-overlay-content">
         <button onClick={props.action}>close</button>
         <h2>Quiz list</h2>
         {quizzes.length &&

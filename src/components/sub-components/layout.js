@@ -1,30 +1,51 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../sub-components/header";
-
+import { modeContext } from "../../context/mode";
+import Img from "../../assets/icon.svg";
+import Logo1 from "../../assets/kwi-lo.jpg";
 import "../../css/layout.css";
 const Layout = (props) => {
+  const {
+    mode: { isUser },
+    heading,
+  } = useContext(modeContext);
   return (
     <div>
-      <Header user={props.user} />
-      <div className="side-panel">
-        <div className="side-panel-logo">Q</div>
-        <ul>
-          <li className="glass">
-            <a href={props.user ? "/menu" : "/dashboard"}>Home</a>
-          </li>
-          <li>
-            <a
-              href={props.user ? "/menu/notifications" : "/admin/notifications"}
-            >
-              Notification
-            </a>
-          </li>
-          <li>
-            <a href="/settings">settings</a>
-          </li>
-        </ul>
+      <Header user={isUser} heading={heading} />
+      <div
+        className="side-panel-cont"
+        onClick={() => {
+          const sidepane = document.querySelector(".side-panel-cont");
+          sidepane.classList.remove("side-panel-slide");
+        }}
+      >
+        <div className="side-panel">
+          <div className="side-panel-logo">
+            <img src={Logo1} />
+          </div>
+          <ul className="side-link">
+            <li>
+              <a href={isUser ? "/menu" : "/dashboard"}>
+                <i className="material-icons">home</i> <div>Home</div>
+              </a>
+            </li>
+            <li>
+              <a href={isUser ? "/menu/notifications" : "/admin/notifications"}>
+                <i className="material-icons">notifications</i>
+                <div>Notifications</div>
+              </a>
+            </li>
+            <li>
+              <a href="/settings">
+                {" "}
+                <i className="material-icons">settings</i>
+                <div>settings</div>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="body">{props.children}</div>
+      <div className="layout-body">{props.children}</div>
     </div>
   );
 };

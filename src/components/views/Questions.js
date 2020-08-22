@@ -38,7 +38,7 @@ const Question = (props) => {
   const [showDialog, setDialog] = useState(false);
   const { state } = props.location;
   const fetchQuestions = () => {
-    let url = `http://localhost:3500/school/student/quiz?pid=${state.user.pid}&quiz=${state.quiz}&sch=${state.sch}&retry=${stateData.retry}`;
+    let url = `${process.env.REACT_APP_HEAD}/school/student/quiz?pid=${state.user.pid}&quiz=${state.quiz}&sch=${state.sch}&retry=${stateData.retry}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -54,7 +54,7 @@ const Question = (props) => {
   useEffect(fetchQuestions, []);
   const questions = question.questions;
   const submitAQuestion = (index, value) => {
-    const url = `http://localhost:3500/school/student/submitquestion`;
+    const url = `${process.env.REACT_APP_HEAD}/school/student/submitquestion`;
     const data = {
       index: index + 1,
       id: question.id,
@@ -93,7 +93,7 @@ const Question = (props) => {
     });
   };
   const submit = () => {
-    const url = `http://localhost:3500/school/student/submit`;
+    const url = `${process.env.REACT_APP_HEAD}/school/student/submit`;
     fetch(url, {
       method: "POST",
       headers: {

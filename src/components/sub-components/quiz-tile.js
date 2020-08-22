@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 const QuizTile = (props) => {
-  const [showMore, setShowMore] = useState(false);
   const quiz = props.quiz;
   const LinkTo = () => {
     props.history.push(
@@ -9,33 +8,19 @@ const QuizTile = (props) => {
   };
   return (
     <li>
-      <div>1</div>
+      <div>{props.sn}</div>
       <div className="quiz-name">{quiz.title || quiz.name}</div>
-      <div>{quiz.totalQuestions}</div>
+      <div>{quiz.totalQuestions ? quiz.totalQuestions : 0}</div>
       <div>{quiz.published ? "true" : "false"}</div>
-      <div onClick={() => setShowMore((prev) => !prev)}>
+      <div className="showmore">
         ...
-        <div
-          style={{
-            position: "absolute",
-            display: `${showMore ? "flex" : "none"}`,
-            flexDirection: `column `,
-            backgroundColor: "#fff",
-            border: "thin solid #ccc",
-            height: "80px",
-            left: "-8px",
-            bottom: "-90px",
-          }}
-        >
+        <div className="show-more">
           {" "}
           <button onClick={LinkTo}>edit</button>
           <button onClick={props.publish}>publish</button>
           <button onClick={props.delete}>delete</button>
         </div>
       </div>
-      {/* <button onClick={props.publish}>pub</button>
-      <button onClick={LinkTo}>edit</button>
-    <button onClick={props.delete}>delete</button>*/}
     </li>
   );
 };

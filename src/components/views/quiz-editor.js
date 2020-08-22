@@ -1,25 +1,18 @@
 import React, { useState, useReducer, useEffect } from "react";
-import Jumbo from "../sub-components/Jumbo";
 import Toast from "../sub-components/toast";
 import "../../css/quiz-editor.css";
-import {
-  inputReducer,
-  textHandler,
-  save,
-  saveEdited,
-  retrieveValue,
-} from "../../utils/editorFunctions";
+import { inputReducer, save, saveEdited } from "../../utils/editorFunctions";
 import { validateQuestion } from "../../validators/question";
 const generateOptions = (inputState, option, dispatch, setoption) => {
   const options = [];
   for (let i = 0; i < inputState.opts.length; i++) {
     options.push(
-      <li className="design-2">
+      <li key={i} className="design-2">
         <div className="opt">
           <label>{`option ${i + 1}`}</label>
           <input
             type="text"
-            onInput={(e) =>
+            onChange={(e) =>
               dispatch({
                 type: "opt",
                 value: e.target.value,
@@ -37,7 +30,6 @@ const generateOptions = (inputState, option, dispatch, setoption) => {
                 i: i,
                 id: inputState.existing.length > i ? inputState.opts[i].id : 0,
               });
-              //setoption((prev) => prev - 1);
             }}
           >
             del
@@ -98,11 +90,10 @@ const QuizEditor = (props) => {
     });
   };
   const fetchQuestion = () => {
-    const url = `http://localhost:3500/school/class/get/question?qu=${quid}&quiz=${match.params.quiz}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/class/get/question?qu=${quid}&quiz=${match.params.quiz}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         const { question } = data;
         const options = question.options;
         let answer = "";
@@ -141,7 +132,6 @@ const QuizEditor = (props) => {
       fetchQuestion();
     }
   }, []);
-  console.log(inputState);
   return (
     <div className="quiz-editor-cont">
       <Toast
@@ -154,12 +144,12 @@ const QuizEditor = (props) => {
         top={{ top: "25px" }}
       />
       <div className="quiz-editor">
-        <Jumbo title={"Question editor"} />
+        <div className="quiz-editor-heading">Question editor</div>
         <div className="question-tile">
           <div className="question design-2">
-            <label for="question">Question</label>
+            <label htmlFor="question">Question</label>
             <textarea
-              onInput={(e) =>
+              onChange={(e) =>
                 dispatch({ type: "addQuestion", value: e.target.value })
               }
               rows="5"

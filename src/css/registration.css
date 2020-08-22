@@ -1,6 +1,20 @@
 .reg-page {
   width: calc(100% - 93px);
   padding-bottom: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  width: 100%;
+  min-height: 100vh;
+}
+.reg-heading {
+  background-color: #050144;
+  height: 50px;
+  color: #fff;
+  padding-left: 5px;
+  padding-top: 5px;
 }
 .reg-page hr {
   width: 100vw;

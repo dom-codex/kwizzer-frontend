@@ -8,10 +8,6 @@ const ExamForm = (props) => {
   const { err } = state;
   return (
     <div className="examform">
-      <div className="form-header">
-        <h1>{props.title}</h1>
-      </div>
-
       <div className="new-exam-switch">
         <span>Type:</span>
         {!props.isedit && (
@@ -31,11 +27,12 @@ const ExamForm = (props) => {
 
       <div className="exam-form">
         <div className="exam-forms">
-          <label>Name</label>
+          <label htmlFor="name">Name</label>
           <input
+            id="name"
             type="text"
             value={state.title}
-            onInput={(e) => props.textHandler(e, "title")}
+            onChange={(e) => props.textHandler(e, "title")}
             placeholder="exam name"
             style={err.title ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
@@ -43,23 +40,25 @@ const ExamForm = (props) => {
           <small>{err.title ? err.title.msg : ""}</small>
         </div>
         <div className="exam-forms">
-          <label>No of Quiz</label>
+          <label htmlFor="nquiz">No of Quiz</label>
           <input
+            id="nquiz"
             type="number"
             value={state.nquiz}
-            onInput={(e) => props.textHandler(e, "nquiz")}
+            onChange={(e) => props.textHandler(e, "nquiz")}
             placeholder="no of quiz"
             style={err.nquiz ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
           <small>{err.nquiz ? err.nquiz.msg : ""}</small>
         </div>
         <div className="exam-forms">
-          <label>Total Marks</label>
+          <label htmlFor={"total-mark"}>Total Marks</label>
           <input
+            id="total-mark"
             type="numbers"
             placeholder="total marks"
             value={state.total}
-            onInput={(e) => props.textHandler(e, "total")}
+            onChange={(e) => props.textHandler(e, "total")}
             style={err.total ? { borderColor: "red", borderWidth: "2px" } : {}}
           />
           <small>{err.total ? err.total.msg : ""}</small>
@@ -68,29 +67,32 @@ const ExamForm = (props) => {
           <span>Duration</span>
           <br />
           <input
+            id="hours"
             type="number"
             placeholder="hrs"
-            onInput={(e) => props.textHandler(e, "hr")}
+            onChange={(e) => props.textHandler(e, "hr")}
             value={state.hr}
             style={err.hr ? { borderColor: "red" } : {}}
           />
-          <label>hrs</label>
+          <label htmlFor={"hours"}>hrs</label>
           <input
+            id="minutes"
             type="number"
             placeholder="min"
-            onInput={(e) => props.textHandler(e, "min")}
+            onChange={(e) => props.textHandler(e, "min")}
             value={state.min}
             style={err.min ? { borderColor: "red" } : {}}
           />
-          <label>min</label>
+          <label htmlFor="minutes">min</label>
           <input
+            id="seconds"
             type="number"
             placeholder="sec"
-            onInput={(e) => props.textHandler(e, "sec")}
+            onChange={(e) => props.textHandler(e, "sec")}
             value={state.sec}
             style={err.sec ? { borderColor: "red" } : {}}
           />
-          <label>sec</label> <br />
+          <label htmlFor="seconds">sec</label> <br />
         </div>
         {!props.edit && state.type !== "custom" && (
           <div className="exam-forms-result">
@@ -117,7 +119,7 @@ const ExamForm = (props) => {
         {
           <div className={`max-retries ${state.setRetry ? "" : "zero"}`}>
             <div>
-              <label for="max-retries">Max retries</label>
+              <label htmlFor="max-retries">Max retries</label>
               <input
                 type="number"
                 id="max-retries"
@@ -134,7 +136,7 @@ const ExamForm = (props) => {
         <div className="exam-forms-result">
           <span>Deliver Result on submition</span>
           <div style={{ height: "10px" }}></div>
-          <label for="yes">yes</label>
+          <label htmlFor="yes">yes</label>
           <input
             type="radio"
             id="yes"
@@ -145,7 +147,7 @@ const ExamForm = (props) => {
             }
           />
 
-          <label for="no">no</label>
+          <label htmlFor="no">no</label>
           <input
             type="radio"
             id="no"
@@ -183,7 +185,6 @@ const Exam = (props) => {
           )}
           <div className="exam-content">
             <ExamForm
-              title={props.title}
               toggle={props.toggle}
               isedit={props.isedit}
               dispatch={props.dispatch}

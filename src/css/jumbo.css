@@ -4,3 +4,8 @@
   align-items: center;
   color: #000;
 }
+@media all and (max-width: 450px) {
+  .jumbo-greeting {
+    justify-content: center;
+  }
+}

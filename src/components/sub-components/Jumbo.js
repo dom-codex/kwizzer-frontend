@@ -3,7 +3,7 @@ import "../../css/jumbo.css";
 function Jumbo(props) {
   return (
     <div className="jumbo-greeting">
-      <div class="user-name">
+      <div className="user-name">
         <h1>{props.title}</h1>
       </div>
     </div>

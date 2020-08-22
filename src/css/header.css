@@ -8,8 +8,16 @@
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
   margin-bottom: 5px;
 }
-.logo {
+.menu-icon {
+  margin-left: 20px;
+  cursor: pointer;
+  display: none;
+}
+.heading {
   margin-left: 93.5px;
+  font-weight: bold;
+  font-size: 1.5em;
+  width: 75%;
 }
 .showcase-nav2 {
   text-align: right;
@@ -29,4 +37,13 @@
   border-radius: 5px;
   padding: 2px;
   font-size: 0.69em;
+}
+@media all and (max-width: 450px) {
+  .menu-icon {
+    display: block;
+  }
+  .showcase-nav {
+    background-color: #050144;
+    color: #fff;
+  }
 }

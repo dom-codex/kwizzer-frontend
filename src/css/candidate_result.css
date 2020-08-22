@@ -1,4 +1,4 @@
-section.candidates-result {
+.candidates-result {
   width: calc(100% - 93px);
 }
 .candidates-results-details {
@@ -15,10 +15,9 @@ section.candidates-result {
   padding-left: 12px;
 }
 .result-content ul li {
-  margin-right: 25px;
+  margin-right: 8px;
   border-radius: 10px;
-  padding-left: 8px;
-  padding-top: 8px;
+  padding: 8px;
   box-shadow: 0 0 12px -5px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
@@ -46,6 +45,25 @@ section.candidates-result {
 .res-score h2 {
   font-size: 3.5em;
 }
+.res-owner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .res-owner p {
   text-transform: capitalize;
+}
+
+.approve-btn {
+  padding: 5px;
+}
+@media all and (max-width: 450px) {
+  .candidates-result {
+    width: 100%;
+  }
+  .result-content ul {
+    grid-template-columns: 1fr;
+  }
+  .result-content ul li {
+  }
 }

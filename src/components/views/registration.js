@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect } from "react";
-import Layout from "../sub-components/layout";
 import QuizOverlay from "../sub-components/QuizOverlay";
 
 import "../../css/registration.css";
@@ -62,7 +61,7 @@ const Registration = (props) => {
     msg: "",
   });
   const register = (email) => {
-    let url = `http://localhost:3500/school/exam/register?sch=${sch}&exam=${quiz}`;
+    let url = `${process.env.REACT_APP_HEAD}/school/exam/register?sch=${sch}&exam=${quiz}`;
 
     let body = {
       subjects: data.subjects,
@@ -84,14 +83,14 @@ const Registration = (props) => {
           dispatch({ type: "err", msg: res.message });
           return;
         }
-        if (res.code === 201) {
-          alert("sucessfully  registered");
+        if (res.code === 200) {
+          dispatch({ type: "err", msg: res.message });
         }
       });
   };
   const getPublishedQuiz = () => {
     //pass the school refrence from outside
-    const url = `http://localhost:3500/school/get/all/publishedquiz?sch=${sch}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/get/all/publishedquiz?sch=${sch}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -104,7 +103,7 @@ const Registration = (props) => {
   };
 
   const findTest = () => {
-    const url = `http://localhost:3500/school/find/exam?eid=${quiz}&sch=${sch}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/find/exam?eid=${quiz}&sch=${sch}`;
 
     fetch(url)
       .then((res) => res.json())
@@ -136,87 +135,89 @@ const Registration = (props) => {
   };
   useEffect(findTest, []);
   return (
-    <Layout>
-      <section className="reg-page">
-        <Toast
-          isOpen={data.showToast}
-          action={() => dispatch({ type: "err", msg: "" })}
-          text={data.msg}
-          styles={{}}
-          animate={"showToast-top"}
-          main={"toast-top"}
-          top={{ top: "25px", left: "10px" }}
+    <section className="reg-page">
+      <div className="reg-heading">
+        <h2>Exam Registration</h2>
+      </div>
+      <Toast
+        isOpen={data.showToast}
+        action={() => dispatch({ type: "err", msg: "" })}
+        text={data.msg}
+        styles={{}}
+        animate={"showToast-top"}
+        main={"toast-top"}
+        top={{ top: "25px", left: "10px" }}
+      />
+      {data.overlay && (
+        <QuizOverlay
+          quizzes={data.published}
+          isExam={true}
+          textHandler={checkboxHandler}
+          state={data.subjects}
+          action={toggleOverlay}
+          overlay={{ width: "100%" }}
         />
-        {data.overlay && (
-          <QuizOverlay
-            quizzes={data.published}
-            isExam={true}
-            textHandler={checkboxHandler}
-            state={data.subjects}
-            action={toggleOverlay}
-          />
-        )}
-        <div className="reg-content">
-          <div>
-            <div className="reg-header">
-              <h1>Exam</h1>
-              <h2>Application</h2>
+      )}
+      <div className="reg-content">
+        <div>
+          <div className="reg-header">
+            <h1>Exam</h1>
+            <h2>Application</h2>
+          </div>
+          <div className="reg-body">
+            <div className="exam-details">
+              <h4>Name:</h4>
+              <span>{data.quiz.name}</span>
             </div>
-            <div className="reg-body">
-              <div className="exam-details">
-                <h4>Name:</h4>
-                <span>{data.quiz.name}</span>
-              </div>
-              <div className="exam-details">
-                <h4>Total Quiz</h4>
-                <span>{data.quiz.nQuiz}</span>
-              </div>
-              <div className="exam-details">
-                <h4>Total Marks</h4>
-                <span>{data.quiz.TotalMarks}</span>
-              </div>
-              <div className="exam-details">
-                <h4>Time</h4>
-                <span>
-                  {data.quiz.hours > 0 ? data.quiz.hours + " hrs " : ""}
-                  {data.quiz.minutes > 0 ? data.quiz.minutes + " min " : ""}
-                  {data.quiz.seconds > 0 ? data.quiz.seconds + " secs " : ""}
-                </span>
-              </div>
+            <div className="exam-details">
+              <h4>Total Quiz</h4>
+              <span>{data.quiz.nQuiz}</span>
             </div>
-            <hr />
-            <div className="candidate-email">
-              {data.quiz.type === "custom" && (
-                <div className="quiz-selector">
-                  <p>select quiz(s):</p>
-                  <button onClick={toggleOverlay}>select</button>
-                </div>
-              )}
-              <label>Email</label>
-
-              <input
-                type="email"
-                value={data.email}
-                onInput={(e) =>
-                  dispatch({
-                    type: "email",
-                    email: e.target.value,
-                  })
-                }
-                placeholder="enter your email address"
-              />
+            <div className="exam-details">
+              <h4>Total Marks</h4>
+              <span>{data.quiz.TotalMarks}</span>
             </div>
-            <div className="reg-btn">
-              {validateRegistrationInput(data) ? (
-                <button onClick={() => register(data.email)}>Register</button>
-              ) : (
-                <button disabled={true}>register</button>
-              )}
+            <div className="exam-details">
+              <h4>Time</h4>
+              <span>
+                {data.quiz.hours > 0 ? data.quiz.hours + " hrs " : ""}
+                {data.quiz.minutes > 0 ? data.quiz.minutes + " min " : ""}
+                {data.quiz.seconds > 0 ? data.quiz.seconds + " secs " : ""}
+              </span>
             </div>
           </div>
+          <hr />
+          <div className="candidate-email">
+            {data.quiz.type === "custom" && (
+              <div className="quiz-selector">
+                <p>select quiz(s):</p>
+                <button onClick={toggleOverlay}>select</button>
+              </div>
+            )}
+            <label>Email</label>
+
+            <input
+              type="email"
+              value={data.email}
+              onInput={(e) =>
+                dispatch({
+                  type: "email",
+                  email: e.target.value,
+                })
+              }
+              placeholder="enter your email address"
+            />
+          </div>
+          <div className="reg-btn">
+            {validateRegistrationInput(data) ? (
+              <button onClick={() => register(data.email)}>Register</button>
+            ) : (
+              <button disabled={true}>register</button>
+            )}
+          </div>
         </div>
-      </section>
-    </Layout>
+      </div>
+    </section>
   );
 };
 export default Registration;

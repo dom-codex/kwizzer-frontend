@@ -19,4 +19,10 @@
   border: none;
   background-color: #ccc;
   padding: 3px;
+  border-left: thin solid grey;
+}
+@media all and (max-width: 450px) {
+  .solution {
+    width: 100%;
+  }
 }

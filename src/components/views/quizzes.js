@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Layout from "../sub-components/layout";
+import React, { useState, useEffect, useContext } from "react";
+import { modeContext } from "../../context/mode";
 import QuizTile from "../sub-components/quiz-tile";
 import Toast from "../sub-components/toast";
+import Dialog from "../sub-components/dialog";
 import "../../css/quizzes.css";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
@@ -9,13 +10,15 @@ const QuizList = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [isToast, setToast] = useState(false);
   const [toastTEXT, setTEXT] = useState("");
+  const [showDialog, setDialog] = useState(false);
+  const [quizRef, setQuizRef] = useState("");
   const { user } = props;
   //sref = props.location.state.sref;
   //retrieve id(sch ref)
   //const { search } = props.location;
   //const id = search.split("=")[1];
   const fetchAllQuiz = () => {
-    const url = `http://localhost:3500/school/class/quiz/all?sid=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/class/quiz/all?sid=${school}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
@@ -23,11 +26,14 @@ const QuizList = (props) => {
         setQuizzes(quizzes);
       });
   };
+  const { switchMode, setHeading } = useContext(modeContext);
   useEffect(() => {
+    setHeading("Quizzes");
+    switchMode(false);
     fetchAllQuiz();
   }, []);
   const publish = (ref) => {
-    const url = `http://localhost:3500/school/quiz/publish`;
+    const url = `${process.env.REACT_APP_HEAD}/school/quiz/publish`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -40,6 +46,7 @@ const QuizList = (props) => {
         if (res.code === 400) {
           setTEXT(res.message);
           setToast(true);
+          fetchAllQuiz();
           return;
         }
         setTEXT(res.message);
@@ -47,19 +54,21 @@ const QuizList = (props) => {
       });
   };
   const deleteQuiz = (quid) => {
-    const url = `http://localhost:3500/school/quiz/delete?quid=${quid}&sid=${school}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/quiz/delete?quid=${quid}&sid=${school}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
         if (data.code === 403) {
           setTEXT(data.message);
+          setDialog(false);
           setToast(true);
           return;
         }
         if (data.code === 201) {
           setTEXT(data.message);
           setToast(true);
+          setDialog(false);
           setQuizzes((prev) => {
             const quizzes = prev.filter((quiz) => quiz.ref !== quid);
             return quizzes;
@@ -68,54 +77,61 @@ const QuizList = (props) => {
       });
   };
   return (
-    <Layout>
-      <section className="quizzes">
-        {isToast && (
-          <Toast
-            isOpen={isToast}
-            text={toastTEXT}
-            action={setToast}
-            animate={"showToast"}
-            main={"toast"}
-            top={{ bottom: "25px" }}
-          />
-        )}
-        <div className="quizzes-list">
-          <div className="quizzes-title">
-            <h2>Quizzes</h2>
-            <hr />
-            <div className="quizzes-heading">
-              <p>s/n</p>
-              <p>name</p>
-              <p>questions</p>
-              <p>published</p>
-            </div>
-            {!quizzes.length ? (
-              <h1>NO quiz</h1>
-            ) : (
-              <ul>
-                {quizzes.map((quiz) => {
-                  return (
-                    <QuizTile
-                      key={quiz.ref}
-                      school={school}
-                      history={props.history}
-                      quiz={quiz}
-                      user={user}
-                      showOverview={props.showOverView}
-                      publish={() => publish(quiz.ref)}
-                      delete={() => {
-                        deleteQuiz(quiz.ref);
-                      }}
-                    />
-                  );
-                })}
-              </ul>
-            )}
+    <section className="quizzes">
+      {showDialog && (
+        <Dialog
+          title={"Are you sure?"}
+          text={"you want to delete this quiz"}
+          showCancel={true}
+          auxAction={() => setDialog(false)}
+          action={() => deleteQuiz(quizRef)}
+        />
+      )}
+      {isToast && (
+        <Toast
+          isOpen={isToast}
+          text={toastTEXT}
+          action={setToast}
+          animate={"showToast"}
+          main={"toast"}
+          top={{ bottom: "25px" }}
+        />
+      )}
+      <div className="quizzes-list">
+        <div className="quizzes-title">
+          <div className="quizzes-heading">
+            <p>s/n</p>
+            <p>name</p>
+            <p>questions</p>
+            <p>published</p>
           </div>
+          {!quizzes.length ? (
+            <h1>NO quiz</h1>
+          ) : (
+            <ul>
+              {quizzes.map((quiz, i) => {
+                return (
+                  <QuizTile
+                    key={quiz.ref}
+                    sn={i + 1}
+                    school={school}
+                    history={props.history}
+                    quiz={quiz}
+                    user={user}
+                    showOverview={props.showOverView}
+                    publish={() => publish(quiz.ref)}
+                    delete={() => {
+                      setQuizRef(quiz.ref);
+                      setDialog(true);
+                    }}
+                  />
+                );
+              })}
+            </ul>
+          )}
         </div>
-      </section>
-    </Layout>
+      </div>
+    </section>
   );
 };
 export default QuizList;

@@ -81,3 +81,8 @@ tfoot {
   margin: 0 8px;
   font-weight: bold;
 }
+@media all and (max-width: 450px) {
+  .candidates {
+    width: 100%;
+  }
+}

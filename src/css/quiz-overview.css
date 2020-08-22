@@ -30,3 +30,8 @@
   height: 35px;
   margin-left: 10px;
 }
+@media all and (max-width: 450px) {
+  .quizOverView {
+    width: 100%;
+  }
+}

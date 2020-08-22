@@ -22,9 +22,9 @@ class Timer extends Component {
       if (this.state.minutes >= 1) {
         this.setState((state) => ({
           seconds: 59,
-          minutes: this.state.minutes - 1,
+          minutes: state.minutes - 1,
         }));
-      } else if (this.state.hours > 0 && this.state.minutes === 1) {
+      } else if (this.state.hours > 0 && this.state.minutes === 0) {
         this.setState((state) => ({
           seconds: 59,
           hours: state.hours - 1,
@@ -35,12 +35,12 @@ class Timer extends Component {
           seconds: 59,
         }));
       }
-    } else if (this.state.minutes === 1 && this.state.hours <= 0) {
+    } /*else if (this.state.minutes === 1 && this.state.hours <= 0) {
       this.setState((state) => ({
         seconds: 59,
         minutes: state.minutes - 1,
       }));
-    }
+    }*/
     //block which executes when none of the condition is met
     else {
       this.setState((state) => ({
