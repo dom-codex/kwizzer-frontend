@@ -8,6 +8,7 @@
   background-color: #fff;
   width: 100%;
   min-height: 100vh;
+  overflow-y: scroll;
 }
 .reg-heading {
   background-color: #050114;
