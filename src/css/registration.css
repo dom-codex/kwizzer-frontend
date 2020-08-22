@@ -9,9 +9,7 @@
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
-  padding-bottom: 20px;
-}
-.reg-content {
+  overflow-x: hidden;
   padding-bottom: 20px;
 }
 .reg-heading {
@@ -81,6 +79,7 @@
 .reg-btn {
   text-align: center;
   margin-top: 10px;
+  margin-bottom: 25px;
 }
 .reg-btn button {
   height: 32px;
