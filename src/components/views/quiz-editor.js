@@ -128,7 +128,7 @@ const QuizEditor = (props) => {
     inputState.question
   );
   useEffect(() => {
-    if (isNew != "true") {
+    if (isNew.toString() !== "true") {
       fetchQuestion();
     }
   }, []);

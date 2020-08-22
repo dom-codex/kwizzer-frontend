@@ -1,4 +1,4 @@
-const { storeData, clearData } = require("./storage");
+const { storeData } = require("./storage");
 module.exports.inputReducer = (state, action) => {
   switch (action.type) {
     case "Input":
@@ -31,6 +31,8 @@ module.exports.textHandler = (e, name, dispatch) => {
     case "password":
       dispatch({ type: "Input", input: { password: e.target.value } });
       break;
+    default:
+      console.log("default");
   }
 };
 module.exports.login = (url, body, redirect, dispatch) => {
@@ -55,7 +57,6 @@ module.exports.login = (url, body, redirect, dispatch) => {
         return redirect(`/dashboard`);
       }
       const ref = resp.user.ref;
-      const id = resp.user.id;
       storeData("person", ref);
       redirect(`/menu`);
     });

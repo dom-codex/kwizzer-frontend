@@ -14,18 +14,18 @@ const UserSignup = (props) => {
     isconfirm: false,
     cansubmit: false,
   });
-  const url = "http://127.0.0.1:3500/user/create";
+  const url = `${process.env.REACT_APP_HEAD}/user/create`;
   const cansubmit = canSubmit(inputState);
   return (
     <div>
       <div className="signUp-input">
-        <label for="name">Name</label>
+        <label htmlFor="name">Name</label>
         <input
           id="name"
           className={`${inputState.notName ? "inputerr" : ""}`}
           autoComplete="off"
           value={inputState.name}
-          onInput={(e) => dispatch({ type: "name", value: e.target.value })}
+          onChange={(e) => dispatch({ type: "name", value: e.target.value })}
           type="text"
           maxLength="30"
           placeholder="name"
@@ -38,12 +38,12 @@ const UserSignup = (props) => {
         ) : null}
       </div>
       <div className="signUp-input">
-        <label for="email">Email</label>
+        <label htmlFor="email">Email</label>
         <input
           id="email"
           className={`${inputState.notEmail ? "inputerr" : ""}`}
           value={inputState.email}
-          onInput={(e) => dispatch({ type: "email", value: e.target.value })}
+          onChange={(e) => dispatch({ type: "email", value: e.target.value })}
           type="email"
           placeholder="email"
           required
@@ -55,24 +55,26 @@ const UserSignup = (props) => {
         ) : null}
       </div>
       <div className="signUp-input">
-        <label for="phone">Phone</label>
+        <label htmlFor="phone">Phone</label>
         <input
           id="phone"
           value={inputState.phone}
-          onInput={(e) => SignupControllers.textHandler(e, "phone", dispatch)}
+          onChange={(e) => SignupControllers.textHandler(e, "phone", dispatch)}
           type="phone"
           maxLength="20"
           placeholder="phone"
         />
       </div>
       <div className="signUp-input">
-        <label for="password">password</label>
+        <label htmlFor="password">password</label>
         <input
           id="password"
           className={`${inputState.notPassword ? "inputerr" : ""}`}
           type="password"
           value={inputState.password}
-          onInput={(e) => dispatch({ type: "password", value: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "password", value: e.target.value })
+          }
           minLength="5"
           placeholder="password"
           required
@@ -84,12 +86,12 @@ const UserSignup = (props) => {
         ) : null}
       </div>
       <div className="signUp-input">
-        <label for="comfirm-password">comfirm password</label>
+        <label htmlFor="comfirm-password">comfirm password</label>
         <input
           id="comfirm-password"
           type="password"
           value={inputState.comfirm}
-          onInput={(e) =>
+          onChange={(e) =>
             dispatch({ type: "cpassword", value: e.target.value })
           }
           minLength="5"

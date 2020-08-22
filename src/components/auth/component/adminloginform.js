@@ -16,7 +16,7 @@ const AdminLoginForm = (props) => {
     showToast: false,
     message: "invalid login details",
   });
-  const url = `http://localhost:3500/school/login`;
+  const url = `${process.env.REACT_APP_HEAD}/school/login`;
   return (
     <div className="login-content">
       <Toast
@@ -29,22 +29,22 @@ const AdminLoginForm = (props) => {
         top={{ bottom: "25px" }}
       />
       <div className="login-input">
-        <label for="email">Email</label>
+        <label htmlFor="email">Email</label>
         <input
           id="email"
           type="email"
           value={inputState.email}
-          onInput={(e) => textHandler(e, "email", dispatch)}
+          onChange={(e) => textHandler(e, "email", dispatch)}
           placeholder="email"
         />
       </div>
       <div className="login-input">
-        <label for="password">password</label>
+        <label htmlFor="password">password</label>
         <input
           id="password"
           type="password"
           value={inputState.password}
-          onInput={(e) => textHandler(e, "password", dispatch)}
+          onChange={(e) => textHandler(e, "password", dispatch)}
           minLength="5"
           placeholder="password"
         />

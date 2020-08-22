@@ -9,7 +9,6 @@ const correct = {
 const choosed = {
   backgroundColor: "red",
 };
-const person = fetchData("person");
 const QuestionDisplay = (props) => {
   return (
     <div>
@@ -37,7 +36,7 @@ const QuestionDisplay = (props) => {
   );
 };
 const Solutions = (props) => {
-  const { question, isExam } = props.location.state;
+  const { question } = props.location.state;
   const questionReducer = (state, action) => {
     let index = 0;
     switch (action.type) {
@@ -80,6 +79,8 @@ const Solutions = (props) => {
           currentQuestionIndex: index,
           question: state.quizzes[state.currentQuizIndex].questions[index],
         };
+      default:
+        return state;
     }
   };
   const [data, dispatch] = useReducer(questionReducer, {

@@ -6,10 +6,7 @@ import { validateRegistrationInput } from "../../utils/validateRegistration";
 import Toast from "../sub-components/toast";
 const Registration = (props) => {
   //get url params
-  const {
-    match,
-    location: { search },
-  } = props;
+  const { match } = props;
   const { sch, quiz } = match.params;
   const inputReducer = (state, action) => {
     switch (action.type) {
@@ -49,6 +46,8 @@ const Registration = (props) => {
           showToast: !state.showToast,
           msg: action.msg,
         };
+      default:
+        return state;
     }
   };
   const [data, dispatch] = useReducer(inputReducer, {
