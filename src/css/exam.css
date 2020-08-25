@@ -1,6 +1,3 @@
-.exam-form-cont {
-  width: calc(100% - 93px);
-}
 .form-header {
   text-align: center;
 }
@@ -155,14 +152,6 @@
   }
   to {
     transform: translateY(0%);
-  }
-}
-@media all and (max-width: 450px) {
-  .exam-form-cont {
-    width: 100%;
-  }
-  .quiz-overlay-content {
-    width: 100%;
   }
 }
 @media all and (max-width: 370px) {

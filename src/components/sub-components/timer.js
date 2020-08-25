@@ -15,7 +15,7 @@ class Timer extends Component {
       this.state.seconds === 0
     ) {
       clearInterval(this.timer);
-      this.props.submit();
+      this.props.submit(this.timer);
       return;
     }
     if (this.state.seconds === 0) {
@@ -63,6 +63,12 @@ class Timer extends Component {
   render() {
     return (
       <div className="timer-cont">
+        <button
+          className="submitExam"
+          onClick={() => this.props.submit(this.timer)}
+        >
+          submit
+        </button>
         <p>
           {this.doubleZero3() + this.state.hours} :{" "}
           {this.doubleZero2() + this.state.minutes} :{" "}

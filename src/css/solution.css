@@ -1,5 +1,5 @@
 .solution {
-  width: calc(100% - 93px);
+  width: 100%;
 }
 .control-buttons {
   text-align: center;
@@ -20,9 +20,4 @@
   background-color: #ccc;
   padding: 3px;
   border-left: thin solid grey;
-}
-@media all and (max-width: 450px) {
-  .solution {
-    width: 100%;
-  }
 }

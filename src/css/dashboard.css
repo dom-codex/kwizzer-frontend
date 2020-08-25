@@ -1,6 +1,5 @@
 .dashboard {
   background-color: #efefef;
-  width: calc(100% - 93px);
   min-height: 100vh;
 }
 .stats-cont {
@@ -33,14 +32,10 @@
   grid-template-columns: 1fr 1fr;
   margin: auto;
   margin-top: 8px;
-  width: calc(96.7vw - 93px);
 }
 @media all and (max-width: 450px) {
   .dashboard {
     width: 100%;
     padding-left: 5px;
-  }
-  .dash-options {
-    width: 100%;
   }
 }

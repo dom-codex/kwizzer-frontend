@@ -1,6 +1,5 @@
 section.new-quiz-window {
   height: calc(100vh - 22px);
-  width: calc(100% - 93px);
   background-color: #fff;
 }
 .new-quiz {
@@ -61,9 +60,6 @@ label.toggle {
   margin: 0 !important;
 }
 @media all and (max-width: 450px) {
-  .quiz-new-window {
-    width: 100% !important;
-  }
   .new-quiz {
     width: 98vw;
     background-color: #fafafa;

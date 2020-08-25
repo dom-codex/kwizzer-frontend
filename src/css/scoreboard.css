@@ -1,5 +1,5 @@
 .scoreboard {
-  width: calc(100% - 93px);
+  width: 100%;
 }
 .quiz-name {
   font-weight: bold;

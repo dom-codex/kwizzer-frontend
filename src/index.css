@@ -21,3 +21,11 @@ code {
   width: 100%;
   overflow-x: hidden;
 }
+.routes {
+  width: calc(100% - 93px);
+}
+@media all and (max-width: 450px) {
+  .routes {
+    width: 100%;
+  }
+}

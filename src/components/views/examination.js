@@ -90,7 +90,8 @@ const Examination = (props) => {
         }
       });
   };
-  const submitExam = () => {
+  const submitExam = (timer) => {
+    clearInterval(timer);
     const url = `${process.env.REACT_APP_HEAD}/school/submit/examination`;
     fetch(url, {
       method: "POST",
@@ -174,7 +175,6 @@ const Examination = (props) => {
       <div className="header">
         {/**pass the quiz name from out side and the time too */}
         <h2>{state.title}</h2>
-        <button onClick={submitExam}>submit</button>
       </div>
       {
         /*question.questions.length*/ data.questions.length && (

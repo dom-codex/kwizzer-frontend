@@ -1,6 +1,3 @@
-.exam-records {
-  width: calc(100% - 93px);
-}
 .tilecontrols {
   height: 100%;
   width: 50%;
@@ -82,8 +79,7 @@
 }
 @media all and (max-width: 450px) {
   .exam-records {
-    width: 100%;
-    background-color: #fafafa;
+    background-color: #ccc;
     height: calc(100vh - 65px);
   }
 }

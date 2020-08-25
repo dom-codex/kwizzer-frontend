@@ -1,8 +1,1 @@
-.examinations {
-  width: calc(100% - 93px);
-}
-@media all and (max-width: 450px) {
-  .examinations {
-    width: 100%;
-  }
-}
+

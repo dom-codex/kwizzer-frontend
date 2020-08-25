@@ -1,5 +1,5 @@
 .result {
-  width: calc(100% - 93px);
+  width: 100%;
 }
 .stud-result {
   padding-bottom: 12px;
@@ -11,9 +11,4 @@
 .stud-result button {
   width: 120px;
   height: 30px;
-}
-@media all and (max-width: 450px) {
-  .result {
-    width: 100%;
-  }
 }

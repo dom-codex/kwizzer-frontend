@@ -2,37 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
-
 import ModeProvider from "./context/mode";
-import App from "./App";
-import Layout from "./components/sub-components/layout";
 import Signup from "./components/auth/signUp";
 import Login from "./components/auth/login";
 import * as serviceWorker from "./serviceWorker";
-import Dashboard from "./components/views/dashboard";
-import AdminNotifications from "./components/views/adminNotifications";
-import ScoreBoard from "./components/views/scoreboard";
-import Quizzes from "./components/views/quizzes";
-import QuizList from "./components/views/quizlist";
-import QuestionEditor from "./components/views/quiz-editor";
-import Candidates from "./components/views/candidates";
-import Result from "./components/views/result";
-import Notification from "./components/views/notification";
-import StudentQuizList from "./components/views/studentQuizlist";
-import Question from "./components/views/Questions";
 import Registration from "./components/views/registration";
-import QuizSolution from "./components/views/solutions";
-import CandidatesResults from "./components/views/candidatesResult";
-import QuizCreationWindow from "./components/views/newQuiz";
-import ExamRecords from "./components/views/examRecords";
-import NewExam from "./components/views/newExam";
-import EditExam from "./components/views/editExam";
-import MyExams from "./components/views/studentExams";
-import Examination from "./components/views/examination";
+import Layout from "./components/sub-components/layout";
+import Examiner from "./screens/examiner";
+import Student from "./screens/student";
 const routing = (
   <Router>
     <ModeProvider>
       <Layout>
+        <div className="routes">
+          <Route component={Examiner} />
+          <Route component={Student} />
+        </div>
+      </Layout>
+      {/*<Layout>
         <Route exact path="/dashboard" component={Dashboard} />
         <Route
           exact
@@ -61,7 +48,7 @@ const routing = (
         <Route exact path="/dashboard/set/exam" component={NewExam} />
         <Route exact path="/dashboard/exam/records" component={ExamRecords} />
         <Route exact path="/dashboard/edit/exam" component={EditExam} />
-        {/*student routes*/}
+        {/*student routes*
         <Route exact path="/menu" component={App} />
         <Route
           exact
@@ -76,7 +63,7 @@ const routing = (
         <Route exact path="/quiz/solutions" component={QuizSolution} />
         <Route exact path="/menu/myexams" component={MyExams} />
       </Layout>
-      <Route exact path="/menu/examination" component={Examination} />
+        <Route exact path="/menu/examination" component={Examination} />*/}
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/admin/auth" component={Signup} />
       <Route exact path="/login" component={Login} />

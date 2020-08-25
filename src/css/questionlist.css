@@ -1,6 +1,3 @@
-section.quiz-editor {
-  width: calc(100% - 93px);
-}
 .quiz-name-edit input {
   width: 95%;
   height: 35px;

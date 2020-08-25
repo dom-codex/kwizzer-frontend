@@ -1,5 +1,5 @@
 .quizzes {
-  width: calc(100vw - 93px);
+  width: 100%;
 }
 .quizzes-list,
 .quizzes-title {
@@ -91,9 +91,4 @@ ul.student-quiz-controls li {
   border-radius: 5px;
   width: 100%;
   margin-left: 0;
-}
-@media all and (max-width: 450px) {
-  .quizzes {
-    width: 100%;
-  }
 }

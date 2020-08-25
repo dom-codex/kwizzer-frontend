@@ -1,6 +1,5 @@
 .notification {
   border-top: thin solid #efefef;
-  width: calc(100% - 93px);
 }
 .notification-card {
   width: 98%;
@@ -22,9 +21,4 @@
 }
 .n-card-body {
   margin: 12px 0;
-}
-@media all and (max-width: 450px) {
-  .notification {
-    width: 100%;
-  }
 }
