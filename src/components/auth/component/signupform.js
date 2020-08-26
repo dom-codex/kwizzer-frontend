@@ -110,7 +110,8 @@ const UserSignup = (props) => {
                 url,
                 inputState,
                 props.redirect,
-                dispatch
+                dispatch,
+                props.showLoader
               )
             }
             className="submit-btn"

@@ -52,9 +52,11 @@ const AdminLoginForm = (props) => {
       <div className="btn-cont">
         <button
           class="submit-btn"
-          onClick={() => login(url, inputState, props.redirect, dispatch)}
+          onClick={() =>
+            login(url, inputState, props.redirect, dispatch, props.showLoader)
+          }
         >
-          submit
+          login
         </button>
       </div>
     </div>

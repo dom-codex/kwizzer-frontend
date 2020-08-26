@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import * as SignupControllers from "../../../utils/signupcontroller";
 import { canSubmit } from "../../../validators/signUp";
+import { clearData } from "../../../utils/storage";
 const AdminSignup = (props) => {
   const [inputState, dispatch] = useReducer(SignupControllers.inputReducer, {
     name: "",
@@ -102,14 +103,17 @@ const AdminSignup = (props) => {
       <div className="btn-cont">
         {cansubmit ? (
           <button
-            onClick={() =>
+            onClick={() => {
+              clearData("school");
+              clearData("school-name");
               SignupControllers.submitValue(
                 url,
                 inputState,
                 props.redirect,
-                dispatch
-              )
-            }
+                dispatch,
+                props.showLoader
+              );
+            }}
             class="submit-btn"
           >
             submit

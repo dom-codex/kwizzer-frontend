@@ -7,14 +7,12 @@ const Subtile = (props) => {
     <div className="sub-tile">
       <div className="sub-tile-options">
         <button>
-          <Link to="/auth?login=true">{props.title.first}</Link>
+          <Link to="/school/login">{props.title.first}</Link>
         </button>
       </div>
       <div className="sub-tile-options">
         <button>
-          <Link to={`/admin/auth?signup=true&user=${props.user.ref}`}>
-            {props.title.second}
-          </Link>
+          <Link to={`/school/create`}>{props.title.second}</Link>
         </button>
       </div>
     </div>

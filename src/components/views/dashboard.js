@@ -7,8 +7,9 @@ import { modeContext } from "../../context/mode";
 import "../../css/dashboard.css";
 import "../../css/quizCreationModal.css";
 import { fetchData } from "../../utils/storage";
-const school = fetchData("school");
 const Dashboard = (props) => {
+  const school = fetchData("school");
+  const schoolName = fetchData("school-name");
   const { switchMode, setHeading } = useContext(modeContext);
   const [quizModalIsOpen, setQuizModalIsOpen] = useState(false);
   const [statistics, setStatistics] = useState({
@@ -45,7 +46,7 @@ const Dashboard = (props) => {
       )}
       <div className="dashboard-contents">
         <div className="showcase">
-          <Jumbo title={"Crystal Academy"} />
+          <Jumbo title={schoolName} />
         </div>
         <div className="stats-cont">
           <h3>Stats</h3>

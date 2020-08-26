@@ -6,6 +6,7 @@
   height: 100%;
   width: 100%;
   padding-top: 50px;
+  padding-bottom: 25px;
   position: fixed;
   top: 0;
   z-index: 2;
@@ -15,12 +16,12 @@
 .signup-header h1 {
   font-size: 2.3em;
   text-align: center;
-  color: teal;
+  color: #050144;
 }
 .signup-header p {
   font-size: 0.9em;
   text-align: center;
-  color: rosybrown;
+  color: orange;
 }
 p.title {
   font-size: 2rem;
@@ -45,7 +46,7 @@ section.signup label {
   padding-left: 5px;
   max-width: 400px;
   margin-bottom: 10px;
-  border: 1px solid;
+  border: thin solid #050144;
   border-radius: 5px;
 }
 .btn-cont {
@@ -56,8 +57,8 @@ section.signup label {
 .btn-cont button {
   height: 38px;
   width: 45%;
-  background-color: turquoise;
-  background-image: linear-gradient(90deg, teal, rgb(168, 226, 168));
+  background-color: #050144;
+  background-image: linear-gradient(90deg, #050144, #050144ab);
   color: #fff;
   font-weight: bold;
   border: none;
@@ -67,9 +68,9 @@ section.signup label {
 }
 .btn-cont button:hover,
 .btn-cont button:active {
-  background-color: rgba(84, 230, 230, 0.918);
+  background-color: #050144;
   background-image: none;
-  border: 2px solid teal;
+  border: 2px solid #050144;
   color: #000;
 }
 .btn-cont button:disabled,
@@ -86,8 +87,17 @@ button.disable:hover {
 }
 .input-error-indicator {
   display: block;
-  text-align: left;
   width: 80%;
   margin: auto;
   color: red;
+  max-width: 405px;
+  margin: auto;
+  margin-bottom: 5px;
+  text-align: left;
+}
+@media all and (max-width: 460px) {
+  .signup {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
 }

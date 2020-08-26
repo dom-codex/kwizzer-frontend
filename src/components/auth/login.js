@@ -1,26 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import UserLoginForm from "./component/loginform";
 import AdminLoginForm from "./component/adminloginform";
-
+import Preloader from "../sub-components/indeterminate_indicator";
 import "../../css/login.css";
 function Login(props) {
-  const { search } = props.location;
-  const adminLogin = search.split("=")[1];
+  const [loader, showLoader] = useState(false);
   const redirect = (addr) => {
-    props.history.push(addr);
+    props.history.replace(addr);
   };
+  const adminLogin = props.admin;
   return (
     <section className="login">
       <div className="login-body">
+        {loader ? <Preloader /> : ""}
         <div className="login-header">
           <h1>Kwizzer</h1>
           <p>Promoting educational transparency</p>
-          <p className="title">{!adminLogin ? "User Login" : "Admin Login"}</p>
+          <p className="title">{!adminLogin ? "User Login" : "School Login"}</p>
         </div>
         {!adminLogin ? (
-          <UserLoginForm redirect={redirect} />
+          <UserLoginForm showLoader={showLoader} redirect={redirect} />
         ) : (
-          <AdminLoginForm redirect={redirect} />
+          <AdminLoginForm showLoader={showLoader} redirect={redirect} />
         )}
       </div>
     </section>

@@ -1,33 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../css/signUp.css";
 import UserSignup from "./component/signupform";
 import AdminSignup from "./component/adminsignupform";
-function SignUp(props) {
+import Preloader from "../sub-components/indeterminate_indicator";
+const SignUp = (props) => {
+  const [loader, showLoader] = useState(false);
   const redirect = (addr) => {
-    props.history.push(addr);
+    props.history.replace(addr);
   };
-  //retrieve query param
-  const { search } = props.location;
-  const adminSignUp = search.split("=")[1];
+  const adminSignUp = props.admin;
   return (
     <section className="signup">
       <div className="signup-body">
+        {loader ? <Preloader /> : ""}
         <div className="signup-header">
           <h1>Kwizzer</h1>
           <p>Promoting educational transparency</p>
           <p className="title">
-            {!adminSignUp ? "Signup form" : "Admin Signup"}
+            {!adminSignUp ? "Signup form" : "Create School"}
           </p>
         </div>
         <div className="signup-content">
           {!adminSignUp ? (
-            <UserSignup redirect={redirect} />
+            <UserSignup showLoader={showLoader} redirect={redirect} />
           ) : (
-            <AdminSignup routes={props} redirect={redirect} />
+            <AdminSignup
+              showLoader={showLoader}
+              routes={props}
+              redirect={redirect}
+            />
           )}
         </div>
       </div>
     </section>
   );
-}
+};
 export default SignUp;

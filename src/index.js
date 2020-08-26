@@ -64,10 +64,26 @@ const routing = (
         <Route exact path="/menu/myexams" component={MyExams} />
       </Layout>
         <Route exact path="/menu/examination" component={Examination} />*/}
-      <Route exact path="/signup" component={Signup} />
-      <Route exact path="/admin/auth" component={Signup} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/auth" component={Login} />
+      <Route
+        exact
+        path="/signup"
+        component={(props) => Signup({ ...props, admin: false })}
+      />
+      <Route
+        exact
+        path="/school/create"
+        component={(props) => Signup({ ...props, admin: true })}
+      />
+      <Route
+        exact
+        path="/login"
+        component={(props) => Login({ ...props, admin: false })}
+      />
+      <Route
+        exact
+        path="/school/login"
+        component={(props) => Login({ ...props, admin: true })}
+      />
     </ModeProvider>
   </Router>
 );

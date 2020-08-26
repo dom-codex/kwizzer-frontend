@@ -35,7 +35,8 @@ export const textHandler = (e, name, dispatch) => {
       console.log("default");
   }
 };
-export const login = (url, body, redirect, dispatch) => {
+export const login = (url, body, redirect, dispatch, showLoader) => {
+  showLoader(true);
   fetch(url, {
     method: "POST",
     headers: {
@@ -45,6 +46,7 @@ export const login = (url, body, redirect, dispatch) => {
   })
     .then((res) => res.json())
     .then((resp) => {
+      showLoader(false);
       if (resp.code === 403) {
         return dispatch({
           type: "prefill",
@@ -55,9 +57,10 @@ export const login = (url, body, redirect, dispatch) => {
       if (resp.code === 200) {
         storeData("school", resp.school);
         return redirect(`/dashboard`);
+      } else {
+        const ref = resp.user.ref;
+        storeData("person", ref);
+        redirect(`/menu`);
       }
-      const ref = resp.user.ref;
-      storeData("person", ref);
-      redirect(`/menu`);
     });
 };

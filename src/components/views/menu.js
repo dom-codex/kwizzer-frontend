@@ -4,30 +4,28 @@ import Submenu from "../sub-components/submenu";
 import { modeContext } from "../../context/mode";
 import "../../css/showcase.css";
 import { fetchData } from "../../utils/storage";
-const stateData = fetchData("person");
+const LoadInfo = (setUser, setDetailsLoaded, stateData) => {
+  const url = `${process.env.REACT_APP_HEAD}/user/find?ref=${stateData}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.code === 201) {
+        setUser(data.user);
+        return setDetailsLoaded(true);
+      }
+    });
+};
 function Menu(props) {
+  const stateData = fetchData("person");
+
   const { switchMode, setHeading } = useContext(modeContext);
   //retrieve user details from state
-  const [detailLoaded, setDetailsLoaded] = useState(false);
+  const [detailLoaded, setDetailsLoaded] = useState(true);
   const [user, setUser] = useState({});
-  //const { location } = props.routes;
-  const LoadInfo = () => {
-    //  const query = location.search.split("=")[1];
-    const url = `${process.env.REACT_APP_HEAD}/user/find?ref=${stateData}`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        /*if (data.code == 400) {
-          return props.routes.history.push("/login");
-        }*/
-        setUser(data.user);
-        setDetailsLoaded(true);
-      });
-  };
   useEffect(() => {
     setHeading("Home");
     switchMode(true);
-    LoadInfo();
+    LoadInfo(setUser, setDetailsLoaded, stateData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

@@ -1,4 +1,4 @@
-const { storeData } = require("./storage");
+const { storeData, clearData } = require("./storage");
 const {
   Validatename,
   Validateemail,
@@ -85,7 +85,9 @@ export const textHandler = (e, name, dispatch) => {
       return;
   }
 };
-export const submitValue = (url, details, redirect, dispatch, ref = "") => {
+export const submitValue = (url, details, redirect, dispatch, showLoader) => {
+  clearData("person");
+  showLoader(true);
   const data = { ...details };
   delete data["notName"];
   delete data["notEmail"];
@@ -100,21 +102,20 @@ export const submitValue = (url, details, redirect, dispatch, ref = "") => {
     headers: {
       "Content-Type": "application/json",
     },
-    body:
-      !ref.length > 0
-        ? JSON.stringify(data)
-        : JSON.stringify({ ...data, owner: ref }),
+    body: JSON.stringify(data),
   })
     .then((res) => res.json())
     .then((data) => {
+      showLoader(false);
       if (data.code === 403) {
         return dispatch({ type: "prefill", data: data.data });
       }
       if (data.code === 201) {
         storeData("person", data.user.ref);
-        redirect(`/menu`);
+        return redirect(`/menu`);
       } else if (data.code === 200) {
         storeData("school", data.school.ref);
+        storeData("school-name", data.school.name);
         redirect(`/dashboard`);
       }
     });
