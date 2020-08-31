@@ -3,7 +3,10 @@ const QuizOverlay = (props) => {
   const { state } = props;
   const quizzes = props.quizzes;
   return (
-    <div className="exam-quiz-overlay">
+    <div
+      className="exam-quiz-overlay"
+      style={!props.isOpen ? props.slideDown : {}}
+    >
       <div style={props.overlay} className="quiz-overlay-content">
         <button onClick={props.action}>close</button>
         <h2>Quiz list</h2>

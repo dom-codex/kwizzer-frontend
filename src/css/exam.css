@@ -7,27 +7,30 @@
 .new-exam-switch {
   display: flex;
   justify-content: space-between;
+  padding: 8px 0px;
   padding-right: 12px;
-  margin-top: 15px;
+  background-color: rgba(212, 212, 212, 0.726);
 }
 .new-exam-switch div {
   display: flex;
   align-items: center;
 }
 .exam-form {
-  margin-top: 5px;
+  margin-top: 1px;
 }
 .exam-forms,
 .exam-forms-duration {
-  background-color: #eeeeee;
-  border-left: 5px solid thistle;
-  margin-bottom: 10px;
+  background-color: rgba(212, 212, 212, 0.726);
+  border-left: 5px solid rgb(163, 163, 163);
+  margin-bottom: 2px;
   padding-left: 5px;
   min-height: 90px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: all 0.35s linear;
 }
+
 .exam-forms-duration {
   display: block;
   height: 75px;
@@ -57,9 +60,11 @@
   width: 100%;
   background-color: rgba(0, 0, 0, 0.1);
   z-index: 1;
+  top: 0;
+  left: 0;
+  transition: all 0.5s linear;
 }
 .quiz-overlay-content {
-  width: calc(100% - 97px);
   height: 100%;
   background-color: royalblue;
   padding-bottom: 10px;
@@ -107,19 +112,23 @@
 }
 .max-retries {
   background-color: #eeeeee;
-  border-left: 5px solid thistle;
+  border-left: 5px solid grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
   height: 72px;
-  transition: all 0.8s ease-in-out;
+  transition: all 0.35s linear;
+  padding-left: 5px;
 }
 .max-retries input {
   height: 40px;
   width: 98%;
   padding-left: 5px;
   border: none;
+}
+.orangeBorder {
+  border-left-color: orange;
 }
 .zero {
   height: 0 !important;

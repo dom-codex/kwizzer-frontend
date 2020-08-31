@@ -2,14 +2,15 @@ import React, { useReducer, useContext, useEffect } from "react";
 import { modeContext } from "../../context/mode";
 import Toast from "../sub-components/toast";
 import Dialog from "../sub-components/dialog";
+import Loader from "../sub-components/indeterminate_indicator";
 import "../../css/quizCreationModal.css";
 import { fetchData } from "../../utils/storage";
-const school = fetchData("school");
 const stylesheet = {
   backgroundColor: "red",
   color: "#fff",
 };
 const NewQuizWindow = (props) => {
+  const school = fetchData("school");
   const inputReducer = (state, action) => {
     let value;
     switch (action.type) {
@@ -50,6 +51,11 @@ const NewQuizWindow = (props) => {
           showToast: !state.showToast,
           message: action.message,
         };
+      case "loading":
+        return {
+          ...state,
+          loading: !state.loading,
+        };
       default:
         return state;
     }
@@ -63,8 +69,10 @@ const NewQuizWindow = (props) => {
     showDialog: false,
     message: "",
     showToast: false,
+    loading: false,
   });
   const createQuiz = () => {
+    dispatch({ type: "loading" });
     const body = inputState;
     const url = `${process.env.REACT_APP_HEAD}/school/class/create/quiz`;
     fetch(url, {
@@ -76,6 +84,7 @@ const NewQuizWindow = (props) => {
     })
       .then((resp) => resp.json())
       .then((res) => {
+        dispatch({ type: "loading" });
         if (res.code === 200) {
           dispatch({ type: "dialog", message: "Quiz created succesfully!!!" });
           //props.history.push(`/dashboard`);
@@ -96,6 +105,13 @@ const NewQuizWindow = (props) => {
   }, []);
   return (
     <section className="new-quiz-window">
+      {inputState.loading ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,0.7)", zIndex: 2 }}
+        />
+      ) : (
+        ""
+      )}
       {inputState.showDialog && (
         <Dialog
           title={"Success"}

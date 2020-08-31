@@ -4,6 +4,7 @@ import React, { useReducer, useEffect, useContext } from "react";
 import NewExamForm from "../sub-components/examform";
 import { modeContext } from "../../context/mode";
 import Toast from "../sub-components/toast";
+import Loader from "../sub-components/indeterminate_indicator";
 import { validateExamForm } from "../../validators/exam";
 import { fetchData } from "../../utils/storage";
 const school = fetchData("school");
@@ -40,6 +41,11 @@ const NewExam = (props) => {
         return {
           ...state,
           isLoading: !state.isLoading,
+        };
+      case "loading":
+        return {
+          ...state,
+          loading: !state.loading,
         };
       case "isopen":
         return {
@@ -113,6 +119,7 @@ const NewExam = (props) => {
     switch: false,
     type: "standard",
     isLoading: true,
+    loading: false,
     isOpen: false,
     quizzes: [],
     setRetry: false,
@@ -165,6 +172,7 @@ const NewExam = (props) => {
       });
   };
   const save = () => {
+    dispatch({ type: "loading" });
     dispatch({ type: "clearerr" });
     const url = `${process.env.REACT_APP_HEAD}/school/set/examination?sch=${school}`;
     let body = { ...data };
@@ -182,6 +190,8 @@ const NewExam = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        dispatch({ type: "loading" });
+
         if (res.code === 403) {
           return dispatch({
             type: "err",
@@ -207,6 +217,13 @@ const NewExam = (props) => {
   }, []);
   return (
     <section className="exam-form-cont">
+      {data.loading ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,.7)", zIndex: 1 }}
+        />
+      ) : (
+        ""
+      )}
       <Toast
         isOpen={data.showToast}
         action={() => dispatch({ type: "toast" })}

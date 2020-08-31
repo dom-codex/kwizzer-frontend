@@ -1,8 +1,23 @@
 import React, { useState, useReducer, useEffect } from "react";
 import Toast from "../sub-components/toast";
+import Spinner from "../sub-components/spinner";
 import "../../css/quiz-editor.css";
 import { inputReducer, save, saveEdited } from "../../utils/editorFunctions";
 import { validateQuestion } from "../../validators/question";
+const removeOrangeBorder = () => {
+  const designs = document.querySelectorAll(".design-2");
+  for (let i = 0; i < designs.length; i++) {
+    designs[i].classList.remove("orangeBorder");
+  }
+};
+const addOrangeBorder = (e) => {
+  removeOrangeBorder();
+  e.target.parentNode.classList.add("orangeBorder");
+};
+const addOrangeBorderOption = (e) => {
+  removeOrangeBorder();
+  e.target.parentNode.parentNode.classList.add("orangeBorder");
+};
 const generateOptions = (inputState, option, dispatch, setoption) => {
   const options = [];
   for (let i = 0; i < inputState.opts.length; i++) {
@@ -12,6 +27,7 @@ const generateOptions = (inputState, option, dispatch, setoption) => {
           <label>{`option ${i + 1}`}</label>
           <input
             type="text"
+            onFocus={addOrangeBorderOption}
             onChange={(e) =>
               dispatch({
                 type: "opt",
@@ -24,6 +40,7 @@ const generateOptions = (inputState, option, dispatch, setoption) => {
             value={inputState.opts[i].value}
           />
           <button
+            className="del-options"
             onClick={() => {
               dispatch({
                 type: "delete",
@@ -32,7 +49,7 @@ const generateOptions = (inputState, option, dispatch, setoption) => {
               });
             }}
           >
-            del
+            <i className="material-icons">clear</i>
           </button>
         </div>
       </li>
@@ -51,6 +68,7 @@ const generateAnswer = (option, data) => {
   }
   return answersOptions;
 };
+
 const QuizEditor = (props) => {
   const { match } = props;
   const { search } = props.location;
@@ -72,6 +90,7 @@ const QuizEditor = (props) => {
     opts: [],
     existing: [],
     todelete: [],
+    loading: false,
   });
   const addOptions = () => {
     if (inputState.opts.length > 4) {
@@ -150,6 +169,7 @@ const QuizEditor = (props) => {
           <div className="question design-2">
             <label htmlFor="question">Question</label>
             <textarea
+              onFocus={addOrangeBorder}
               onChange={(e) =>
                 dispatch({ type: "addQuestion", value: e.target.value })
               }
@@ -166,7 +186,7 @@ const QuizEditor = (props) => {
                   {generateOptions(inputState, option, dispatch, setoptions)}
                 </ul>
                 <button onClick={addOptions} className="add-option">
-                  add option
+                  add option <i className="material-icons">control_point</i>
                 </button>
               </div>
             ) : (
@@ -185,6 +205,7 @@ const QuizEditor = (props) => {
               <li className="ans design-2">
                 <label>Answer</label>&nbsp;
                 <select
+                  onFocus={addOrangeBorder}
                   value={inputState.answer}
                   onChange={(e) =>
                     dispatch({ type: "ans", answer: e.target.value })
@@ -198,12 +219,19 @@ const QuizEditor = (props) => {
           </div>
           <hr />
           <div className="editor-controls">
-            <button onClick={() => props.history.goBack()}>cancel</button>
+            <button
+              onClick={
+                !inputState.loading ? () => props.history.goBack() : null
+              }
+            >
+              cancel
+            </button>
             {canCreate ? (
               <button
                 onClick={
                   isNew === "true"
-                    ? () =>
+                    ? () => {
+                        removeOrangeBorder();
                         save(
                           inputState,
                           quid,
@@ -211,18 +239,27 @@ const QuizEditor = (props) => {
                           props.school,
                           dispatch,
                           setoptions
-                        )
-                    : () =>
+                        );
+                      }
+                    : () => {
+                        removeOrangeBorder();
                         saveEdited(
                           inputState,
                           quid,
                           props.history,
                           match.params.quiz,
-                          props.school
-                        )
+                          dispatch
+                        );
+                      }
                 }
               >
-                {isNew === "true" ? "Create" : "Save changes"}
+                {inputState.loading ? (
+                  <Spinner />
+                ) : isNew === "true" ? (
+                  "Create"
+                ) : (
+                  "Save changes"
+                )}
               </button>
             ) : (
               <button style={{ backgroundColor: "grey" }}>

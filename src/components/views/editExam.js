@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import NewExamForm from "../sub-components/examform";
+import Loader from "../sub-components/indeterminate_indicator";
 import Dialog from "../sub-components/dialog";
 import { fetchData } from "../../utils/storage";
 import { validateExamForm } from "../../validators/exam";
@@ -120,6 +121,11 @@ const NewExam = (props) => {
           ...state,
           showDialog: !state.showDialog,
         };
+      case "loading":
+        return {
+          ...state,
+          loading: !state.loading,
+        };
       default:
         return state;
     }
@@ -132,6 +138,7 @@ const NewExam = (props) => {
     tocreate: [],
     type: "",
     isLoading: true,
+    loading: false,
     isOpen: false,
     setRetry: false,
     retries: 0,
@@ -172,6 +179,7 @@ const NewExam = (props) => {
       });
   };
   const save = () => {
+    dispatch({ type: "loading" });
     dispatch({ type: "clearerr" });
     const url = `${process.env.REACT_APP_HEAD}/school/exam/save?sch=${school}&exam=${exam}`;
     let body = { ...data };
@@ -190,9 +198,9 @@ const NewExam = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        dispatch({ type: "loading" });
         if (res.code === 403) {
-          dispatch({ type: "err", errors: res.errors });
+          return dispatch({ type: "err", errors: res.errors });
         }
         dispatch({ type: "showDialog" });
       });
@@ -202,7 +210,6 @@ const NewExam = (props) => {
     fetch(url)
       .then((res) => res.json())
       .then((resdata) => {
-        console.log(resdata);
         getPublishedQuiz(resdata);
       });
   };
@@ -212,6 +219,13 @@ const NewExam = (props) => {
   }, []);
   return (
     <section className="exam-form-cont">
+      {data.loading ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,.7)", zIndex: 1 }}
+        />
+      ) : (
+        ""
+      )}
       {data.showDialog && (
         <Dialog
           title={"Notice"}

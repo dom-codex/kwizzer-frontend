@@ -5,7 +5,7 @@ import AdminNotifications from "../components/views/adminNotifications";
 import ScoreBoard from "../components/views/scoreboard";
 import Quizzes from "../components/views/quizzes";
 import QuizList from "../components/views/quizlist";
-import QuestionEditor from "../components/views/quiz-editor";
+
 import Candidates from "../components/views/candidates";
 import QuizSolution from "../components/views/solutions";
 import CandidatesResults from "../components/views/candidatesResult";
@@ -25,11 +25,6 @@ const Examiner = (props) => {
       <Route exact path="/admin/notifications" component={AdminNotifications} />
       <Route exact path="/dashboard/quizzes" component={Quizzes} />
       <Route exact path="/dashboard/quizzes/list" component={QuizList} />
-      <Route
-        exact
-        path="/dashboard/question/:quiz"
-        component={QuestionEditor}
-      />
       <Route exact path="/dashboard/candidates" component={Candidates} />
       <Route
         exact

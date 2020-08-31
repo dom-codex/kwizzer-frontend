@@ -1,8 +1,13 @@
-import React, { useEffect, useState, useReducer } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useReducer } from "react";
 import Toast from "../sub-components/toast";
+import Loader from "../sub-components/indeterminate_indicator";
+import Dialog from "../sub-components/dialog";
 import "../../css/questionlist.css";
-import { inputReducer, saveEditedQuiz } from "../../utils/quizEditorController";
+import {
+  inputReducer,
+  saveEditedQuiz,
+  DeleteQuestion,
+} from "../../utils/quizEditorController";
 import { fetchData } from "../../utils/storage";
 const error = {
   backgroundColor: "red",
@@ -10,6 +15,7 @@ const error = {
 };
 const school = fetchData("school");
 const QuestionTile = (props) => {
+  const { dispatch } = props;
   const goToEditor = (question, quiz) => {
     props.history.push(`/dashboard/question/${quiz}/?new=false&qu=${question}`);
   };
@@ -19,12 +25,20 @@ const QuestionTile = (props) => {
         <li>
           <div className="questions">
             <div className="quiz-nav">
-              <button className="question-delete-btn">Delete</button>
+              <button
+                onClick={
+                  () => dispatch({ type: "setRef", Qref: props.hash })
+                  //DeleteQuestion(props.hash, props.dispatch, props.questions)
+                }
+                className="question-delete-btn"
+              >
+                <i className="material-icons">cancel</i>
+              </button>
               <button
                 className="question-edit-btn"
                 onClick={() => goToEditor(props.id, props.quiz)}
               >
-                edit
+                <i className="material-icons">create</i>
               </button>
             </div>
             <h4>Question</h4>
@@ -45,28 +59,44 @@ const QuestionTile = (props) => {
     </div>
   );
 };
+const removeOrangeBorder = () => {
+  //get all divs with design class
+  //add orange border to parent whose input is focused
+  const designs = document.querySelectorAll(".design-1");
+  //loop tru and remove the orange border class
+  for (let i = 0; i < designs.length; i++) {
+    designs[i].classList.remove("border-orange");
+  }
+};
+const switchBorderColor = (e) => {
+  removeOrangeBorder();
+  e.target.parentNode.classList.add("border-orange");
+};
 const QuizList = (props) => {
-  const [questions, setQuestions] = useState([]);
+  //const [question, setQuestions] = useState([]);
   const [quiz, dispatch] = useReducer(inputReducer, {
     name: "",
     total: "",
     mark: "",
     nQuestions: "",
+    questions: [],
     showToast: false,
     hasErr: false,
     message: "",
+    loader: false,
+    dialog: false,
+    Qref: "",
   });
   //retrieve necessary params
   const { search } = props.location;
   const quid = search.split("quid=")[1];
-  //const { school } = props.location.state;
-  //const sid = search.split("sid=")[1].split("&")[0];
   const getQuiz = () => {
     const url = `${process.env.REACT_APP_HEAD}/school/class/questions/all?quid=${quid}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        setQuestions(data.questions);
+        //  setQuestions(data.questions);
+        dispatch({ type: "setQuestion", questions: data.questions });
         dispatch({
           type: "prefill",
           values: data.quiz,
@@ -77,6 +107,24 @@ const QuizList = (props) => {
   useEffect(getQuiz, []);
   return (
     <section className="quiz-editor">
+      {quiz.loader ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,.8)", zIndex: 2 }}
+        />
+      ) : (
+        ""
+      )}
+      {quiz.dialog ? (
+        <Dialog
+          title={"Are your sure?"}
+          text={"you want to delete this question?"}
+          action={() => DeleteQuestion(quiz.Qref, dispatch)}
+          showCancel={true}
+          auxAction={() => dispatch({ type: "dialog" })}
+        />
+      ) : (
+        ""
+      )}
       <Toast
         isOpen={quiz.showToast}
         action={() => dispatch({ type: "toast" })}
@@ -84,10 +132,10 @@ const QuizList = (props) => {
         styles={quiz.hasErr ? error : {}}
         animate={"showToast-top"}
         main={"toast-top"}
-        top={{ top: "25px" }}
+        top={{ top: "25px", zIndex: 2, left: "0%" }}
       />
       <button className="create-fab">
-        <Link to={`/dashboard/question/${quid}/?new=true&quid=${quid}`}>+</Link>
+        <a href={`/dashboard/question/${quid}/?new=true&quid=${quid}`}>+</a>
       </button>
       <div className="quiz-name-edit">
         <div className="name-quiz design-1">
@@ -97,6 +145,7 @@ const QuizList = (props) => {
             id="quiz-name"
             type="text"
             value={quiz.name}
+            onFocus={switchBorderColor}
             onChange={(e) =>
               dispatch({
                 type: "title",
@@ -112,6 +161,7 @@ const QuizList = (props) => {
             type="number"
             id="nQuest"
             value={quiz.nQuestions}
+            onFocus={switchBorderColor}
             onChange={(e) =>
               dispatch({
                 type: "toanswer",
@@ -127,6 +177,7 @@ const QuizList = (props) => {
             id="perMark"
             step="0.01"
             value={quiz.mark}
+            onFocus={switchBorderColor}
             onChange={(e) =>
               dispatch({
                 type: "mark",
@@ -141,6 +192,7 @@ const QuizList = (props) => {
             type="number"
             id="total"
             value={quiz.total}
+            onFocus={switchBorderColor}
             onChange={(e) =>
               dispatch({
                 type: "total",
@@ -150,9 +202,11 @@ const QuizList = (props) => {
           />
         </div>
         <button
-          onClick={() =>
-            saveEditedQuiz(quiz, quid, school, props.history, dispatch)
-          }
+          className="quiz-edit-save"
+          onClick={() => {
+            saveEditedQuiz(quiz, quid, school, props.history, dispatch);
+            removeOrangeBorder();
+          }}
         >
           save
         </button>
@@ -160,21 +214,24 @@ const QuizList = (props) => {
 
       <div className="question-header">
         <h2>Questions</h2>
-        <p>Total: {questions.length}</p>
+        <p>Total: {quiz.questions.length}</p>
       </div>
       <hr />
       <div className="questions-list">
-        {questions.length ? (
-          questions.map((question) => {
+        {quiz.questions.length ? (
+          quiz.questions.map((question) => {
             return (
               <QuestionTile
                 key={question.id}
                 id={question.id}
+                hash={question.ref}
                 history={props.history}
                 question={question.question}
                 options={question.options}
                 quiz={quid}
                 school={school}
+                dispatch={dispatch}
+                questions={quiz.questions}
               />
             );
           })

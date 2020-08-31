@@ -17,10 +17,14 @@
   padding-left: 5px;
 }
 .design-2 {
-  background-color: #f6f6f6;
+  background-color: rgba(204, 204, 204, 0.629);
   width: 100%;
-  border-left: 5px solid thistle;
-  margin-bottom: 10px;
+  border-left: 6px solid rgba(128, 128, 128, 0.629);
+  margin-bottom: 2px;
+  transition: all 0.37s linear;
+}
+.orangeBorder {
+  border-left-color: orange;
 }
 .question {
   padding: 8px 0 10px 16px;
@@ -40,11 +44,25 @@
   font-size: 1.3rem;
   margin-left: 5px;
 }
-button.add-option {
-  width: 85%;
-  margin-left: 45px;
+.add-option {
+  width: 65%;
   height: 30px;
-  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 30px;
+  border: 2px solid orange;
+  color: orange;
+  border-radius: 5px;
+  background: none;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  outline: none;
+}
+.add-option:hover {
+  background-color: orange;
+  color: #fff;
 }
 .options ul {
   list-style: none;
@@ -61,6 +79,7 @@ button.add-option {
   padding-left: 5px;
   position: relative;
   border: none;
+  outline: none;
 }
 .opt {
   position: relative;
@@ -76,22 +95,30 @@ button.add-option {
   right: 0px;
   top: 22px;
   z-index: 1;
+  border: none;
+  width: 70px;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .editor-controls {
   display: flex;
   justify-content: flex-end;
-  padding-right: 30px;
+  padding-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 .editor-controls button {
   margin-left: 25px;
   height: 38px;
+  min-width: 50px;
   padding: 3px;
   border: none;
   border-radius: 5px;
   background-color: teal;
   color: #fff;
+  position: relative;
 }
 .editor-controls button:nth-child(1) {
   background-color: tomato;

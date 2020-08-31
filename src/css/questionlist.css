@@ -16,16 +16,19 @@
   flex-direction: column;
 }
 .design-1 {
-  background-color: rgb(240, 240, 240);
-  width: 95%;
+  background-color: rgb(233, 233, 233);
+  width: 100%;
   height: 90px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  border-left: 5px solid thistle;
+  border-left: 5px solid #ccc;
   margin: auto;
   margin-bottom: 10px;
   padding: 0 5px;
+  transition: all 0.5s linear;
+}
+.border-orange {
+  border-left-color: orange;
 }
 .name-quiz label,
 label[for="perMark"],
@@ -34,13 +37,21 @@ label[for="nQuest"] {
   font-size: 1.3em;
   font-weight: bold;
 }
-.name-quiz input:disabled {
-  border: none;
+.quiz-edit-save {
+  width: 75%;
+  margin: auto;
+  height: 38px;
+  border: 2px solid orange;
+  border-radius: 8px;
+  background: none;
+  color: orange;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  outline: none;
 }
-.name-quiz button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.quiz-edit-save:hover {
+  background-color: orange;
+  color: #fff;
 }
 .bar {
   width: 50px;
@@ -57,12 +68,17 @@ label[for="nQuest"] {
 .question-delete-btn {
   position: absolute;
   right: 8px;
-}
-.question-delete-btn {
-  right: 60px;
   background: none;
   border: none;
-  color: red;
+}
+.question-edit-btn {
+  color: orange;
+}
+.question-delete-btn {
+  right: 65px;
+  background: none;
+  border: none;
+  color: tomato;
 }
 .questions-tile ul {
   list-style: none;
@@ -84,4 +100,13 @@ label[for="nQuest"] {
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  border: none;
+  background-color: orange;
+  box-shadow: 0px 0px 2px 1px #ccc;
+}
+.create-fab a {
+  display: block;
+  font-size: 2.5em;
+  text-decoration: none;
+  color: black;
 }

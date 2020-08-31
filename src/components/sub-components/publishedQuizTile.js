@@ -2,6 +2,7 @@ import React from "react";
 import QuizCandidate from "./quizCandidate";
 const PubTile = (props) => {
   const { quiz } = props;
+  console.log(quiz);
   return (
     <div className="pub-card">
       <div className="pub-card-body">

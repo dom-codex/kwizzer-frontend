@@ -2,7 +2,21 @@ import React from "react";
 import Switch from "../sub-components/switch";
 import "../../css/exam.css";
 import QuizOverlay from "../sub-components/QuizOverlay";
-
+const removeOrangeBorder = () => {
+  const forms1 = document.querySelectorAll(".exam-forms");
+  const forms2 = document.querySelectorAll(".exam-forms-duration");
+  for (let i = 0; i < forms1.length; i++) {
+    forms1[i].classList.remove("orangeBorder");
+  }
+  for (let i = 0; i < forms2.length; i++) {
+    forms2[i].classList.remove("orangeBorder");
+  }
+  document.querySelector(".max-retries").classList.remove("orangeBorder");
+};
+const addOrangeBorder = (e) => {
+  removeOrangeBorder();
+  e.target.parentNode.classList.add("orangeBorder");
+};
 const ExamForm = (props) => {
   const { state } = props;
   const { err } = state;
@@ -31,6 +45,7 @@ const ExamForm = (props) => {
           <input
             id="name"
             type="text"
+            onFocus={addOrangeBorder}
             value={state.title}
             onChange={(e) => props.textHandler(e, "title")}
             placeholder="exam name"
@@ -44,6 +59,7 @@ const ExamForm = (props) => {
           <input
             id="nquiz"
             type="number"
+            onFocus={addOrangeBorder}
             value={state.nquiz}
             onChange={(e) => props.textHandler(e, "nquiz")}
             placeholder="no of quiz"
@@ -57,6 +73,7 @@ const ExamForm = (props) => {
             id="total-mark"
             type="numbers"
             placeholder="total marks"
+            onFocus={addOrangeBorder}
             value={state.total}
             onChange={(e) => props.textHandler(e, "total")}
             style={err.total ? { borderColor: "red", borderWidth: "2px" } : {}}
@@ -69,6 +86,7 @@ const ExamForm = (props) => {
           <input
             id="hours"
             type="number"
+            onFocus={addOrangeBorder}
             placeholder="hrs"
             onChange={(e) => props.textHandler(e, "hr")}
             value={state.hr}
@@ -78,6 +96,7 @@ const ExamForm = (props) => {
           <input
             id="minutes"
             type="number"
+            onFocus={addOrangeBorder}
             placeholder="min"
             onChange={(e) => props.textHandler(e, "min")}
             value={state.min}
@@ -88,6 +107,7 @@ const ExamForm = (props) => {
             id="seconds"
             type="number"
             placeholder="sec"
+            onFocus={addOrangeBorder}
             onChange={(e) => props.textHandler(e, "sec")}
             value={state.sec}
             style={err.sec ? { borderColor: "red" } : {}}
@@ -118,19 +138,18 @@ const ExamForm = (props) => {
         }
         {
           <div className={`max-retries ${state.setRetry ? "" : "zero"}`}>
-            <div>
-              <label htmlFor="max-retries">Max retries</label>
-              <input
-                type="number"
-                id="max-retries"
-                step="1"
-                onChange={(e) =>
-                  props.dispatch({ type: "retries", value: e.target.value })
-                }
-                value={state.retries}
-                placeholder="maximum number of retries"
-              />
-            </div>
+            <label htmlFor="max-retries">Max retries</label>
+            <input
+              type="number"
+              id="max-retries"
+              step="1"
+              onFocus={addOrangeBorder}
+              onChange={(e) =>
+                props.dispatch({ type: "retries", value: e.target.value })
+              }
+              value={state.retries}
+              placeholder="maximum number of retries"
+            />
           </div>
         }
         <div className="exam-forms-result">
@@ -160,7 +179,14 @@ const ExamForm = (props) => {
         </div>
         <div className="exam-btn">
           {props.isValidated ? (
-            <button onClick={props.save}>SET</button>
+            <button
+              onClick={() => {
+                removeOrangeBorder();
+                props.save();
+              }}
+            >
+              SET
+            </button>
           ) : (
             <button disabled={true}>set</button>
           )}
@@ -175,14 +201,16 @@ const Exam = (props) => {
     <section>
       {!data.isLoading ? (
         <div>
-          {data.isOpen && (
+          {
             <QuizOverlay
               action={data.setList}
               state={data.data.quiz}
+              isOpen={data.isOpen}
+              slideDown={{ transform: "translateY(100%)" }}
               textHandler={props.checkboxHandler}
               quizzes={data.quizzes}
             />
-          )}
+          }
           <div className="exam-content">
             <ExamForm
               toggle={props.toggle}

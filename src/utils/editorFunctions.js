@@ -101,6 +101,11 @@ export const inputReducer = (state, action) => {
         isEdit: false,
         opts: [],
       };
+    case "loading":
+      return {
+        ...state,
+        loading: !state.loading,
+      };
     default:
       return state;
   }
@@ -124,6 +129,7 @@ export const textHandler = (e, input, name, dispatch, type) => {
   }
 };
 export const save = (data, quid, history, school, dispatch, setoptions) => {
+  dispatch({ type: "loading" });
   const url = `${process.env.REACT_APP_HEAD}/school/class/create/question?quid=${quid}`;
   const body = { ...data };
   delete body["showToast"];
@@ -139,6 +145,7 @@ export const save = (data, quid, history, school, dispatch, setoptions) => {
   })
     .then((resp) => resp.json())
     .then((resp) => {
+      dispatch({ type: "loading" });
       if (resp.code === 403) {
         return dispatch({ type: "toast", message: resp.message });
       }
@@ -149,7 +156,8 @@ export const save = (data, quid, history, school, dispatch, setoptions) => {
       }
     });
 };
-export const saveEdited = (data, quid, history, quiz, school) => {
+export const saveEdited = (data, quid, history, quiz, dispatch) => {
+  dispatch({ type: "loading" });
   const url = `${process.env.REACT_APP_HEAD}/school/class/update/question?quid=${quid}&quiz=${quiz}`;
   const body = { ...data };
   delete body["showToast"];
@@ -164,6 +172,7 @@ export const saveEdited = (data, quid, history, quiz, school) => {
   })
     .then((resp) => resp.json())
     .then((resp) => {
+      dispatch({ type: "loading" });
       if (resp.code === 201) {
         history.push(`/dashboard/quizzes/list?quid=${quiz}`);
       }

@@ -3,6 +3,7 @@ import { modeContext } from "../../context/mode";
 import Tile from "../sub-components/tiles";
 import Toast from "../sub-components/toast";
 import Dialog from "../sub-components/dialog";
+import Loader from "../sub-components/indeterminate_indicator";
 import Styles from "../../css/tile.module.css";
 import styles from "../../css/examrecords.css";
 import { fetchData } from "../../utils/storage";
@@ -12,10 +13,24 @@ const ExamRecords = (props) => {
   const [exams, setExams] = useState([]);
   const [showToast, setToast] = useState(false);
   const [showDialog, setDialog] = useState(false);
+  const [loader, showLoader] = useState(false);
   const [examId, setExamId] = useState("");
-  const [btnText, setBtnText] = useState("revoke");
-  const [btnText2, setBtnText2] = useState("authorize");
   const [toastText, setToastText] = useState("");
+  const hideMore = () => {
+    const more = document.querySelectorAll(".records-more");
+    for (let i = 0; i < more.length; i++) {
+      more[i].classList.remove("showMore");
+    }
+  };
+  const showMore = (e) => {
+    hideMore();
+    e.target.parentNode.parentNode.children[1].classList.add("showMore");
+  };
+  const hide = (e) => {
+    if (!e.target.matches(".material-icons")) {
+      hideMore();
+    }
+  };
   const fetchExams = () => {
     const url = `${process.env.REACT_APP_HEAD}/school/get/records?sch=${school}`;
     fetch(url)
@@ -29,30 +44,52 @@ const ExamRecords = (props) => {
     props.history.push("/dashboard/edit/exam", { exam: eid });
   };
   const setRegStatus = (ref) => {
+    showLoader(true);
     const url = `${process.env.REACT_APP_HEAD}/school/exam/set/regstatus?exam=${ref}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
+        showLoader(false);
         setToastText(res.message);
-        setBtnText(res.text);
+        exams.forEach((exam) => {
+          if (exam.ref === ref) {
+            if (exam.canReg) {
+              exam.canReg = false;
+            } else {
+              exam.canReg = true;
+            }
+          }
+        });
         setToast(true);
       });
   };
   const authorize = (ref) => {
+    showLoader(true);
     const url = `${process.env.REACT_APP_HEAD}/school/exam/canstart?exam=${ref}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
+        showLoader(false);
         setToastText(res.message);
-        setBtnText2(res.text);
+        exams.forEach((exam) => {
+          if (exam.ref === ref) {
+            if (exam.canStart) {
+              exam.canStart = false;
+            } else {
+              exam.canStart = true;
+            }
+          }
+        });
         setToast(true);
       });
   };
   const deleteExam = () => {
+    showLoader(true);
     const url = `${process.env.REACT_APP_HEAD}/school/exam/delete?sch=${school}&exam=${examId}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((res) => {
+        showLoader(false);
         setDialog(false);
         if (res.code === 200) {
           setToastText(res.message);
@@ -67,8 +104,6 @@ const ExamRecords = (props) => {
 
   const CopyLink = (e) => {
     const link = e.target.parentNode.children[1];
-    console.log(link);
-    //const link = link;
     link.focus();
     link.select();
     link.setSelectionRange(0, 99999);
@@ -76,6 +111,7 @@ const ExamRecords = (props) => {
     document.execCommand("copy");
   };
   useEffect(() => {
+    window.addEventListener("click", (e) => hide(e));
     setHeading("Records");
     switchMode(false);
     fetchExams();
@@ -83,6 +119,13 @@ const ExamRecords = (props) => {
   }, []);
   return (
     <section className="exam-records">
+      {loader ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,.7)", zIndex: 2 }}
+        />
+      ) : (
+        ""
+      )}
       {showDialog && (
         <Dialog
           title={"Are you sure?"}
@@ -115,14 +158,16 @@ const ExamRecords = (props) => {
                   action={{}}
                 >
                   <div className="control-btns">
-                    <div className="more-btn">...</div>
+                    <div className="more-btn" onClick={showMore}>
+                      <i className="material-icons">more_horiz</i>
+                    </div>
                     <div className="records-more">
                       <button onClick={() => LinkTo(exam.ref)}>edit</button>
                       <button onClick={() => authorize(exam.ref)}>
-                        {btnText2}
+                        {exam.canStart ? "revoke" : "authorize"}
                       </button>
                       <button onClick={() => setRegStatus(exam.ref)}>
-                        {exam.canReg ? btnText : "activate"}
+                        {exam.canReg ? "deactivate" : "activate"}
                       </button>
                       <div className="reg-link">
                         <button onClick={(e) => CopyLink(e)}>copy link</button>
@@ -145,6 +190,7 @@ const ExamRecords = (props) => {
                   </div>
                   <div className="exam-info">
                     <div>
+                      time
                       <i className="material-icons">access_time</i>
                       <div>
                         {exam.hours > 0 ? `${exam.hours}h  ` : ""}
@@ -153,10 +199,12 @@ const ExamRecords = (props) => {
                       </div>
                     </div>
                     <div>
+                      Quiz
                       <i className="material-icons">list</i>
                       <div>{exam.nQuiz}</div>
                     </div>
                     <div>
+                      marks
                       <i className="material-icons">assignment_turned_in</i>
                       <div>{exam.TotalMarks}</div>
                     </div>

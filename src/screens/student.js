@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import Result from "../components/views/result";
 import Notification from "../components/views/notification";
 import StudentExamList from "../components/views/studentQuizlist";
-import Question from "../components/views/Questions";
 import MyExams from "../components/views/studentExams";
 import Examination from "../components/views/examination";
 import ExamSolution from "../components/views/solutions";

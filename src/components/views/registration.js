@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import QuizOverlay from "../sub-components/QuizOverlay";
-
+import Loader from "../sub-components/indeterminate_indicator";
 import "../../css/registration.css";
 import { validateRegistrationInput } from "../../utils/validateRegistration";
 import Toast from "../sub-components/toast";
@@ -46,6 +46,11 @@ const Registration = (props) => {
           showToast: !state.showToast,
           msg: action.msg,
         };
+      case "loading":
+        return {
+          ...state,
+          loading: !state.loading,
+        };
       default:
         return state;
     }
@@ -57,9 +62,11 @@ const Registration = (props) => {
     subjects: [],
     overlay: false,
     showToast: false,
+    loading: false,
     msg: "",
   });
   const register = (email) => {
+    dispatch({ type: "loading" });
     let url = `${process.env.REACT_APP_HEAD}/school/exam/register?sch=${sch}&exam=${quiz}`;
 
     let body = {
@@ -78,6 +85,7 @@ const Registration = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        dispatch({ type: "loading" });
         if (res.code === 403) {
           dispatch({
             type: "err",
@@ -142,6 +150,13 @@ const Registration = (props) => {
   useEffect(findTest, []);
   return (
     <section className="reg-page">
+      {data.loading ? (
+        <Loader
+          style={{ backgroundColor: "rgba(255,255,255,.7)", zIndex: 1 }}
+        />
+      ) : (
+        ""
+      )}
       <div className="reg-heading">
         <h2>Exam Registration</h2>
       </div>

@@ -6,6 +6,7 @@ import ModeProvider from "./context/mode";
 import Signup from "./components/auth/signUp";
 import Login from "./components/auth/login";
 import * as serviceWorker from "./serviceWorker";
+import QuestionEditor from "./components/views/quiz-editor";
 import Registration from "./components/views/registration";
 import Layout from "./components/sub-components/layout";
 import Examiner from "./screens/examiner";
@@ -64,6 +65,7 @@ const routing = (
         <Route exact path="/menu/myexams" component={MyExams} />
       </Layout>
         <Route exact path="/menu/examination" component={Examination} />*/}
+      <Route exact path="/exam/register/:sch/:quiz" component={Registration} />
       <Route
         exact
         path="/signup"
@@ -83,6 +85,11 @@ const routing = (
         exact
         path="/school/login"
         component={(props) => Login({ ...props, admin: true })}
+      />
+      <Route
+        exact
+        path="/dashboard/question/:quiz"
+        component={QuestionEditor}
       />
     </ModeProvider>
   </Router>
