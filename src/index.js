@@ -11,6 +11,7 @@ import Registration from "./components/views/registration";
 import Layout from "./components/sub-components/layout";
 import Examiner from "./screens/examiner";
 import Student from "./screens/student";
+process.env.CI = false;
 const routing = (
   <Router>
     <ModeProvider>
