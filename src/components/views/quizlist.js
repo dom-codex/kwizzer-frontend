@@ -1,4 +1,6 @@
 import React, { useEffect, useReducer } from "react";
+import ReactHtmlParser from "react-html-parser";
+
 import Toast from "../sub-components/toast";
 import Loader from "../sub-components/indeterminate_indicator";
 import Dialog from "../sub-components/dialog";
@@ -8,6 +10,7 @@ import {
   saveEditedQuiz,
   DeleteQuestion,
 } from "../../utils/quizEditorController";
+import { checkForEquation } from "../../utils/transformQuestion";
 import { fetchData } from "../../utils/storage";
 const error = {
   backgroundColor: "red",
@@ -42,13 +45,14 @@ const QuestionTile = (props) => {
               </button>
             </div>
             <h4>Question</h4>
-            <div>{props.question}</div>
+            <div className="q-div">{checkForEquation(props.question)}</div>
             <h4>options</h4>
             <ul className="options-li">
               {props.options.map((option) => {
                 return (
                   <li key={option.option}>
-                    {option.option} {option.isAnswer ? " (answer)" : ""}
+                    {checkForEquation(option.option, 30)}{" "}
+                    {option.isAnswer ? " (answer)" : ""}
                   </li>
                 );
               })}
@@ -217,6 +221,7 @@ const QuizList = (props) => {
         <p>Total: {quiz.questions.length}</p>
       </div>
       <hr />
+
       <div className="questions-list">
         {quiz.questions.length ? (
           quiz.questions.map((question) => {

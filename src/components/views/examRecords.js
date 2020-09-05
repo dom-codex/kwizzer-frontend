@@ -16,6 +16,8 @@ const ExamRecords = (props) => {
   const [loader, showLoader] = useState(false);
   const [examId, setExamId] = useState("");
   const [toastText, setToastText] = useState("");
+  const [dialogTxt, setDialogTxt] = useState("you want to delete this exam");
+  const [dialogTitle, setDialogTitle] = useState("Are your sure?");
   const hideMore = () => {
     const more = document.querySelectorAll(".records-more");
     for (let i = 0; i < more.length; i++) {
@@ -98,6 +100,10 @@ const ExamRecords = (props) => {
             const newExams = oldExams.filter((exam) => exam.ref !== examId);
             return newExams;
           });
+        } else {
+          setDialogTitle("Opps!!!");
+          setDialogTxt(res.message);
+          setDialog(true);
         }
       });
   };
@@ -128,11 +134,19 @@ const ExamRecords = (props) => {
       )}
       {showDialog && (
         <Dialog
-          title={"Are you sure?"}
-          text={"you want to delete this exam"}
-          showCancel={true}
+          title={dialogTitle}
+          text={dialogTxt}
+          showCancel={dialogTitle === "Opps!!!" ? false : true}
           auxAction={() => setDialog(false)}
-          action={deleteExam}
+          action={
+            dialogTitle === "Opps!!!"
+              ? () => {
+                  setDialogTitle("Are you sure?");
+                  setDialogTxt("you want to delete this exam?");
+                  setDialog(false);
+                }
+              : deleteExam
+          }
         />
       )}
       <Toast

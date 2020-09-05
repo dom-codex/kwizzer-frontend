@@ -10,6 +10,7 @@ const Tiles = (props) => {
       onClick={
         NumberOfSubmitted || noOfStudents || true ? openResult : showToast
       }
+      style={props.color ? { backgroundColor: props.color } : {}}
     >
       <div className={props.Styles.tilename}>
         <h2>{props.title}</h2>

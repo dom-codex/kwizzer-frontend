@@ -53,7 +53,7 @@ const Result = (props) => {
       });
   };*/
   const linkTo = (data) => {
-    props.history.push("/quiz/solutions", data);
+    props.history.push("/myexam/solutions", data);
   };
   useEffect(() => {
     setHeading("Results");

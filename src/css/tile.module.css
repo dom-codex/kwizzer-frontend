@@ -5,7 +5,7 @@
   display: block;
   min-height: 92px;
   padding: 10px 0;
-  border-bottom: thin solid #efefef;
+  border-bottom: thin solid #cccccc;
   position: relative;
 }
 .tilename {
@@ -28,8 +28,11 @@
   height: 82px;
   width: 90%;
   margin: auto;
+  margin-bottom: 14px;
   box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.64);
   border-radius: 5px;
+  font-family: Fredoka One;
+  letter-spacing: 2px;
 }
 .li div {
   font-weight: bold;

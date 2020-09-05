@@ -72,6 +72,16 @@ export const examsReducer = (state, action) => {
         ...state,
         showToast: false,
       };
+    case "dialogTitle":
+      return {
+        ...state,
+        dialogTitle: action.title,
+      };
+    case "dialogTxt":
+      return {
+        ...state,
+        dialogText: action.txt,
+      };
     default:
       return state;
   }

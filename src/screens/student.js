@@ -15,7 +15,7 @@ const Student = (props) => {
       <Route exact path="/menu/quiz" component={StudentExamList} />
       <Route exact path="/menu/results" component={Result} />
       <Route exact path="/menu/examination" component={Examination} />
-      <Route exact path="/quiz/solutions" component={ExamSolution} />
+      <Route exact path="/myexam/solutions" component={ExamSolution} />
       <Route exact path="/menu/myexams" component={MyExams} />
     </section>
   );

@@ -17,11 +17,14 @@
   font-size: 2.3em;
   text-align: center;
   color: #050144;
+  font-family: Fredoka One;
+  letter-spacing: 1px;
 }
 .signup-header p {
   font-size: 0.9em;
   text-align: center;
   color: orange;
+  font-family: Fredoka One;
 }
 p.title {
   font-size: 2rem;
@@ -39,6 +42,7 @@ section.signup label {
   margin-bottom: 5px;
   text-align: left;
   cursor: pointer;
+  font-family: Fredoka One;
 }
 .signUp-input input {
   width: 100%;
@@ -48,6 +52,7 @@ section.signup label {
   margin-bottom: 10px;
   border: thin solid #050144;
   border-radius: 5px;
+  font-family: Fredoka One;
 }
 .btn-cont {
   max-width: 408px;

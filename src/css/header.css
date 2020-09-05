@@ -4,8 +4,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  border-bottom: thin solid #efefef;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  border-bottom: thin solid #ccc;
 }
 .menu-icon {
   margin-left: 20px;
@@ -17,6 +16,8 @@
   font-weight: bold;
   font-size: 1.5em;
   width: 75%;
+  font-family: Fredoka One;
+  letter-spacing: 2px;
 }
 .showcase-nav2 {
   text-align: right;
@@ -42,8 +43,15 @@
     display: block;
   }
   .showcase-nav {
-    /* background-color: #050144;*/
-    background-color: #050114;
+    /* background-color: #050114;*/
+    background-color: #050144;
     color: #fff;
+  }
+  .heading {
+    text-align: center;
+    margin-left: 0;
+  }
+  .showcase-nav2 {
+    width: 20%;
   }
 }

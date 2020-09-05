@@ -6,13 +6,12 @@ import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
 import Toast from "../sub-components/toast";
 import { examsReducer } from "../../utils/examstore";
+import { checkForEquation } from "../../utils/transformQuestion";
 import "../../css/question.css";
 const myStyle = {
   backgroundColor: "green",
 };
-let message =
-  "This marks the end of the exam!!! Good luck on checking your result";
-let heading = "Congratulations";
+
 const generateJumpers = (n, dispatch, ci) => {
   const jumpers = [];
   for (let i = 0; i < n; i++) {
@@ -43,7 +42,10 @@ const Examination = (props) => {
     openSelector: false,
     openQuizSelector: false,
     showToast: false,
-    text: "",
+    text: "submitted",
+    dialogTitle: "WellDone",
+    dialogText:
+      "This marks the end of the exam!!! Good luck on checking your result",
   });
   const LoadExam = () => {
     let url = `${process.env.REACT_APP_HEAD}/school/get/exampaper?pid=${state.user}&exam=${state.quiz}&sheet=${state.sheet}`;
@@ -55,6 +57,10 @@ const Examination = (props) => {
       .then((exam) => {
         if (exam.code === 403) {
           return props.history.replace(`/menu/myexams`, { denied: true });
+        } else if (exam.code === 401) {
+          dispatch({ type: "dialogTitle", title: "Opps!!!" });
+          dispatch({ type: "dialogTxt", txt: exam.message });
+          return dispatch({ type: "dialog" });
         }
         const {
           quizzes: { quizzes, _id },
@@ -170,7 +176,28 @@ const Examination = (props) => {
         top={{ bottom: "25px" }}
       />
       {data.showDialog && (
-        <Dialog title={heading} text={message} action={redirect} />
+        <Dialog
+          title={data.dialogTitle}
+          text={data.dialogText}
+          action={
+            data.dialogTitle === "Opps!!!"
+              ? () => {
+                  dispatch({
+                    type: "dialogTitle",
+                    title: "WellDone",
+                  });
+                  dispatch({
+                    type: "dialogTxt",
+                    txt:
+                      "This marks the end of the exam!!! Good luck on checking your result",
+                  });
+                  return dispatch({
+                    type: "dialog",
+                  });
+                }
+              : redirect
+          }
+        />
       )}
       <div className="header">
         {/**pass the quiz name from out side and the time too */}
@@ -228,7 +255,7 @@ const Examination = (props) => {
                     onClick={() => selectAnswer(0, q.option)}
                   >
                     <OptionLabel i={i} />
-                    <div>{q.option}</div>
+                    <div>{checkForEquation(q.option)}</div>
                   </li>
                 );
               })}

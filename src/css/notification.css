@@ -1,5 +1,6 @@
 .notification {
   border-top: thin solid #efefef;
+  font-family: Lato;
 }
 .notification-card {
   width: 98%;

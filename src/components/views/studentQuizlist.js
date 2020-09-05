@@ -36,7 +36,6 @@ const StudentQuizList = (props) => {
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setQuizzes(data.quizzes);
       });
   };

@@ -2,10 +2,8 @@
   height: 50px;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #000;
-}
-@media all and (max-width: 450px) {
-  .jumbo-greeting {
-    justify-content: center;
-  }
+  font-family: Fredoka One;
+  letter-spacing: 3px;
 }

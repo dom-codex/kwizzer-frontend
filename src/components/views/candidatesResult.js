@@ -52,7 +52,7 @@ const CandidatesResults = (props) => {
   return (
     <section className="candidates-result">
       <div className="candidates-results-details">
-        <h1>Results</h1>
+        <div></div>
         <div>
           <small>total submitted: {result.length ? result.length : 0}</small>
           <br />

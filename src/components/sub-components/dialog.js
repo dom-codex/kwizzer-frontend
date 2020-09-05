@@ -1,7 +1,7 @@
 import React from "react";
 import "../../css/dialog.css";
 const Dialog = (props) => {
-  const { action, text, title, auxAction, showCancel } = props;
+  const { action, text, title, auxAction, showCancel, list } = props;
   return (
     <div className="dialog">
       <div className="dialog-content">
@@ -10,6 +10,7 @@ const Dialog = (props) => {
         </div>
         <div className="dialog-body">
           <p className="dialog-text">{text}</p>
+          {list ? list : ""}
         </div>
         <div className="dialog-controls">
           {showCancel ? (

@@ -106,6 +106,11 @@ export const inputReducer = (state, action) => {
         ...state,
         loading: !state.loading,
       };
+    case "dialog":
+      return {
+        ...state,
+        dialog: !state.dialog,
+      };
     default:
       return state;
   }
@@ -148,8 +153,7 @@ export const save = (data, quid, history, school, dispatch, setoptions) => {
       dispatch({ type: "loading" });
       if (resp.code === 403) {
         return dispatch({ type: "toast", message: resp.message });
-      }
-      if (resp.code === 201) {
+      } else if (resp.code === 201) {
         return dispatch({ type: "success", message: resp.message });
 
         //  history.push(`/dashboard/quizzes/list?quid=${quid}`, {});
@@ -157,12 +161,17 @@ export const save = (data, quid, history, school, dispatch, setoptions) => {
     });
 };
 export const saveEdited = (data, quid, history, quiz, dispatch) => {
+  const pattern = /(<[\/]{0,}p>)/gi;
+
   dispatch({ type: "loading" });
   const url = `${process.env.REACT_APP_HEAD}/school/class/update/question?quid=${quid}&quiz=${quiz}`;
   const body = { ...data };
   delete body["showToast"];
   delete body["isEdit"];
   delete body["message"];
+  body.opts.forEach((o) => {
+    o.value = o.value.replace(pattern, "");
+  });
   fetch(url, {
     method: "POST",
     headers: {

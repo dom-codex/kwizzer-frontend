@@ -1,5 +1,6 @@
 .exams-list-ul li {
   min-height: 138px;
+  font-family: Fredoka One;
 }
 .tilecontrols {
   height: 100%;
@@ -36,6 +37,7 @@
   padding: 5px 2px;
   border: none;
   border-bottom: thin solid #ccc;
+  font-family: Fredoka One;
 }
 .control-btns button:hover {
   background-color: rgba(0, 0, 0, 0.4);

@@ -30,7 +30,9 @@ function Menu(props) {
   }, []);
   return (
     <section className="menu">
-      <Jumbo title={detailLoaded ? `${"Hi " + user.name}` : "Loading..."} />
+      <Jumbo
+        title={detailLoaded ? `${"Welcome " + user.name}` : "Loading..."}
+      />
       {detailLoaded && <Submenu user={user} routes={props.routes} />}
     </section>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from "react";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
+import { checkForEquation } from "../../utils/transformQuestion";
 import "../../css/solution.css";
 const correct = {
   backgroundColor: "green",
@@ -21,7 +22,7 @@ const QuestionDisplay = (props) => {
             return (
               <li style={isAnswer ? correct : chosen ? choosed : null}>
                 <OptionLabel i={i} />
-                <div>{q.option}</div>
+                <div>{checkForEquation(q.option)}</div>
               </li>
             );
           })}

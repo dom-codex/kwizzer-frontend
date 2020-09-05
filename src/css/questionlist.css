@@ -4,12 +4,16 @@
   border: none;
   color: grey;
   font-size: 1.3em;
+  font-family: Fredoka One;
 }
 .question-header h2 {
   margin-bottom: 0;
+  font-family: Lato;
+  letter-spacing: 2px;
 }
 .question-header p {
   margin-top: 5px;
+  font-family: Fredoka One;
 }
 .quiz-name-edit {
   display: flex;
@@ -48,6 +52,7 @@ label[for="nQuest"] {
   font-size: 1.1em;
   letter-spacing: 1px;
   outline: none;
+  font-family: Fredoka One;
 }
 .quiz-edit-save:hover {
   background-color: orange;
@@ -63,6 +68,7 @@ label[for="nQuest"] {
   margin-bottom: 5px;
   position: relative;
   padding: 5px 0 10px 10px;
+  font-family: Lato;
 }
 .question-edit-btn,
 .question-delete-btn {
@@ -92,6 +98,9 @@ label[for="nQuest"] {
 .options-li {
   padding-left: 0;
 }
+.options-li li {
+  display: flex;
+}
 .create-fab {
   position: fixed;
   z-index: 1;
@@ -109,4 +118,14 @@ label[for="nQuest"] {
   font-size: 2.5em;
   text-decoration: none;
   color: black;
+}
+.q-span {
+  font-size: 1.5em;
+  margin: 0 2px;
+}
+.q-div {
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  padding-right: 3px;
 }

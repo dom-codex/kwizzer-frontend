@@ -4,6 +4,7 @@
   align-items: center;
   height: 55px;
   padding-right: 6px;
+  font-family: Fredoka One;
 }
 .result-content ul {
   list-style: none;
@@ -53,6 +54,7 @@
 
 .approve-btn {
   padding: 5px;
+  font-family: Fredoka One;
 }
 @media all and (max-width: 450px) {
   .result-content ul {

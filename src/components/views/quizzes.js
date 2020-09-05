@@ -12,6 +12,8 @@ const QuizList = (props) => {
   const [isToast, setToast] = useState(false);
   const [toastTEXT, setTEXT] = useState("");
   const [showDialog, setDialog] = useState(false);
+  const [dialogTitle, setTitle] = useState("Are you sure?");
+  const [dialogTxt, setTxt] = useState("you want to delete this quiz");
   const [quizRef, setQuizRef] = useState("");
   const [loader, showLoader] = useState(false);
   const { user } = props;
@@ -70,6 +72,10 @@ const QuizList = (props) => {
           setTEXT(data.message);
           setToast(true);
           return;
+        } else if (data.code === 401) {
+          setTitle("Opps!!!");
+          setTxt(data.message);
+          return setDialog(true);
         }
         if (data.code === 201) {
           setTEXT(data.message);
@@ -93,11 +99,19 @@ const QuizList = (props) => {
       )}
       {showDialog && (
         <Dialog
-          title={"Are you sure?"}
-          text={"you want to delete this quiz"}
-          showCancel={true}
+          title={dialogTitle}
+          text={dialogTxt}
+          showCancel={dialogTitle === "Opps!!!" ? false : true}
           auxAction={() => setDialog(false)}
-          action={() => deleteQuiz(quizRef)}
+          action={
+            dialogTitle === "Opps!!!"
+              ? () => {
+                  setTitle("Are you sure?");
+                  setTxt("you want to delete this quiz");
+                  setDialog(false);
+                }
+              : () => deleteQuiz(quizRef)
+          }
         />
       )}
       {isToast && (
@@ -111,7 +125,7 @@ const QuizList = (props) => {
         />
       )}
       <div className="quizzes-list">
-        <table cellSpacing="0" cellPadding="1">
+        <table cellSpacing="0" cellPadding="0">
           <thead>
             <tr>
               <th scope="col">s/n</th>

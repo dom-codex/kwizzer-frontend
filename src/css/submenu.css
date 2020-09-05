@@ -4,6 +4,8 @@
 }
 .submenu-heading {
   margin-top: 25px;
-  margin-left: 20px;
-  color: #ccc;
+  margin-left: 10px;
+  color: grey;
+  font-family: Fredoka One;
+  letter-spacing: 2px;
 }

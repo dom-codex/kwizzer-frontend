@@ -33,11 +33,11 @@ function SubMenu(props) {
       <hr />
       <br />
       <div className="menu-options">
-        <Menutile
+        {/*<Menutile
           title={"Dashboard"}
           icon={"dashboard"}
           subtile={<Subtile title={title} user={props.user} />}
-        />
+        />*/}
         <Menutile
           title={"Notifications"}
           icon={"event"}

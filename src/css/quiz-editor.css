@@ -19,7 +19,7 @@
 .design-2 {
   background-color: rgba(204, 204, 204, 0.629);
   width: 100%;
-  border-left: 6px solid rgba(128, 128, 128, 0.629);
+  border-left: 6px solid rgba(78, 35, 35, 0.629);
   margin-bottom: 2px;
   transition: all 0.37s linear;
 }
@@ -27,7 +27,7 @@
   border-left-color: orange;
 }
 .question {
-  padding: 8px 0 10px 16px;
+  padding: 8px 0 10px 5px;
 }
 .question label {
   margin-right: 12px;
@@ -84,7 +84,7 @@
 .opt {
   position: relative;
   width: 97%;
-  height: 75px;
+  min-height: 75px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -96,8 +96,8 @@
   top: 22px;
   z-index: 1;
   border: none;
-  width: 70px;
-  height: 25%;
+  width: 55px;
+  height: 17%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +118,6 @@
   border-radius: 5px;
   background-color: teal;
   color: #fff;
-  position: relative;
 }
 .editor-controls button:nth-child(1) {
   background-color: tomato;
@@ -133,4 +132,19 @@
 }
 .options-list select {
   width: 150px;
+}
+.note-ul li {
+  margin-left: 20px;
+}
+.wrs_modal_dialogContainer {
+  position: relative !important;
+  min-width: 100% !important;
+  top: 0% !important;
+}
+.wrs_modal_dialogContainer.wrs_modal_android,
+.wrs_modal_dialogContainer.wrs_modal_ios {
+  transform: translate(50%, -200%);
+}
+.wrs_modal_overlay {
+  display: none !important;
 }

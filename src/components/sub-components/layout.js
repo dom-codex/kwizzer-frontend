@@ -34,7 +34,7 @@ const Layout = (props) => {
                 <div>Notifications</div>
               </a>
             </li>
-            <li>
+            <li style={{ zIndex: 90 }}>
               <a href="/settings">
                 {" "}
                 <i className="material-icons">settings</i>

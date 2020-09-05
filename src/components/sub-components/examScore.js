@@ -1,7 +1,11 @@
 import React from "react";
 import Tile from "../sub-components/tiles";
 import Styles from "../../css/tile.module.css";
-
+const colors = ["orange", "orangered", "tomato", "torquoise"];
+const genRandomColors = () => {
+  const n = Math.floor(Math.random() * (colors.length - 1));
+  return colors[n];
+};
 const ExamScore = (props) => {
   const { quizzes, setToast, viewResults } = props;
 
@@ -14,6 +18,7 @@ const ExamScore = (props) => {
               <Tile
                 key={quiz.ref}
                 Styles={{}}
+                color={genRandomColors()}
                 li={Styles.li}
                 action={{
                   showToast: setToast,
