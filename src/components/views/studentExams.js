@@ -7,7 +7,7 @@ import "../../css/examlist.css";
 import { fetchData } from "../../utils/storage";
 const person = fetchData("person");
 const StudentExams = (props) => {
-  const { switchMode, setHeading } = useContext(modeContext);
+  const { setHeading } = useContext(modeContext);
   //const userIdentity = props.location.state;
   const [exams, setExams] = useState([]);
   const [showOverView, setOverView] = useState(false);
@@ -43,7 +43,6 @@ const StudentExams = (props) => {
   };
   useEffect(() => {
     setHeading("Exams");
-    switchMode(true);
     getExams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

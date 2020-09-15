@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import "../../css/signUp.css";
 import UserSignup from "./component/signupform";
-import AdminSignup from "./component/adminsignupform";
 import Preloader from "../sub-components/indeterminate_indicator";
 const SignUp = (props) => {
   const [loader, showLoader] = useState(false);
   const redirect = (addr) => {
     props.history.replace(addr);
   };
-  const adminSignUp = props.admin;
   return (
     <section className="signup">
       <div className="signup-body">
@@ -16,20 +14,10 @@ const SignUp = (props) => {
         <div className="signup-header">
           <h1>Kwizzer</h1>
           <p>Promoting educational transparency</p>
-          <p className="title">
-            {!adminSignUp ? "Signup form" : "Create School"}
-          </p>
+          <p className="title">{"Signup form"}</p>
         </div>
         <div className="signup-content">
-          {!adminSignUp ? (
-            <UserSignup showLoader={showLoader} redirect={redirect} />
-          ) : (
-            <AdminSignup
-              showLoader={showLoader}
-              routes={props}
-              redirect={redirect}
-            />
-          )}
+          {<UserSignup showLoader={showLoader} redirect={redirect} />}
         </div>
       </div>
     </section>

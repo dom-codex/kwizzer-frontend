@@ -54,13 +54,8 @@ export const login = (url, body, redirect, dispatch, showLoader) => {
           message: resp.message,
         });
       }
-      if (resp.code === 200) {
-        storeData("school", resp.school);
-        return redirect(`/dashboard`);
-      } else {
-        const ref = resp.user.ref;
-        storeData("person", ref);
-        redirect(`/menu`);
-      }
+      const ref = resp.user.ref;
+      storeData("person", ref);
+      redirect(`/menu`);
     });
 };

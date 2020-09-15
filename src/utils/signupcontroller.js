@@ -113,10 +113,6 @@ export const submitValue = (url, details, redirect, dispatch, showLoader) => {
       if (data.code === 201) {
         storeData("person", data.user.ref);
         return redirect(`/menu`);
-      } else if (data.code === 200) {
-        storeData("school", data.school.ref);
-        storeData("school-name", data.school.name);
-        redirect(`/dashboard`);
       }
     });
 };

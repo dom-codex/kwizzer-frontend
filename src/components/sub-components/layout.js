@@ -4,13 +4,10 @@ import { modeContext } from "../../context/mode";
 import Logo1 from "../../assets/kwi-lo.jpg";
 import "../../css/layout.css";
 const Layout = (props) => {
-  const {
-    mode: { isUser },
-    heading,
-  } = useContext(modeContext);
+  const { heading } = useContext(modeContext);
   return (
     <div>
-      <Header user={isUser} heading={heading} />
+      <Header heading={heading} />
       <div
         className="side-panel-cont"
         onClick={() => {
@@ -24,12 +21,12 @@ const Layout = (props) => {
           </div>
           <ul className="side-link">
             <li>
-              <a href={isUser ? "/menu" : "/dashboard"}>
+              <a href={"/menu"}>
                 <i className="material-icons">home</i> <div>Home</div>
               </a>
             </li>
             <li>
-              <a href={isUser ? "/menu/notifications" : "/admin/notifications"}>
+              <a href={"/menu/notifications"}>
                 <i className="material-icons">notifications</i>
                 <div>Notifications</div>
               </a>

@@ -2,17 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../../css/header.css";
 import { fetchData } from "../../utils/storage";
 import Opensocket from "socket.io-client";
-
 let ref;
 function Header(props) {
   const [notifications, setNotifications] = useState(0);
   const fetchNewNotifications = () => {
     ref = fetchData("person");
-    let url = `${process.env.REACT_APP_HEAD}/school/students/new/notifications?pref=${ref}`;
-    if (!props.user) {
-      ref = fetchData("school");
-      url = `${process.env.REACT_APP_HEAD}/school/admin/new/notifications?sref=${ref}`;
-    }
+    const url = `${process.env.REACT_APP_HEAD}/school/students/new/notifications?pref=${ref}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -25,11 +20,7 @@ function Header(props) {
   };
   useEffect(() => {
     fetchNewNotifications();
-    if (props.user) {
-      ref = fetchData("person");
-    } else {
-      ref = fetchData("school");
-    }
+    ref = fetchData("person");
   });
   useEffect(() => {
     const socket = Opensocket(`${process.env.REACT_APP_HEAD}?ref=${ref}`);
@@ -54,10 +45,7 @@ function Header(props) {
       </div>
       <div className="heading">{props.heading}</div>
       <div className="showcase-nav2">
-        <a
-          href={props.user ? "/menu/notifications" : "/admin/notifications"}
-          className="notifications"
-        >
+        <a href={"/menu/notifications"} className="notifications">
           <span style={notifications ? { backgroundColor: "orangered" } : {}}>
             {notifications}
           </span>
