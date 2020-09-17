@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Header from "../sub-components/header";
 import QuizList from "../sub-components/studentQuizTile";
 import QuizOverView from "../sub-components/quizOverview";
+import { fetchData } from "../../utils/storage";
 import "../../css/quiz-overview.css";
 import "../../css/quizzes.css";
+const pid = fetchData("person");
 const StudentQuizList = (props) => {
-  const userIdentity = props.location.state;
   const { search } = props.location;
   const user = search.split("=")[1];
   const [showOverview, setShowOverview] = useState(false);
@@ -23,7 +23,7 @@ const StudentQuizList = (props) => {
       sch: data.sch,
       time: data.time,
       title: data.title,
-      user: userIdentity,
+      user: pid,
       retry: data.retry,
     });
   };
@@ -32,7 +32,7 @@ const StudentQuizList = (props) => {
     setShowOverview(choice);
   };
   const fetchRegisteredQuiz = () => {
-    const url = `${process.env.REACT_APP_HEAD}/school/student/get/quiz?pid=${userIdentity.pid}`;
+    const url = `${process.env.REACT_APP_HEAD}/school/student/get/quiz?pid=${pid}`;
     fetch(url)
       .then((resp) => resp.json())
       .then((data) => {
@@ -43,7 +43,6 @@ const StudentQuizList = (props) => {
   useEffect(fetchRegisteredQuiz, []);
   return (
     <div>
-      <Header />
       {showOverview && (
         <QuizOverView
           data={overviewData}

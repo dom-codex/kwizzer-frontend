@@ -39,6 +39,11 @@ function SubMenu(props) {
           subtile={<Subtile title={title} user={props.user} />}
         />*/}
         <Menutile
+          title={"My Exams"}
+          icon={"list_alt"}
+          action={() => LinkTo("/menu/myexams", userIdentities)}
+        />
+        <Menutile
           title={"Notifications"}
           icon={"event"}
           action={() => LinkTo("/menu/notifications", userIdentities)}
@@ -47,11 +52,6 @@ function SubMenu(props) {
           title={"Results"}
           icon={"wysiwyg"}
           action={() => LinkTo("/menu/results", userIdentities)}
-        />
-        <Menutile
-          title={"My Exams"}
-          icon={"list_alt"}
-          action={() => LinkTo("/menu/myexams", userIdentities)}
         />
       </div>
     </div>

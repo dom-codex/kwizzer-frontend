@@ -31,13 +31,25 @@ const Layout = (props) => {
                 <div>Notifications</div>
               </a>
             </li>
-            <li style={{ zIndex: 90 }}>
+            <li>
+              <a href={"/menu/myexams"}>
+                <i className="material-icons">list_alt</i>
+                <div>My exams</div>
+              </a>
+            </li>
+            <li>
+              <a href={"/menu/results"}>
+                <i className="material-icons">wysiwyg</i>
+                <div>results</div>
+              </a>
+            </li>
+            {/*<li style={{ zIndex: 90 }}>
               <a href="/settings">
                 {" "}
                 <i className="material-icons">settings</i>
                 <div>settings</div>
               </a>
-            </li>
+            </li>/*/}
           </ul>
         </div>
       </div>

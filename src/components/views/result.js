@@ -1,4 +1,5 @@
-import React, { useEffect, useReducer, useContext } from "react";
+import React, { useEffect, useReducer, useContext, useState } from "react";
+import Loading from "../sub-components/Loading";
 import { modeContext } from "../../context/mode";
 import { resulReducer } from "../../utils/studentResults";
 import "../../css/result.css";
@@ -29,29 +30,19 @@ const Tile = (props) => {
 };
 const Result = (props) => {
   const { switchMode, setHeading } = useContext(modeContext);
-
   const [state, dispatch] = useReducer(resulReducer, {
     exams: [],
   });
+  const [loading, setLoading] = useState(true);
   const getExamResults = () => {
     const url = `${process.env.REACT_APP_HEAD}/school/student/myexams?pid=${person}`;
     fetch(url)
       .then((res) => res.json())
       .then((exams) => {
-        console.log(exams);
         dispatch({ type: "load", exams: exams.exams });
+        setLoading(false);
       });
   };
-  /* const getResults = () => {
-    const url = `http://localhost:3500/school/student/check/result?pid=${userIdentity.pid}`;
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((data) => {
-        // setResult(data.questionPapers);
-        console.log(data);
-        getExamResults(data.questionPapers);
-      });
-  };*/
   const linkTo = (data) => {
     props.history.push("/myexam/solutions", data);
   };
@@ -63,23 +54,29 @@ const Result = (props) => {
   }, []);
   return (
     <section className="result">
-      {state.exams.length ? (
-        state.exams.map((r, i) => {
-          return (
-            <Tile
-              key={i}
-              title={r.title}
-              answered={r.totalAnswered}
-              fails={r.fails}
-              score={r.score.$numberDecimal}
-              total={r.totalMarks}
-              paperId={r._id}
-              viewSoln={linkTo}
-            />
-          );
-        })
+      {loading ? (
+        <Loading />
       ) : (
-        <h1>no result found</h1>
+        <div>
+          {state.exams.length ? (
+            state.exams.map((r, i) => {
+              return (
+                <Tile
+                  key={i}
+                  title={r.title}
+                  answered={r.totalAnswered}
+                  fails={r.fails}
+                  score={r.score.$numberDecimal}
+                  total={r.totalMarks}
+                  paperId={r._id}
+                  viewSoln={linkTo}
+                />
+              );
+            })
+          ) : (
+            <h1>no result found</h1>
+          )}
+        </div>
       )}
     </section>
   );
