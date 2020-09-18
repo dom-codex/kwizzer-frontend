@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import Jumbo from "../sub-components/Jumbo";
 import Submenu from "../sub-components/submenu";
+import Loading from "../sub-components/Loading";
 import { modeContext } from "../../context/mode";
 import "../../css/showcase.css";
 import { fetchData } from "../../utils/storage";
@@ -11,8 +12,8 @@ const LoadInfo = (setUser, setDetailsLoaded, stateData) => {
     .then((data) => {
       if (data.code === 201) {
         setUser(data.user);
-        return setDetailsLoaded(true);
       }
+      setDetailsLoaded(false);
     });
 };
 function Menu(props) {
@@ -30,10 +31,14 @@ function Menu(props) {
   }, []);
   return (
     <section className="menu">
-      <Jumbo
-        title={detailLoaded ? `${"Welcome " + user.name}` : "Loading..."}
-      />
-      {detailLoaded && <Submenu user={user} routes={props.routes} />}
+      {detailLoaded ? (
+        <Loading />
+      ) : (
+        <div>
+          <Jumbo title={`${"Welcome " + user.name}`} />
+          {<Submenu user={user} routes={props.routes} />}
+        </div>
+      )}
     </section>
   );
 }

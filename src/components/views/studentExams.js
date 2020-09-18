@@ -6,8 +6,8 @@ import Toast from "../sub-components/toast";
 import Loading from "../sub-components/Loading";
 import "../../css/examlist.css";
 import { fetchData } from "../../utils/storage";
-const person = fetchData("person");
 const StudentExams = (props) => {
+  const person = fetchData("person");
   const { setHeading } = useContext(modeContext);
   //const userIdentity = props.location.state;
   const [exams, setExams] = useState([]);
@@ -21,11 +21,17 @@ const StudentExams = (props) => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        if (!data.exams.length) {
-          return setText("You haven't applied for any examination");
+        if (data.code === 403) {
+          setText("Candidate not found");
+          return setLoading(false);
         }
-        setExams(data.exams);
+        if (!data.exams.length) {
+          setText("You haven't applied for any examination");
+          setLoading(false);
+        }
         setLoading(false);
+
+        setExams(data.exams);
       });
   };
   const linkTo = (route, data) => {
