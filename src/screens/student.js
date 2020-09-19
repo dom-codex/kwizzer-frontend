@@ -6,6 +6,7 @@ import StudentExamList from "../components/views/studentQuizlist";
 import MyExams from "../components/views/studentExams";
 import Examination from "../components/views/examination";
 import ExamSolution from "../components/views/solutions";
+import Settings from "../components/views/settings";
 import App from "../App";
 const Student = (props) => {
   return (
@@ -17,6 +18,7 @@ const Student = (props) => {
       <Route exact path="/menu/examination" component={Examination} />
       <Route exact path="/myexam/solutions" component={ExamSolution} />
       <Route exact path="/menu/myexams" component={MyExams} />
+      <Route exact path="/menu/settings" component={Settings} />
     </section>
   );
 };
