@@ -9,6 +9,10 @@ const SignUp = (props) => {
   };
   return (
     <section className="signup">
+      <div className="alternative">
+        <span>Already have an account?</span>
+        <a href="/login">Login</a>
+      </div>
       <div className="signup-body">
         {loader ? <Preloader /> : ""}
         <div className="signup-header">
