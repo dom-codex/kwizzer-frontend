@@ -13,18 +13,31 @@ import Login from "../components/auth/login";
 import GetStarted from "../components/views/gettingstarted";
 import Home from "../components/views/home";
 import App from "../App";
+import ProtectedRoute from "../private/privateRoute";
 const Student = (props) => {
   return (
     <section style={{ width: "100%" }}>
       <Switch>
-        <Route exact path="/menu" component={App} />
-        <Route exact path="/menu/notifications" component={Notification} />
-        <Route exact path="/menu/quiz" component={StudentExamList} />
-        <Route exact path="/menu/results" component={Result} />
-        <Route exact path="/menu/examination" component={Examination} />
-        <Route exact path="/myexam/solutions" component={ExamSolution} />
-        <Route exact path="/menu/myexams" component={MyExams} />
-        <Route exact path="/menu/settings" component={Settings} />
+        <ProtectedRoute exact={true} path="/menu" component={App} />
+        <ProtectedRoute
+          exact
+          path="/menu/notifications"
+          component={Notification}
+        />
+        <ProtectedRoute exact path="/menu/quiz" component={StudentExamList} />
+        <ProtectedRoute exact path="/menu/results" component={Result} />
+        <ProtectedRoute
+          exact
+          path="/menu/examination"
+          component={Examination}
+        />
+        <ProtectedRoute
+          exact
+          path="/myexam/solutions"
+          component={ExamSolution}
+        />
+        <ProtectedRoute exact path="/menu/myexams" component={MyExams} />
+        <ProtectedRoute exact path="/menu/settings" component={Settings} />
         <Route exact path="/" component={Home} />
         <Route
           exact
