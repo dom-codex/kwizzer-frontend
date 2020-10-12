@@ -6,7 +6,9 @@ const gettingstarted = (props) => {
     <section className="gettingstarted">
       <div className="g-h">
         <div>
-          <i className="material-icons">home</i>{" "}
+          <a href="/" style={{ color: "#fff", textDecoration: "none" }}>
+            <i className="material-icons">home</i>{" "}
+          </a>
         </div>
       </div>
       <div className="logo-showcase">
