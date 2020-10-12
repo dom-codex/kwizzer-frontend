@@ -75,7 +75,7 @@ function Menu(props) {
                 <div>
                   <div className="label">exam:</div>
                   <p class="examName">
-                    {stats.examNames ? stats.examNames : "N/A"}
+                    {stats.examNames ? stats.examNames.name : "N/A"}
                   </p>
                 </div>
               </div>
