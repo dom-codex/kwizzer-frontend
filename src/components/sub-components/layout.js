@@ -16,9 +16,9 @@ const Layout = (props) => {
         }}
       >
         <div className="side-panel">
-          <div className="side-panel-logo">
+          <a href={`/`} className="side-panel-logo">
             <img src={Logo1} alt="logo" />
-          </div>
+          </a>
           <ul className="side-link">
             <li>
               <a href={"/menu"}>
@@ -40,6 +40,12 @@ const Layout = (props) => {
             <li>
               <a href={"/menu/results"}>
                 <i className="material-icons">wysiwyg</i>
+                <div>results</div>
+              </a>
+            </li>
+            <li>
+              <a href={"/menu/settings"}>
+                <i className="material-icons">gear</i>
                 <div>results</div>
               </a>
             </li>

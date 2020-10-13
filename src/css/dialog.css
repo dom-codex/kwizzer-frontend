@@ -25,6 +25,7 @@
 .dialog-controls {
   display: flex !important;
   justify-content: flex-end !important;
+  margin-top: 8px;
 }
 .dialog-controls button {
   height: 32px;

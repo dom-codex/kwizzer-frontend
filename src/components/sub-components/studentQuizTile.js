@@ -40,7 +40,9 @@ const StudentQuizTile = (props) => {
       {props.canRetake && props.completed && (
         <button onClick={() => showOverView(true)}>Retry</button>
       )}
-      {props.completed && !props.canRetake && <button>taken</button>}
+      {props.completed && !props.canRetake && (
+        <button disabled={true}>taken</button>
+      )}
     </li>
   );
 };

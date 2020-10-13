@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
+import { withRouter } from "react-router-dom";
 import QuestionDisplayArea from "../sub-components/question-display";
 import OptionLabel from "../sub-components/option-label";
 import Loading from "../sub-components/Loading";
@@ -152,4 +153,4 @@ const Solutions = (props) => {
     </section>
   );
 };
-export default Solutions;
+export default withRouter(Solutions);

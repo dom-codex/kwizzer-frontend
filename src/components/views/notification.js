@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import Loading from "../sub-components/Loading";
 import Opensocket from "socket.io-client";
 import { modeContext } from "../../context/mode";
@@ -67,4 +68,4 @@ const Notification = (props) => {
     </section>
   );
 };
-export default Notification;
+export default withRouter(Notification);

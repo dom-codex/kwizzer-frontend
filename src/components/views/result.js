@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
+import { withRouter } from "react-router-dom";
 import Loading from "../sub-components/Loading";
 import { modeContext } from "../../context/mode";
 import { resulReducer } from "../../utils/studentResults";
@@ -81,4 +82,4 @@ const Result = (props) => {
     </section>
   );
 };
-export default Result;
+export default withRouter(Result);

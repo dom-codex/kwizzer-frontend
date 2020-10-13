@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import { modeContext } from "../../context/mode";
 import QuizTile from "../sub-components/studentQuizTile";
 import QuizOverView from "../sub-components/quizOverview";
@@ -115,4 +116,4 @@ const StudentExams = (props) => {
   );
 };
 
-export default StudentExams;
+export default withRouter(StudentExams);
