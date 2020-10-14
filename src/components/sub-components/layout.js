@@ -45,8 +45,8 @@ const Layout = (props) => {
             </li>
             <li>
               <a href={"/menu/settings"}>
-                <i className="material-icons">gear</i>
-                <div>results</div>
+                <i className="material-icons">settings</i>
+                <div>settings</div>
               </a>
             </li>
             {/*<li style={{ zIndex: 90 }}>
